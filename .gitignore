@@ -1,0 +1,9 @@
+.dart_tool/
+.packages
+build/
+*.g.dart
+*.freezed.dart
+pubspec.lock
+.flutter-plugins
+.flutter-plugins-dependencies
+lib/l10n/

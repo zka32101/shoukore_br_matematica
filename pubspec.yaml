@@ -1,0 +1,29 @@
+name: shoukore_br_matematica
+description: "小学コレ！ブラジル版 算数アプリ（shoukore_core_globalを共通コアとして利用）。"
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.0
+  flutter: ">=3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  shoukore_core_global:
+    git:
+      url: https://github.com/zka32101/shoukore_core_global.git
+      ref: main
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lints: ^6.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - curriculum/pt_BR.json
