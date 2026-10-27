@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'home_screen.dart';
 import 'l10n/app_localizations.dart';
+import 'onboarding_completion_store.dart';
+import 'onboarding_screen.dart';
 
 void main() {
   runApp(const ShoukoreBrMatematicaApp());
@@ -17,6 +19,25 @@ class ShoukoreBrMatematicaApp extends StatefulWidget {
 
 class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
   static const _locale = Locale('pt', 'BR');
+
+  final OnboardingCompletionStore _onboardingStore = InMemoryOnboardingCompletionStore();
+  bool _loadingOnboardingState = true;
+  bool _onboardingCompleted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOnboardingState();
+  }
+
+  Future<void> _loadOnboardingState() async {
+    final completed = await _onboardingStore.isCompleted();
+    if (!mounted) return;
+    setState(() {
+      _onboardingCompleted = completed;
+      _loadingOnboardingState = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +71,14 @@ class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
           border: OutlineInputBorder(),
         ),
       ),
-      home: const HomeScreen(),
+      home: _loadingOnboardingState
+          ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+          : _onboardingCompleted
+              ? const HomeScreen()
+              : OnboardingScreen(
+                  completionStore: _onboardingStore,
+                  onCompleted: () => setState(() => _onboardingCompleted = true),
+                ),
     );
   }
 }

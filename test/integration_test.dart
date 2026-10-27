@@ -22,6 +22,22 @@ void main() {
       await tester.pumpWidget(const ShoukoreBrMatematicaApp());
       await tester.pumpAndSettle();
 
+      // 初回起動時はオンボーディング（ウェルカム→Ahaモーメント→ペイウォール）が
+      // 表示され、完了するとホーム画面に遷移する。
+      await tester.tap(find.byKey(const Key('onboardingWelcomeNextButton')));
+      await tester.pumpAndSettle();
+
+      // Ahaモーメント: 最初の1問は必ず正解できる固定問題（2+3=5）。
+      await tester.tap(find.byKey(const Key('onboardingQuizChoice_5')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('onboardingQuizFeedbackText')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('onboardingQuizContinueButton')));
+      await tester.pumpAndSettle();
+
+      // ペイウォール: 無料継続（スキップ）を選んでホームへ。
+      await tester.tap(find.byKey(const Key('onboardingSkipButton')));
+      await tester.pumpAndSettle();
+
       // 既定ロケール(pt_BR)でpt_BRのカリキュラム単元一覧が表示される。
       expect(find.byKey(const Key('unit_mat_numeros_1')), findsOneWidget);
 

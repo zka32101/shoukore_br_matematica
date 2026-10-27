@@ -53,5 +53,20 @@
   "explanationAdd": "A soma é a operação que junta duas ou mais quantidades para encontrar o total. Por exemplo, 3+5 significa \"somar 5 a 3\", e o resultado é 8.",
   "explanationSubtract": "A subtração é a operação que encontra quanto resta ao retirar uma quantidade de outra. Por exemplo, 8-3 significa \"tirar 3 de 8\", e o resultado é 5.",
   "explanationMultiply": "A multiplicação é uma forma rápida de somar o mesmo número várias vezes. Por exemplo, 3×4 significa \"somar 3 quatro vezes\", e o resultado é 12.",
-  "explanationDivide": "A divisão é a operação que separa uma quantidade em partes iguais. Por exemplo, 12÷4 significa \"separar 12 em 4 partes iguais\", e o resultado é 3."
+  "explanationDivide": "A divisão é a operação que separa uma quantidade em partes iguais. Por exemplo, 12÷4 significa \"separar 12 em 4 partes iguais\", e o resultado é 3.",
+  "onboardingWelcomeTitle": "Bem-vindo ao 小学コレ！ Matemática",
+  "onboardingWelcomeBody": "Aprenda matemática seguindo a BNCC, cuide do seu bichinho e conquiste moedas a cada acerto!",
+  "onboardingWelcomeNextButton": "Vamos começar!",
+  "onboardingQuizTitle": "Experimente uma questão",
+  "onboardingQuizQuestion": "Quanto é 2 + 3?",
+  "onboardingQuizCorrectFeedback": "Isso mesmo! Você ganhou 10 moedas.",
+  "onboardingQuizIncorrectFeedback": "Quase! Tente de novo.",
+  "onboardingQuizContinueButton": "Continuar",
+  "onboardingPaywallTitle": "Continue aprendendo sem limites",
+  "onboardingPaywallBody": "Desbloqueie todas as unidades de matemática da BNCC, com relatórios para os responsáveis e controle de tempo de uso.",
+  "onboardingPaywallMonthlyPrice": "R$ 14,90/mês",
+  "onboardingPaywallYearlyPrice": "R$ 99,90/ano",
+  "onboardingPaywallTrialNote": "2 semanas grátis para testar",
+  "onboardingPaywallStartTrialButton": "Iniciar teste grátis",
+  "onboardingPaywallSkipButton": "Continuar sem assinar"
 }
