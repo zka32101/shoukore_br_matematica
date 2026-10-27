@@ -16,9 +16,7 @@ class ShoukoreBrMatematicaApp extends StatefulWidget {
 }
 
 class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
-  Locale _locale = const Locale('pt', 'BR');
-
-  void _setLocale(Locale locale) => setState(() => _locale = locale);
+  static const _locale = Locale('pt', 'BR');
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +50,7 @@ class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
           border: OutlineInputBorder(),
         ),
       ),
-      home: HomeScreen(onLocaleChanged: _setLocale),
+      home: const HomeScreen(),
     );
   }
 }

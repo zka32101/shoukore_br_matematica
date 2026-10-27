@@ -38,9 +38,9 @@ void main() {
       expect(find.byKey(const Key('lockIcon')), findsNothing);
 
       // 単元数が増え一覧が画面に収まらないため、保護者ゲートのタイルはスクロールして確認する。
-      await tester.scrollUntilVisible(find.byKey(const Key('guardianGateTile')), 300.0);
+      await tester.ensureVisible(find.byKey(const Key('guardianGateTile')));
       expect(find.text('Para os responsáveis'), findsOneWidget);
-      await tester.scrollUntilVisible(find.byKey(const Key('unit_mat_numeros_1')), -500.0);
+      await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
 
       // 単元をタップすると出題され、回答するとprogressのmasteryが更新される。
       await tester.tap(find.byKey(const Key('unit_mat_numeros_1')));
@@ -72,7 +72,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // ホームにもgrowth状態タイルが表示され、出題画面と状態を共有している。
-      await tester.scrollUntilVisible(find.byKey(const Key('growthStatusTile')), -300.0);
+      await tester.ensureVisible(find.byKey(const Key('growthStatusTile')));
       expect(find.byKey(const Key('growthStatusTile')), findsOneWidget);
 
       // 既定(pt_BR)はscreenTimeLimitMinutes:0（無制限）のため、利用時間タイルは
@@ -84,7 +84,7 @@ void main() {
       await tester.tap(find.byKey(const Key('screenTimeLimitToggleButton')));
       await tester.pumpAndSettle();
 
-      await tester.scrollUntilVisible(find.byKey(const Key('weeklyReportTile')), 300.0);
+      await tester.ensureVisible(find.byKey(const Key('weeklyReportTile')));
       await tester.tap(find.byKey(const Key('weeklyReportTile')));
       await tester.pumpAndSettle();
 
@@ -94,10 +94,10 @@ void main() {
 
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(find.byKey(const Key('unit_mat_numeros_1')), -300.0);
+      await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
 
       // 年齢確認: 2020年生まれ（6歳、pt_BRの同意年齢12歳未満）は保護者同意が必要。
-      await tester.scrollUntilVisible(find.byKey(const Key('ageVerificationTile')), 300.0);
+      await tester.ensureVisible(find.byKey(const Key('ageVerificationTile')));
       expect(find.byKey(const Key('consentStatusText')), findsOneWidget);
       await tester.tap(find.byKey(const Key('ageVerificationTile')));
       await tester.pumpAndSettle();
@@ -113,7 +113,7 @@ void main() {
       expect(find.text('Consentimento dos responsáveis: concedido'), findsOneWidget);
 
       // デイリーミッションのリマインド通知: 既定は未設定、タップで設定/解除を切り替えられる。
-      await tester.scrollUntilVisible(find.byKey(const Key('dailyReminderTile')), 300.0);
+      await tester.ensureVisible(find.byKey(const Key('dailyReminderTile')));
       expect(find.text('Nenhuma notificação agendada'), findsOneWidget);
       await tester.tap(find.byKey(const Key('dailyReminderTile')));
       await tester.pumpAndSettle();
@@ -122,10 +122,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Nenhuma notificação agendada'), findsOneWidget);
 
-      await tester.scrollUntilVisible(find.byKey(const Key('unit_mat_numeros_1')), -300.0);
+      await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
 
       // 学習データ管理画面: 書き出し内容の確認・保護者同意の撤回ができる。
-      await tester.scrollUntilVisible(find.byKey(const Key('dataPrivacyTile')), 500.0);
+      await tester.ensureVisible(find.byKey(const Key('dataPrivacyTile')));
       await tester.tap(find.byKey(const Key('dataPrivacyTile')));
       await tester.pumpAndSettle();
 
@@ -153,7 +153,7 @@ void main() {
 
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(find.byKey(const Key('unit_mat_numeros_1')), -300.0);
+      await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
     },
   );
 }
