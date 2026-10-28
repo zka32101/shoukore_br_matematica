@@ -8,6 +8,7 @@ import 'l10n/app_localizations.dart';
 import 'misconception_hint_resolver.dart';
 import 'question_cache.dart';
 import 'question_prompt_resolver.dart';
+import 'tts_service.dart';
 import 'unit_name_resolver.dart';
 
 class QuestionScreen extends StatefulWidget {
@@ -37,6 +38,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
   static const _autoHintPolicy = AutoHintPolicy();
   static const _consecutiveIncorrectAlert = ConsecutiveIncorrectAnswerAlert();
 
+  final TtsService _ttsService = TtsService();
+
   Question? _question;
   Mastery? _mastery;
   String? _feedback;
@@ -49,6 +52,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
   void initState() {
     super.initState();
     _loadQuestion();
+  }
+
+  @override
+  void dispose() {
+    _ttsService.stop();
+    super.dispose();
   }
 
   Future<void> _loadQuestion() async {
@@ -188,10 +197,23 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     if (prompt == null) return const SizedBox.shrink();
                     return Padding(
                       padding: const EdgeInsets.only(top: 16),
-                      child: Text(
-                        prompt,
-                        key: const Key('questionPromptText'),
-                        style: theme.textTheme.headlineSmall,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              prompt,
+                              key: const Key('questionPromptText'),
+                              style: theme.textTheme.headlineSmall,
+                            ),
+                          ),
+                          IconButton(
+                            key: const Key('listenPromptButton'),
+                            tooltip: AppLocalizations.of(context)!.listenButtonLabel,
+                            icon: const Icon(Icons.volume_up_outlined),
+                            onPressed: () => _ttsService.speak(prompt),
+                          ),
+                        ],
                       ),
                     );
                   }),
@@ -327,9 +349,21 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  AppLocalizations.of(context)!.explanationSectionTitle,
-                                  style: theme.textTheme.titleMedium,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        AppLocalizations.of(context)!.explanationSectionTitle,
+                                        style: theme.textTheme.titleMedium,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      key: const Key('listenExplanationButton'),
+                                      tooltip: AppLocalizations.of(context)!.listenButtonLabel,
+                                      icon: const Icon(Icons.volume_up_outlined),
+                                      onPressed: () => _ttsService.speak(explanation),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 4),
                                 Text(explanation, key: const Key('explanationText')),

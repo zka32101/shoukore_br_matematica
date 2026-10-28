@@ -624,5 +624,6 @@
       }
     }
   },
-  "ageGateInvalidYearError": "Digite um ano de nascimento válido."
+  "ageGateInvalidYearError": "Digite um ano de nascimento válido.",
+  "listenButtonLabel": "Ouvir"
 }

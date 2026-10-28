@@ -12,6 +12,12 @@ void main() {
     if (call.method == 'Clipboard.setData') return null;
     return null;
   });
+  // 読み上げ機能(flutter_tts)は実機のTTSエンジンに依存するため、
+  // テスト環境では何もしないモックに置き換える。
+  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+      .setMockMethodCallHandler(const MethodChannel('flutter_tts'), (call) async {
+    return 1;
+  });
 
   // 1つのtestWidgets内でシナリオを連結し、pumpWidgetを1回だけ呼ぶ。
   // （Flutter test環境では複数のtestWidgetsでpumpWidgetを繰り返すとアセット読み込みの
@@ -79,6 +85,10 @@ void main() {
       // 回答前から表示される。
       expect(find.byKey(const Key('autoHintText')), findsOneWidget);
 
+      // 読み上げ機能: 問題文を読み上げるボタンが表示される
+      // (実際のタップ動作はtest/tts_service_test.dartで確認する)。
+      expect(find.byKey(const Key('listenPromptButton')), findsOneWidget);
+
       final choiceButtons = find.byType(ElevatedButton);
       expect(choiceButtons, findsWidgets);
       await tester.tap(choiceButtons.first);
@@ -91,6 +101,15 @@ void main() {
       // ビューポート上の可視性に依存しないようskipOffstage:falseで検証する。
       expect(
         find.byKey(const Key('explanationText'), skipOffstage: false),
+        findsOneWidget,
+      );
+
+      // 読み上げ機能: 解説文を読み上げるボタンが表示される
+      // (ListViewのSliver遅延レイアウトでoffstageになりタップ位置が
+      // 不安定になることがあるため、タップ動作はTtsServiceの単体テストで
+      // 確認する)。
+      expect(
+        find.byKey(const Key('listenExplanationButton'), skipOffstage: false),
         findsOneWidget,
       );
 
