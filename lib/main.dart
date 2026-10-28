@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'package:shoukore_core_global/shoukore_core_global.dart';
+
 import 'home_screen.dart';
 import 'l10n/app_localizations.dart';
-import 'onboarding_completion_store.dart';
 import 'onboarding_screen.dart';
 
 void main() {

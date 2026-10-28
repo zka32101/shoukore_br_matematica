@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shoukore_core_global/shoukore_core_global.dart';
 
 import 'l10n/app_localizations.dart';
-import 'onboarding_completion_store.dart';
 
 /// 初回起動時のオンボーディング（ウェルカム→Ahaモーメント→ペイウォール）。
 ///
@@ -22,6 +22,8 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  static const _ahaTracker = AhaMomentTracker();
+
   final PageController _pageController = PageController();
   bool _quizCorrect = false;
 
@@ -60,7 +62,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             _AhaQuizPage(
               l10n: l10n,
               correct: _quizCorrect,
-              onAnswered: (correct) => setState(() => _quizCorrect = correct),
+              onAnswered: (correct) => setState(() {
+                _quizCorrect = _ahaTracker.reachedOnThisAnswer(
+                  alreadyReached: _quizCorrect,
+                  correct: correct,
+                );
+              }),
               onContinue: () => _goToPage(2),
             ),
             _PaywallPage(
