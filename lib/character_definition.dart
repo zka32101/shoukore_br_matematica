@@ -34,9 +34,10 @@ class CharacterDefinition {
 }
 
 /// ブラジル算数版の12体（BNCCのeixoごとに配分、単元数の多いeixoに3体）。
-/// `Gogo`/`Ichiko`/`Fukuju`/`Niniko`は日本版キャラを流用したもの
-/// （参照元画像: `H:\マイドライブ\images\小学コレ！\JP_日本\算数\
-/// 01_キャラクター\算数キャラ`）。
+/// `Gogo`/`Dracotrê`/`Ichiko`/`Fukuju`/`Fouku`/`Divido`/`Niniko`は日本版
+/// キャラを流用したもの（参照元画像: `H:\マイドライブ\images\小学コレ！\
+/// JP_日本\算数\01_キャラクター\算数キャラ`）。新規作成が必要なのは
+/// `Tucaninho`/`Tamanduinho`/`Tatuzinho`/`Capivito`/`Araruna`の5体のみ。
 const characterDefinitions = <CharacterDefinition>[
   CharacterDefinition(
     id: 'tucaninho',
@@ -102,11 +103,11 @@ const characterDefinitions = <CharacterDefinition>[
     color: Colors.teal,
   ),
   CharacterDefinition(
-    id: 'jabutizinho',
+    id: 'fouku',
     eixoKeyword: 'geometria',
     order: 1,
-    name: 'Jabutizinho',
-    motif: 'Jabuti',
+    name: 'Fouku',
+    motif: 'Veado (日本版「フォウク」流用)',
     icon: Icons.shield_outlined,
     color: Colors.green,
   ),
@@ -120,12 +121,12 @@ const characterDefinitions = <CharacterDefinition>[
     color: Colors.brown,
   ),
   CharacterDefinition(
-    id: 'preguinha',
+    id: 'divido',
     eixoKeyword: 'grandezas',
     order: 1,
-    name: 'Preguinha',
-    motif: 'Bicho-preguiça',
-    icon: Icons.schedule,
+    name: 'Divido',
+    motif: 'Mago da balança (日本版「ディビド」流用)',
+    icon: Icons.balance,
     color: Colors.grey,
   ),
   CharacterDefinition(
