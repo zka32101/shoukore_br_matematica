@@ -3,6 +3,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 import 'package:shoukore_core_global/shoukore_core_global_entitlement_revenuecat.dart';
 
+import 'age_gate_consent_logic.dart';
 import 'curriculum_repository.dart';
 import 'l10n/app_localizations.dart';
 
@@ -160,14 +161,14 @@ class _AgeGatePageState extends State<_AgeGatePage> {
       _submitting = true;
     });
     final profile = await widget.repository.loadRegionalProfile(widget.locale);
-    final requiresConsent = const AgeGate().requiresGuardianConsent(
+    final requiresConsent = await requiresConsentAndRecordIfNot(
       birthYear: birthYear,
       profile: profile,
       clock: widget.clock,
+      consentStore: widget.consentStore,
     );
     if (!mounted) return;
     if (!requiresConsent) {
-      await widget.consentStore.setConsent(const ConsentRecord(parentalConsentGiven: false));
       widget.onNext();
       return;
     }
@@ -178,10 +179,11 @@ class _AgeGatePageState extends State<_AgeGatePage> {
   }
 
   Future<void> _answerConsent(bool accepted) async {
-    await widget.consentStore.setConsent(ConsentRecord(
-      parentalConsentGiven: accepted,
-      consentedAt: accepted ? widget.clock.now() : null,
-    ));
+    await recordConsentAnswer(
+      consentStore: widget.consentStore,
+      clock: widget.clock,
+      accepted: accepted,
+    );
     widget.onNext();
   }
 

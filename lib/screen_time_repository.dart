@@ -40,16 +40,27 @@ class ScreenTimeRepository {
   final ScreenTimeStore _store;
   ScreenTimeSnapshot _snapshot;
 
+  // ScreenTimeSnapshotは分単位しか保持できないため、`addUsage`を呼ぶたびに
+  // `elapsed.inMinutes`で切り捨てると、1分未満の短い利用が何度積み重なっても
+  // 一切カウントされない（例: 40秒の利用を何度繰り返しても0分のまま）。
+  // この秒単位の余りをアプリ稼働中は保持し、1分に達した分だけ確定させる。
+  int _pendingSeconds = 0;
+
   Duration get usedToday => Duration(minutes: _snapshot.usedTodayMinutes);
 
   /// 出題画面を開いていた時間を積算する。ミッション日が変わっていればリセットする。
   Future<void> addUsage(Duration elapsed) async {
     final today = boundary.currentMissionDay(clock);
-    final base = (_snapshot.day == null || !boundary.isSameMissionDay(_snapshot.day!, today))
-        ? 0
-        : _snapshot.usedTodayMinutes;
+    final sameDay = _snapshot.day != null && boundary.isSameMissionDay(_snapshot.day!, today);
+    final base = sameDay ? _snapshot.usedTodayMinutes : 0;
+    if (!sameDay) _pendingSeconds = 0;
+
+    _pendingSeconds += elapsed.inSeconds;
+    final wholeMinutes = _pendingSeconds ~/ 60;
+    _pendingSeconds %= 60;
+
     _snapshot = ScreenTimeSnapshot(
-      usedTodayMinutes: base + elapsed.inMinutes,
+      usedTodayMinutes: base + wholeMinutes,
       day: today,
     );
     await _store.save(_snapshot);

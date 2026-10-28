@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 
+import 'age_gate_consent_logic.dart';
 import 'l10n/app_localizations.dart';
 
 /// 年齢確認（生まれ年の入力）を行い、`AgeGate`で保護者同意の要否を判定する。
@@ -39,16 +40,13 @@ Future<void> showAgeGateFlow(
   );
   if (birthYear == null || !context.mounted) return;
 
-  final requiresConsent = const AgeGate().requiresGuardianConsent(
+  final requiresConsent = await requiresConsentAndRecordIfNot(
     birthYear: birthYear,
     profile: profile,
     clock: clock,
+    consentStore: consentStore,
   );
-
-  if (!requiresConsent) {
-    await consentStore.setConsent(const ConsentRecord(parentalConsentGiven: false));
-    return;
-  }
+  if (!requiresConsent) return;
 
   if (!context.mounted) return;
   final accepted = await showDialog<bool>(
@@ -71,8 +69,9 @@ Future<void> showAgeGateFlow(
     ),
   );
 
-  await consentStore.setConsent(ConsentRecord(
-    parentalConsentGiven: accepted ?? false,
-    consentedAt: (accepted ?? false) ? clock.now() : null,
-  ));
+  await recordConsentAnswer(
+    consentStore: consentStore,
+    clock: clock,
+    accepted: accepted ?? false,
+  );
 }
