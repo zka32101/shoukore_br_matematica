@@ -17,7 +17,12 @@ import 'question_cache.dart';
 import 'question_screen.dart';
 import 'screen_time_repository.dart';
 import 'src/question/arithmetic_question_source.dart';
+import 'src/question/composite_question_source.dart';
 import 'src/question/curriculum_loader.dart';
+import 'src/question/geometry_question_source.dart';
+import 'src/question/measurement_question_source.dart';
+import 'src/question/sequence_question_source.dart';
+import 'src/question/statistics_question_source.dart';
 import 'weekly_report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const _locale = Locale('pt', 'BR');
 
   CurriculumData? _curriculum;
-  ArithmeticQuestionSource? _source;
+  QuestionSource? _source;
   GrowthRepository? _growthRepository;
   RegionalProfile? _regionalProfile;
   ScreenTimeRepository? _screenTimeRepository;
@@ -77,9 +82,28 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _load() async {
     final curriculum = await _repository.loadCurriculum(_locale);
     final localeKey = _repository.localeKey(_locale);
-    final source = ArithmeticQuestionSource(
-      unitsByLocale: {localeKey: curriculum.units},
-      templates: curriculum.templates,
+    final unitsByLocale = {localeKey: curriculum.units};
+    final source = CompositeQuestionSource(
+      arithmeticSource: ArithmeticQuestionSource(
+        unitsByLocale: unitsByLocale,
+        templates: curriculum.templates,
+      ),
+      geometrySource: GeometryQuestionSource(
+        unitsByLocale: unitsByLocale,
+        templates: curriculum.shapeTemplates,
+      ),
+      measurementSource: MeasurementQuestionSource(
+        unitsByLocale: unitsByLocale,
+        templates: curriculum.unitConversionTemplates,
+      ),
+      sequenceSource: SequenceQuestionSource(
+        unitsByLocale: unitsByLocale,
+        templates: curriculum.sequenceTemplates,
+      ),
+      statisticsSource: StatisticsQuestionSource(
+        unitsByLocale: unitsByLocale,
+        templates: curriculum.dataSetTemplates,
+      ),
     );
     final regionalProfile = await _repository.loadRegionalProfile(_locale);
     final growthRepository = await GrowthRepository.load(

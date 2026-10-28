@@ -107,6 +107,30 @@ void main() {
       await tester.pumpAndSettle();
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
 
+      // Números以外の4つのeixo（Álgebra/Geometria/Grandezas e Medidas/
+      // Probabilidade e Estatística）もCompositeQuestionSourceで正しく
+      // 出題できることを確認する（専用のQuestionSourceにディスパッチされる）。
+      for (final otherUnitId in [
+        'mat_algebra_1',
+        'mat_geometria_1',
+        'mat_grandezas_2',
+        'mat_probabilidade_1',
+      ]) {
+        await tester.ensureVisible(find.byKey(Key('unit_$otherUnitId')));
+        await tester.tap(find.byKey(Key('unit_$otherUnitId')));
+        await tester.pumpAndSettle();
+
+        final otherChoiceButtons = find.byType(ElevatedButton);
+        expect(otherChoiceButtons, findsWidgets);
+        await tester.tap(otherChoiceButtons.first);
+        await tester.pumpAndSettle();
+        expect(find.byKey(const Key('feedbackText')), findsOneWidget);
+
+        await tester.tap(find.byType(BackButton));
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
+      }
+
       // 既定(pt_BR)はscreenTimeLimitMinutes:0（無制限）のため、利用時間タイルは
       // 制限なしの状態で表示される。デモ用トグルをONにすると1分制限が模擬される。
       expect(find.byKey(const Key('screenTimeStatusTile')), findsOneWidget);
@@ -162,7 +186,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Consentimento dos responsáveis: concedido'), findsOneWidget);
-      expect(find.text('Registros de aprendizagem: 1'), findsOneWidget);
+      // numeros(1件)+他4eixoの結合確認(4件)=5件。
+      expect(find.text('Registros de aprendizagem: 5'), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('copyExportedJsonButton')));
       await tester.pumpAndSettle();
