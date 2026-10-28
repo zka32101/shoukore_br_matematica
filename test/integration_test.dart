@@ -141,7 +141,7 @@ void main() {
       expect(find.byKey(const Key('screenTimeStatusTile')), findsOneWidget);
       await tester.tap(find.byKey(const Key('screenTimeLimitToggleButton')));
       await tester.pumpAndSettle();
-      expect(find.textContaining('remaining: 1min'), findsOneWidget);
+      expect(find.textContaining('Restam: 1 min'), findsOneWidget);
       await tester.tap(find.byKey(const Key('screenTimeLimitToggleButton')));
       await tester.pumpAndSettle();
 
