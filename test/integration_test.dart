@@ -91,6 +91,11 @@ void main() {
       await tester.ensureVisible(find.byKey(const Key('growthStatusTile')));
       expect(find.byKey(const Key('growthStatusTile')), findsOneWidget);
 
+      // コレクションキャラ一覧（8体）も表示される。
+      await tester.ensureVisible(find.byKey(const Key('characterCard_araruna')));
+      expect(find.byKey(const Key('characterCard_tucaninho')), findsOneWidget);
+      expect(find.byKey(const Key('characterCard_araruna')), findsOneWidget);
+
       // 既定(pt_BR)はscreenTimeLimitMinutes:0（無制限）のため、利用時間タイルは
       // 制限なしの状態で表示される。デモ用トグルをONにすると1分制限が模擬される。
       expect(find.byKey(const Key('screenTimeStatusTile')), findsOneWidget);

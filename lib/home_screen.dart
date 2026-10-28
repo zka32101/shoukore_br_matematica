@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart' hide InMemoryProgressStore;
 
 import 'age_gate_dialog.dart';
+import 'character_collection_repository.dart';
+import 'character_definition.dart';
 import 'curriculum_repository.dart';
 import 'data_privacy_screen.dart';
 import 'growth_repository.dart';
@@ -47,6 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final ProgressStore _progressStore = InMemoryProgressStore();
   final GrowthStore _growthStore = InMemoryGrowthStore();
+  final CharacterCollectionStore _characterCollectionStore = InMemoryCharacterCollectionStore();
+  CharacterCollectionSnapshot _characterSnapshot = CharacterCollectionSnapshot.initial;
+  late final _characterCollectionRepository = CharacterCollectionRepository(
+    progressStore: _progressStore,
+    collectionStore: _characterCollectionStore,
+  );
   final QuestionCache _questionCache = QuestionCache();
   final ConsentStore _consentStore = InMemoryConsentStore();
   ConsentRecord? _consent;
@@ -86,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final entitlement = widget.entitlementReader != null
         ? await widget.entitlementReader!.current()
         : _entitlement;
+    final characterSnapshot = await _characterCollectionRepository.refresh(curriculum.units);
     if (!mounted) return;
     setState(() {
       _curriculum = curriculum;
@@ -94,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _regionalProfile = regionalProfile;
       _screenTimeRepository = screenTimeRepository;
       _entitlement = entitlement;
+      _characterSnapshot = characterSnapshot;
     });
   }
 
@@ -285,15 +295,32 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                           await _screenTimeRepository!
                               .addUsage(_clock.now().difference(openedAt));
-                          // 出題画面でgrowth状態（stage/coins）が更新されている可能性があるため、
-                          // ホームに戻った際に再描画する。
-                          if (mounted) setState(() {});
+                          final characterSnapshot = await _characterCollectionRepository
+                              .refresh(curriculum.units);
+                          // 出題画面でgrowth状態（stage/coins）・キャラコレクションが
+                          // 更新されている可能性があるため、ホームに戻った際に再描画する。
+                          if (mounted) {
+                            setState(() => _characterSnapshot = characterSnapshot);
+                          }
                         },
                             ),
                           ),
                       ],
                     );
                   },
+                ),
+                _SectionLabel(label: 'Coleção'),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: [
+                    for (final def in characterDefinitions)
+                      _CharacterCard(
+                        key: Key('characterCard_${def.id}'),
+                        definition: def,
+                        level: _characterSnapshot.levelOf(def.id),
+                      ),
+                  ],
                 ),
                 _SectionLabel(label: 'レポート・設定'),
                 Card(
@@ -551,6 +578,71 @@ class _UnitCard extends StatelessWidget {
                     Icons.lock,
                     key: const Key('lockIcon'),
                     size: 18,
+                    color: theme.colorScheme.outline,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// コレクションキャラ1体分の所持状態・育成レベルを表示するカード。
+/// 未所持（レベル0）はグレーアウト+ロックアイコン表示にする。
+class _CharacterCard extends StatelessWidget {
+  const _CharacterCard({super.key, required this.definition, required this.level});
+
+  final CharacterDefinition definition;
+  final int level;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final owned = level > 0;
+    final color = owned ? definition.color : theme.colorScheme.outlineVariant;
+    return SizedBox(
+      width: 96,
+      height: 110,
+      child: Material(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 22,
+                    backgroundColor: color,
+                    foregroundColor: Colors.white,
+                    child: Icon(definition.icon, size: 20),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    definition.name,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.labelMedium,
+                  ),
+                  Text(
+                    owned ? characterLevelLabels[level] : '???',
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ],
+              ),
+              if (!owned)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Icon(
+                    Icons.lock,
+                    key: const Key('characterLockIcon'),
+                    size: 16,
                     color: theme.colorScheme.outline,
                   ),
                 ),
