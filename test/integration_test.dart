@@ -76,8 +76,13 @@ void main() {
 
       expect(find.byKey(const Key('feedbackText')), findsOneWidget);
 
-      // 回答後、問題テンプレの解説（教科書的な説明）が表示される。
-      expect(find.byKey(const Key('explanationText')), findsOneWidget);
+      // 問題文(prompt)の表示や解説文の充実化で出題画面の縦幅が伸び、ListViewの
+      // Sliverが遅延レイアウトする範囲外（offstage）になりがちなため、
+      // ビューポート上の可視性に依存しないようskipOffstage:falseで検証する。
+      expect(
+        find.byKey(const Key('explanationText'), skipOffstage: false),
+        findsOneWidget,
+      );
 
       // 出題画面にgrowth状態（stage/coins/mission進捗）が表示される。
       // 閾値(10問)に満たないため、正誤に関わらずstageはeggのまま。

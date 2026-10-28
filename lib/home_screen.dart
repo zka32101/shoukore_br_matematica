@@ -73,6 +73,11 @@ class _HomeScreenState extends State<HomeScreen> {
   // 現時点ではpremiumトグルで模擬する。
   Entitlement _entitlement = const Entitlement(unlockedSubjectIds: {});
 
+  // 無限に出題される中でも「マスターした」ことが分かるよう、単元ごとに
+  // 直近10問・正答率90%以上をマスター済みと判定する(コア側の判定ロジックを利用)。
+  static const _masteryEligibility = UnitMasteryBadgeEligibility();
+  Set<String> _masteredUnitIds = {};
+
   @override
   void initState() {
     super.initState();
@@ -130,6 +135,30 @@ class _HomeScreenState extends State<HomeScreen> {
       _entitlement = entitlement;
       _characterSnapshot = characterResult.snapshot;
     });
+    await _refreshMasteredUnits(curriculum.units);
+  }
+
+  /// 単元ごとのマスター判定を更新する。新たにマスターした単元があれば
+  /// お祝いのSnackBarを表示し、「やった感」を実感できるようにする。
+  Future<void> _refreshMasteredUnits(List<Unit> units) async {
+    final masteredIds = <String>{};
+    for (final unit in units) {
+      final attempts = await _progressStore.getAttempts(unit.id);
+      if (_masteryEligibility.isMastered(attempts)) {
+        masteredIds.add(unit.id);
+      }
+    }
+    final newlyMastered = masteredIds.difference(_masteredUnitIds);
+    if (!mounted) return;
+    setState(() => _masteredUnitIds = masteredIds);
+    if (newlyMastered.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          key: const Key('unitMasteredSnackBar'),
+          content: Text(AppLocalizations.of(context)!.unitMasteredMessage(newlyMastered.first)),
+        ),
+      );
+    }
   }
 
   /// 新規所持・レベルアップしたキャラがいれば、お祝いのSnackBarを表示する。
@@ -306,6 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: _visualForUnit(unit).$1,
                         color: _visualForUnit(unit).$2,
                         locked: !_entitlement.isUnlocked(unit.subjectId),
+                        mastered: _masteredUnitIds.contains(unit.id),
                         onTap: () async {
                           if (!_entitlement.isUnlocked(unit.subjectId)) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -348,6 +378,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             setState(() => _characterSnapshot = characterResult.snapshot);
                             _showCharacterCollectionChanges(characterResult);
                           }
+                          await _refreshMasteredUnits(curriculum.units);
                         },
                             ),
                           ),
@@ -579,6 +610,7 @@ class _UnitCard extends StatelessWidget {
     required this.icon,
     required this.color,
     required this.locked,
+    required this.mastered,
     required this.onTap,
   });
 
@@ -588,6 +620,7 @@ class _UnitCard extends StatelessWidget {
   final IconData icon;
   final Color color;
   final bool locked;
+  final bool mastered;
   final VoidCallback onTap;
 
   @override
@@ -600,7 +633,13 @@ class _UnitCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
         onTap: onTap,
-        child: Padding(
+        child: Container(
+          decoration: mastered
+              ? BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.amber, width: 2),
+                )
+              : null,
           padding: const EdgeInsets.all(12),
           child: Stack(
             children: [
@@ -634,6 +673,17 @@ class _UnitCard extends StatelessWidget {
                     key: const Key('lockIcon'),
                     size: 18,
                     color: theme.colorScheme.outline,
+                  ),
+                ),
+              if (mastered)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: Icon(
+                    Icons.emoji_events,
+                    key: const Key('masteredIcon'),
+                    size: 18,
+                    color: Colors.amber[800],
                   ),
                 ),
             ],

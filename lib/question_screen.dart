@@ -170,7 +170,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   ),
                 ),
                 if (question.params.containsKey('a') && question.params.containsKey('b'))
-                  Builder(builder: (context) {
+                  // KeyedSubtree: 条件付きで出現/消滅するリスト項目にはKeyを付け、
+                  // Flutterが位置ベースで無関係な要素の状態を取り違えないようにする。
+                  KeyedSubtree(
+                    key: const ValueKey('promptSlot'),
+                    child: Builder(builder: (context) {
                     final prompt = resolveArithmeticPrompt(
                       AppLocalizations.of(context)!,
                       operator: question.params['operator'] ?? '',
@@ -187,8 +191,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       ),
                     );
                   }),
+                  ),
                 if (_autoHintVisible && question.explanationId.isNotEmpty)
-                  Builder(builder: (context) {
+                  KeyedSubtree(
+                    key: const ValueKey('autoHintSlot'),
+                    child: Builder(builder: (context) {
                     final hint = resolveExplanation(
                       AppLocalizations.of(context)!,
                       question.explanationId,
@@ -221,6 +228,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       ),
                     );
                   }),
+                  ),
                 const SizedBox(height: 20),
                 Wrap(
                   spacing: 12,
@@ -273,55 +281,61 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   ),
                 ],
                 if (_misconceptionHint != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(Icons.psychology_outlined, color: theme.colorScheme.primary),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                _misconceptionHint!,
-                                key: const Key('misconceptionHintText'),
-                                style: theme.textTheme.bodyMedium,
+                  KeyedSubtree(
+                    key: const ValueKey('misconceptionHintSlot'),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(Icons.psychology_outlined, color: theme.colorScheme.primary),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  _misconceptionHint!,
+                                  key: const Key('misconceptionHintText'),
+                                  style: theme.textTheme.bodyMedium,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 if (_feedback != null && question.explanationId.isNotEmpty)
-                  Builder(builder: (context) {
-                    final explanation = resolveExplanation(
-                      AppLocalizations.of(context)!,
-                      question.explanationId,
-                    );
-                    if (explanation == null) return const SizedBox.shrink();
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!.explanationSectionTitle,
-                                style: theme.textTheme.titleMedium,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(explanation, key: const Key('explanationText')),
-                            ],
+                  KeyedSubtree(
+                    key: const ValueKey('explanationSlot'),
+                    child: Builder(builder: (context) {
+                      final explanation = resolveExplanation(
+                        AppLocalizations.of(context)!,
+                        question.explanationId,
+                      );
+                      if (explanation == null) return const SizedBox.shrink();
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.explanationSectionTitle,
+                                  style: theme.textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(explanation, key: const Key('explanationText')),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
                 if (_overcomeMisconception != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
