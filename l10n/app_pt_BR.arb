@@ -475,5 +475,65 @@
   "onboardingPaywallBenefitNoAds": "Sem anúncios",
   "onboardingPaywallBenefitFullTrial": "14 dias de teste grátis com acesso completo a tudo",
   "onboardingPaywallBenefitReports": "Relatórios semanais para os responsáveis",
-  "onboardingPaywallBenefitScreenTime": "Controle de tempo de uso"
+  "onboardingPaywallBenefitScreenTime": "Controle de tempo de uso",
+  "shapeScenarioGardenSides": "Dona Ana quer fazer um canteiro em forma de {shape} no jardim da escola. Quantos lados esse canteiro vai ter?",
+  "@shapeScenarioGardenSides": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "shapeScenarioGardenDiagonals": "Os alunos vão pintar todas as diagonais de uma pipa em forma de {shape} para decorar a sala de aula. Quantas diagonais eles vão pintar?",
+  "@shapeScenarioGardenDiagonals": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "measurementScenarioClassroom": "A professora mediu o quadro da sala de aula: {value} {fromUnit}. Quantos {toUnit} isso equivale?",
+  "@measurementScenarioClassroom": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      },
+      "toUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "measurementScenarioCanteen": "Na cantina da escola, um saco de arroz pesa {value} {fromUnit}. Quantos {toUnit} isso equivale?",
+  "@measurementScenarioCanteen": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      },
+      "toUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetScenarioPushups": "Na aula de educação física, os alunos contaram quantas flexões cada um fez: {values}. Qual é o maior número de flexões?",
+  "@datasetScenarioPushups": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetScenarioRecess": "Os alunos registraram quantos minutos brincaram no recreio: {values}. Qual é o valor que mais se repete (moda)?",
+  "@datasetScenarioRecess": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  }
 }

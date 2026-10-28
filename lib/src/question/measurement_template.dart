@@ -9,6 +9,7 @@ class UnitConversionTemplate {
     required this.maxValue,
     this.explanationId = '',
     this.reverse = false,
+    this.scenarioId = '',
   })  : assert(factor > 0),
         assert(minValue <= maxValue);
 
@@ -21,6 +22,7 @@ class UnitConversionTemplate {
         maxValue: j['maxValue'] as int,
         explanationId: (j['explanationId'] as String?) ?? '',
         reverse: (j['reverse'] as bool?) ?? false,
+        scenarioId: (j['scenarioId'] as String?) ?? '',
       );
 
   final String id;
@@ -38,4 +40,8 @@ class UnitConversionTemplate {
   final int maxValue;
   final String explanationId;
   final bool reverse;
+
+  /// 設定時、応用シナリオ(学校・実生活の場面)の出題文で表示する
+  /// (アプリ側question_prompt_resolver.dartが解決)。空なら汎用の出題文。
+  final String scenarioId;
 }

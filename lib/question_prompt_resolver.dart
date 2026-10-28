@@ -53,9 +53,17 @@ String _resolveShapeName(AppLocalizations l10n, String shapeNameKey) {
 
 String _resolveShapePrompt(AppLocalizations l10n, Map<String, String> params) {
   final shapeName = _resolveShapeName(l10n, params['shapeNameKey']!);
-  return params['questionKind'] == 'diagonals'
-      ? l10n.shapePromptDiagonals(shapeName)
-      : l10n.shapePromptSides(shapeName);
+  final isDiagonals = params['questionKind'] == 'diagonals';
+  switch (params['scenarioId']) {
+    case 'scenario_garden':
+      return isDiagonals
+          ? l10n.shapeScenarioGardenDiagonals(shapeName)
+          : l10n.shapeScenarioGardenSides(shapeName);
+    default:
+      return isDiagonals
+          ? l10n.shapePromptDiagonals(shapeName)
+          : l10n.shapePromptSides(shapeName);
+  }
 }
 
 String _resolveUnitName(AppLocalizations l10n, String unitKey) {
@@ -82,15 +90,27 @@ String _resolveUnitName(AppLocalizations l10n, String unitKey) {
 }
 
 String _resolveMeasurementPrompt(AppLocalizations l10n, Map<String, String> params) {
-  return l10n.measurementPrompt(
-    _resolveUnitName(l10n, params['toUnitKey']!),
-    int.parse(params['value']!),
-    _resolveUnitName(l10n, params['fromUnitKey']!),
-  );
+  final toUnit = _resolveUnitName(l10n, params['toUnitKey']!);
+  final value = int.parse(params['value']!);
+  final fromUnit = _resolveUnitName(l10n, params['fromUnitKey']!);
+  switch (params['scenarioId']) {
+    case 'scenario_classroom':
+      return l10n.measurementScenarioClassroom(value, fromUnit, toUnit);
+    case 'scenario_canteen':
+      return l10n.measurementScenarioCanteen(value, fromUnit, toUnit);
+    default:
+      return l10n.measurementPrompt(toUnit, value, fromUnit);
+  }
 }
 
 String _resolveDatasetPrompt(AppLocalizations l10n, Map<String, String> params) {
   final values = params['values']!.split(',').join(', ');
+  switch (params['scenarioId']) {
+    case 'scenario_pushups':
+      return l10n.datasetScenarioPushups(values);
+    case 'scenario_recess':
+      return l10n.datasetScenarioRecess(values);
+  }
   switch (params['operation']) {
     case 'max':
       return l10n.datasetPromptMax(values);

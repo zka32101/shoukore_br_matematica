@@ -26,6 +26,7 @@ class DataSetTemplate {
     required this.minValue,
     required this.maxValue,
     this.explanationId = '',
+    this.scenarioId = '',
   })  : assert(valueCount >= 2),
         assert(minValue <= maxValue);
 
@@ -36,6 +37,7 @@ class DataSetTemplate {
         minValue: j['minValue'] as int,
         maxValue: j['maxValue'] as int,
         explanationId: (j['explanationId'] as String?) ?? '',
+        scenarioId: (j['scenarioId'] as String?) ?? '',
       );
 
   final String id;
@@ -44,4 +46,8 @@ class DataSetTemplate {
   final int minValue;
   final int maxValue;
   final String explanationId;
+
+  /// 設定時、応用シナリオ(学校・実生活の場面)の出題文で表示する
+  /// (アプリ側question_prompt_resolver.dartが解決)。空なら汎用の出題文。
+  final String scenarioId;
 }

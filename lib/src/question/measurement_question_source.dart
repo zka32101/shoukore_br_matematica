@@ -103,6 +103,7 @@ class MeasurementQuestionSource implements QuestionSource {
         'value': displayValue.toString(),
         'fromUnitKey': displayUnitKey,
         'toUnitKey': answerUnitKey,
+        if (template.scenarioId.isNotEmpty) 'scenarioId': template.scenarioId,
       },
     );
   }

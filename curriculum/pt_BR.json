@@ -554,6 +554,65 @@
       "maxOperand": 10,
       "explanationId": "explanation_divide",
       "wordProblemId": "word_problem_divide_budget"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_shape_square_garden",
+      "shapeNameKey": "shape_square",
+      "sides": 4,
+      "explanationId": "explanation_shape_square",
+      "scenarioId": "scenario_garden"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_diagonals_pentagon_garden",
+      "shapeNameKey": "shape_pentagon",
+      "sides": 5,
+      "questionKind": "diagonals",
+      "explanationId": "explanation_diagonals",
+      "scenarioId": "scenario_garden"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_cm_to_m_classroom",
+      "fromUnitKey": "unit_cm",
+      "toUnitKey": "unit_m",
+      "factor": 100,
+      "minValue": 1,
+      "maxValue": 9,
+      "explanationId": "explanation_unit_cm_to_m",
+      "scenarioId": "scenario_classroom"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_g_to_kg_canteen",
+      "fromUnitKey": "unit_g",
+      "toUnitKey": "unit_kg",
+      "factor": 1000,
+      "minValue": 1,
+      "maxValue": 9,
+      "explanationId": "explanation_unit_g_to_kg",
+      "scenarioId": "scenario_canteen"
+    },
+    {
+      "kind": "dataset",
+      "id": "tpl_dataset_max_pushups",
+      "operation": "max",
+      "valueCount": 5,
+      "minValue": 1,
+      "maxValue": 20,
+      "explanationId": "explanation_dataset_max",
+      "scenarioId": "scenario_pushups"
+    },
+    {
+      "kind": "dataset",
+      "id": "tpl_dataset_mode_recess",
+      "operation": "mode",
+      "valueCount": 5,
+      "minValue": 1,
+      "maxValue": 5,
+      "explanationId": "explanation_dataset_mode",
+      "scenarioId": "scenario_recess"
     }
   ],
   "units": [
@@ -769,7 +828,8 @@
         "tpl_shape_triangle",
         "tpl_shape_square",
         "tpl_shape_pentagon",
-        "tpl_diagonals_square"
+        "tpl_diagonals_square",
+        "tpl_shape_square_garden"
       ],
       "habilidadeCodes": [
         "EF02MA14",
@@ -786,7 +846,8 @@
       "templateIds": [
         "tpl_shape_pentagon",
         "tpl_shape_hexagon",
-        "tpl_diagonals_pentagon"
+        "tpl_diagonals_pentagon",
+        "tpl_diagonals_pentagon_garden"
       ],
       "habilidadeCodes": [
         "EF03MA14",
@@ -855,7 +916,8 @@
       "order": 4,
       "templateIds": [
         "tpl_cm_to_m",
-        "tpl_m_to_cm"
+        "tpl_m_to_cm",
+        "tpl_cm_to_m_classroom"
       ],
       "habilidadeCodes": [
         "EF02MA16",
@@ -889,7 +951,8 @@
       "order": 4,
       "templateIds": [
         "tpl_g_to_kg",
-        "tpl_kg_to_g"
+        "tpl_kg_to_g",
+        "tpl_g_to_kg_canteen"
       ],
       "habilidadeCodes": [
         "EF04MA20",
@@ -922,7 +985,8 @@
       "order": 5,
       "templateIds": [
         "tpl_dataset_max",
-        "tpl_dataset_min"
+        "tpl_dataset_min",
+        "tpl_dataset_max_pushups"
       ],
       "habilidadeCodes": [
         "EF01MA20",
@@ -957,7 +1021,8 @@
       "templateIds": [
         "tpl_dataset_max",
         "tpl_dataset_min",
-        "tpl_dataset_mode"
+        "tpl_dataset_mode",
+        "tpl_dataset_mode_recess"
       ],
       "habilidadeCodes": [
         "EF03MA25",
