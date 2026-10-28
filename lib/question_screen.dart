@@ -3,10 +3,12 @@ import 'package:shoukore_core_global/shoukore_core_global.dart';
 
 import 'explanation_resolver.dart';
 import 'growth_repository.dart';
+import 'growth_stage_label_resolver.dart';
 import 'l10n/app_localizations.dart';
 import 'misconception_hint_resolver.dart';
 import 'question_cache.dart';
 import 'question_prompt_resolver.dart';
+import 'unit_name_resolver.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({
@@ -130,9 +132,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
   Widget build(BuildContext context) {
     final question = _question;
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final correct = _feedback == 'correct';
     return Scaffold(
-      appBar: AppBar(title: Text(widget.unit.id)),
+      appBar: AppBar(title: Text(resolveUnitName(l10n, widget.unit.id))),
       body: question == null
           ? const Center(child: CircularProgressIndicator())
           : ListView(
@@ -150,7 +153,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
                               Icon(Icons.insights, size: 18, color: theme.colorScheme.primary),
                               const SizedBox(width: 6),
                               Text(
-                                'mastery: ${(_mastery!.score * 100).toStringAsFixed(0)}%',
+                                l10n.questionMasteryLabel(
+                                  (_mastery!.score * 100).round(),
+                                ),
                                 key: const Key('masteryText'),
                                 style: theme.textTheme.titleSmall,
                               ),
@@ -158,10 +163,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
                           ),
                         const SizedBox(height: 4),
                         Text(
-                          'stage: ${widget.growthRepository.stage.name}, '
-                          'coins: ${widget.growthRepository.wallet.balance}, '
-                          'mission: ${widget.growthRepository.missionState.completedCount}, '
-                          'streak: ${widget.growthRepository.streak.currentStreakDays}',
+                          l10n.questionGrowthStatusLine(
+                            growthStageLabel(widget.growthRepository.stage),
+                            widget.growthRepository.wallet.balance,
+                            widget.growthRepository.missionState.completedCount,
+                            widget.growthRepository.streak.currentStreakDays,
+                          ),
                           key: const Key('growthStatusText'),
                           style: theme.textTheme.bodySmall,
                         ),
@@ -264,7 +271,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            _feedback!,
+                            correct ? l10n.questionFeedbackCorrect : l10n.questionFeedbackIncorrect,
                             key: const Key('feedbackText'),
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: correct

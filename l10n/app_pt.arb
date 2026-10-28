@@ -535,5 +535,32 @@
         "type": "String"
       }
     }
-  }
+  },
+  "questionMasteryLabel": "Domínio: {percent}%",
+  "@questionMasteryLabel": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "questionGrowthStatusLine": "Fase: {stage} · Moedas: {coins} · Missões: {missions} · Sequência: {streak} dias",
+  "@questionGrowthStatusLine": {
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      },
+      "coins": {
+        "type": "int"
+      },
+      "missions": {
+        "type": "int"
+      },
+      "streak": {
+        "type": "int"
+      }
+    }
+  },
+  "questionFeedbackCorrect": "Isso mesmo!",
+  "questionFeedbackIncorrect": "Quase! Tente a próxima."
 }

@@ -25,6 +25,7 @@ import 'src/question/geometry_question_source.dart';
 import 'src/question/measurement_question_source.dart';
 import 'src/question/sequence_question_source.dart';
 import 'src/question/statistics_question_source.dart';
+import 'unit_name_resolver.dart';
 import 'weekly_report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -243,64 +244,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return ScreenTimeGuard(effectiveProfile);
   }
 
-  /// 単元IDから、画面に出す単元名(ポルトガル語)を引く。未登録のIDはそのまま返す。
-  static String _unitName(AppLocalizations l10n, String unitId) {
-    switch (unitId) {
-      case 'mat_numeros_1':
-        return l10n.unitName_mat_numeros_1;
-      case 'mat_numeros_2':
-        return l10n.unitName_mat_numeros_2;
-      case 'mat_numeros_3':
-        return l10n.unitName_mat_numeros_3;
-      case 'mat_numeros_4':
-        return l10n.unitName_mat_numeros_4;
-      case 'mat_numeros_5':
-        return l10n.unitName_mat_numeros_5;
-      case 'mat_algebra_1':
-        return l10n.unitName_mat_algebra_1;
-      case 'mat_algebra_2':
-        return l10n.unitName_mat_algebra_2;
-      case 'mat_algebra_3':
-        return l10n.unitName_mat_algebra_3;
-      case 'mat_algebra_4':
-        return l10n.unitName_mat_algebra_4;
-      case 'mat_algebra_5':
-        return l10n.unitName_mat_algebra_5;
-      case 'mat_geometria_1':
-        return l10n.unitName_mat_geometria_1;
-      case 'mat_geometria_2':
-        return l10n.unitName_mat_geometria_2;
-      case 'mat_geometria_3':
-        return l10n.unitName_mat_geometria_3;
-      case 'mat_geometria_4':
-        return l10n.unitName_mat_geometria_4;
-      case 'mat_geometria_5':
-        return l10n.unitName_mat_geometria_5;
-      case 'mat_grandezas_1':
-        return l10n.unitName_mat_grandezas_1;
-      case 'mat_grandezas_2':
-        return l10n.unitName_mat_grandezas_2;
-      case 'mat_grandezas_3':
-        return l10n.unitName_mat_grandezas_3;
-      case 'mat_grandezas_4':
-        return l10n.unitName_mat_grandezas_4;
-      case 'mat_grandezas_5':
-        return l10n.unitName_mat_grandezas_5;
-      case 'mat_probabilidade_1':
-        return l10n.unitName_mat_probabilidade_1;
-      case 'mat_probabilidade_2':
-        return l10n.unitName_mat_probabilidade_2;
-      case 'mat_probabilidade_3':
-        return l10n.unitName_mat_probabilidade_3;
-      case 'mat_probabilidade_4':
-        return l10n.unitName_mat_probabilidade_4;
-      case 'mat_probabilidade_5':
-        return l10n.unitName_mat_probabilidade_5;
-      default:
-        return unitId;
-    }
-  }
-
   static const _stageVisual = <GrowthStage, (IconData, String)>{
     GrowthStage.egg: (Icons.egg_outlined, 'Ovo'),
     GrowthStage.baby: (Icons.child_care, 'Filhote'),
@@ -393,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 144,
                             child: _UnitCard(
                         unitKey: Key('unit_${unit.id}'),
-                        label: _unitName(l10n, unit.id),
+                        label: resolveUnitName(l10n, unit.id),
                         grade: unit.grade,
                         icon: _visualForUnit(unit).$1,
                         color: _visualForUnit(unit).$2,

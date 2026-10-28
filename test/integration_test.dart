@@ -66,7 +66,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byKey(const Key('masteryText')), findsOneWidget);
-      expect(find.text('mastery: 0%'), findsOneWidget);
+      expect(find.text('Domínio: 0%'), findsOneWidget);
 
       // 未学習(mastery 0%)はAutoHintPolicyの閾値未満のため、自動ヒントが
       // 回答前から表示される。
@@ -90,10 +90,10 @@ void main() {
       // 出題画面にgrowth状態（stage/coins/mission進捗）が表示される。
       // 閾値(10問)に満たないため、正誤に関わらずstageはeggのまま。
       expect(find.byKey(const Key('growthStatusText')), findsOneWidget);
-      expect(find.textContaining('stage: egg'), findsOneWidget);
+      expect(find.textContaining('Fase: Ovo'), findsOneWidget);
 
       // 学習ストリーク: 1問回答した時点で1日目のストリークになる。
-      expect(find.textContaining('streak: 1'), findsOneWidget);
+      expect(find.textContaining('Sequência: 1 dias'), findsOneWidget);
 
       // ホームに戻って週次レポートを開くと、直前の回答が集計に反映されている。
       await tester.tap(find.byType(BackButton));
