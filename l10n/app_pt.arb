@@ -8,8 +8,12 @@
   "@guardianGateInstruction": {
     "description": "保護者ゲートの計算問題文",
     "placeholders": {
-      "a": {"type": "int"},
-      "b": {"type": "int"}
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
     }
   },
   "guardianGateWrongAnswer": "Resposta incorreta. Tente novamente.",
@@ -50,10 +54,10 @@
   "dataPrivacyCopyJsonButton": "Copiar conteúdo exportado como JSON",
   "dataPrivacyExportCopiedMessage": "Conteúdo exportado copiado para a área de transferência",
   "explanationSectionTitle": "Explicação",
-  "explanationAdd": "A soma é a operação que junta duas ou mais quantidades para encontrar o total. Por exemplo, 3+5 significa \"somar 5 a 3\", e o resultado é 8.",
-  "explanationSubtract": "A subtração é a operação que encontra quanto resta ao retirar uma quantidade de outra. Por exemplo, 8-3 significa \"tirar 3 de 8\", e o resultado é 5.",
-  "explanationMultiply": "A multiplicação é uma forma rápida de somar o mesmo número várias vezes. Por exemplo, 3×4 significa \"somar 3 quatro vezes\", e o resultado é 12.",
-  "explanationDivide": "A divisão é a operação que separa uma quantidade em partes iguais. Por exemplo, 12÷4 significa \"separar 12 em 4 partes iguais\", e o resultado é 3.",
+  "explanationAdd": "A soma é a operação que junta duas ou mais quantidades para formar um total maior. Imagine que você tem 3 bolinhas de gude e um amigo te dá mais 5: quantas você tem agora? Basta contar todas juntas, 3+5 = 8. Dica: não importa a ordem, 3+5 dá o mesmo resultado que 5+3!",
+  "explanationSubtract": "A subtração mostra quanto resta depois de tirar uma parte de um total. Imagine que você tinha 8 figurinhas e deu 3 para um amigo: quantas sobraram? 8-3 significa \"de 8, tire 3\", e o resultado é 5. Dica: o resultado da subtração nunca pode ser maior que o número de onde você começou.",
+  "explanationMultiply": "A multiplicação é um jeito rápido de somar o mesmo número várias vezes. Em vez de somar 3+3+3+3, você pode calcular 3×4, que significa \"4 grupos de 3\", e o resultado é 12. Pense em 4 caixas com 3 bolas cada: no total são 12 bolas!",
+  "explanationDivide": "A divisão separa uma quantidade em partes iguais. Imagine 12 biscoitos divididos igualmente entre 4 amigos: quantos cada um recebe? 12÷4 significa \"separar 12 em 4 partes iguais\", e o resultado é 3. Dica: multiplicação e divisão são operações inversas — se 4×3=12, então 12÷4=3.",
   "onboardingWelcomeTitle": "Bem-vindo ao 小学コレ！ Matemática",
   "onboardingWelcomeBody": "Aprenda matemática seguindo a BNCC, cuide do seu bichinho e conquiste moedas a cada acerto!",
   "onboardingWelcomeNextButton": "Vamos começar!",
@@ -74,61 +78,117 @@
   "autoHintAvailableMessage": "Veja a explicação antes de responder, já que esta unidade ainda está em prática.",
   "consecutiveIncorrectAlertTitle": "Alerta para os responsáveis",
   "consecutiveIncorrectAlertMessage": "Seu filho(a) errou várias questões seguidas nesta unidade. Pode ser um bom momento para ajudar.",
-  "explanationSequence": "Em uma sequência, os números seguem um padrão que se repete. Primeiro, descubra quanto cada número aumenta (ou diminui) em relação ao anterior. Depois, aplique esse mesmo padrão ao último número para encontrar o próximo.",
-  "explanationShapeTriangle": "Um triângulo tem 3 lados e 3 vértices. \"Tri\" significa três, como em \"tricolor\".",
-  "explanationShapeSquare": "Um quadrado tem 4 lados iguais e 4 vértices.",
-  "explanationShapePentagon": "Um pentágono tem 5 lados. \"Penta\" significa cinco.",
-  "explanationShapeHexagon": "Um hexágono tem 6 lados. Pense nas células de uma colmeia de abelhas: elas têm esse formato!",
-  "explanationShapeHeptagon": "Um heptágono tem 7 lados. \"Hepta\" significa sete.",
-  "explanationShapeOctagon": "Um octógono tem 8 lados. Pense na placa de PARE: ela tem esse formato!",
-  "explanationUnitCmToM": "1 metro tem 100 centímetros. Para transformar centímetros em metros, divida o número por 100.",
-  "explanationUnitMToKm": "1 quilômetro tem 1000 metros. Para transformar metros em quilômetros, divida o número por 1000.",
-  "explanationUnitGToKg": "1 quilograma tem 1000 gramas. Para transformar gramas em quilogramas, divida o número por 1000.",
-  "explanationUnitMlToL": "1 litro tem 1000 mililitros. Para transformar mililitros em litros, divida o número por 1000.",
-  "explanationDatasetMax": "O valor máximo é o maior número do conjunto de dados. Compare todos os números e escolha o maior.",
-  "explanationDatasetMin": "O valor mínimo é o menor número do conjunto de dados. Compare todos os números e escolha o menor.",
-  "explanationDatasetMode": "A moda é o valor que aparece mais vezes no conjunto de dados. Conte quantas vezes cada número aparece e escolha o que se repete mais.",
-  "explanationUnitMToCm": "1 metro tem 100 centímetros. Para transformar metros em centímetros, multiplique o número por 100.",
-  "explanationUnitKmToM": "1 quilômetro tem 1000 metros. Para transformar quilômetros em metros, multiplique o número por 1000.",
-  "explanationUnitKgToG": "1 quilograma tem 1000 gramas. Para transformar quilogramas em gramas, multiplique o número por 1000.",
-  "explanationUnitLToMl": "1 litro tem 1000 mililitros. Para transformar litros em mililitros, multiplique o número por 1000.",
-  "explanationSequenceDescending": "Nesta sequência, os números diminuem seguindo um padrão. Descubra quanto cada número diminui em relação ao anterior e aplique esse padrão para encontrar o próximo.",
-  "explanationDiagonals": "A diagonal liga dois vértices que não são vizinhos. Para contar as diagonais de um polígono com n lados, use a fórmula n×(n-3)÷2.",
-  "explanationDatasetSum": "A soma é o resultado de adicionar todos os números do conjunto de dados, um por um.",
-  "explanationDatasetRange": "A amplitude é a diferença entre o maior e o menor valor do conjunto de dados: amplitude = valor máximo − valor mínimo.",
+  "explanationSequence": "Em uma sequência numérica, os números seguem um padrão que se repete, como os degraus de uma escada. Primeiro, compare dois números vizinhos e descubra quanto aumenta (ou diminui) de um para o outro. Depois, aplique essa mesma diferença ao último número da sequência para descobrir o próximo.",
+  "explanationShapeTriangle": "Um triângulo tem 3 lados e 3 vértices (cantos). A palavra \"tri\" significa três, como em \"tricolor\" ou \"triciclo\". Você pode encontrar triângulos no mundo real, como em um pedaço de pizza ou no teto de algumas casas!",
+  "explanationShapeSquare": "Um quadrado tem 4 lados iguais e 4 vértices, todos formando ângulos retos (de 90°). Uma janela quadrada ou um tabuleiro de jogo são bons exemplos do dia a dia!",
+  "explanationShapePentagon": "Um pentágono tem 5 lados. \"Penta\" significa cinco, como em \"pentacampeão\". Muitas casinhas desenhadas por crianças têm o formato de um pentágono: um quadrado com um telhado triangular em cima!",
+  "explanationShapeHexagon": "Um hexágono tem 6 lados. Pense nas células de uma colmeia de abelhas: elas têm esse formato! A bola de futebol também é formada por hexágonos (e pentágonos) costurados juntos.",
+  "explanationShapeHeptagon": "Um heptágono tem 7 lados. \"Hepta\" significa sete. Você sabia que a moeda brasileira de 25 centavos tem o formato de um heptágono?",
+  "explanationShapeOctagon": "Um octógono tem 8 lados. Pense na placa de PARE: ela tem esse formato! É uma das placas mais fáceis de reconhecer nas ruas.",
+  "explanationUnitCmToM": "1 metro tem 100 centímetros — pense em uma régua do tamanho de um metro, dividida em 100 partes pequenas. Para transformar centímetros em metros, divida o número por 100 (porque 100 cm cabem em 1 m).",
+  "explanationUnitMToKm": "1 quilômetro tem 1000 metros — mais ou menos a distância que uma pessoa caminha em 10 a 15 minutos! Para transformar metros em quilômetros, divida o número por 1000.",
+  "explanationUnitGToKg": "1 quilograma tem 1000 gramas — um pacote de açúcar comum pesa 1 kg, ou seja, 1000 g. Para transformar gramas em quilogramas, divida o número por 1000.",
+  "explanationUnitMlToL": "1 litro tem 1000 mililitros — uma garrafa de refrigerante grande tem 2 litros, ou seja, 2000 ml. Para transformar mililitros em litros, divida o número por 1000.",
+  "explanationDatasetMax": "O valor máximo é o maior número do conjunto de dados. Imagine as alturas de vários colegas de turma: o valor máximo é a altura da pessoa mais alta. Compare todos os números e escolha o maior.",
+  "explanationDatasetMin": "O valor mínimo é o menor número do conjunto de dados — como encontrar a temperatura mais baixa da semana em um gráfico. Compare todos os números e escolha o menor.",
+  "explanationDatasetMode": "A moda é o valor que aparece mais vezes no conjunto de dados, como a cor de camiseta mais comum entre os colegas da sala. Conte quantas vezes cada número aparece e escolha o que se repete mais.",
+  "explanationUnitMToCm": "1 metro tem 100 centímetros. Para transformar metros em centímetros, multiplique o número por 100 — por exemplo, 2 metros de corda têm 200 centímetros.",
+  "explanationUnitKmToM": "1 quilômetro tem 1000 metros. Para transformar quilômetros em metros, multiplique o número por 1000 — por exemplo, uma corrida de 5 km tem 5000 metros.",
+  "explanationUnitKgToG": "1 quilograma tem 1000 gramas. Para transformar quilogramas em gramas, multiplique o número por 1000 — por exemplo, uma melancia de 3 kg pesa 3000 g.",
+  "explanationUnitLToMl": "1 litro tem 1000 mililitros. Para transformar litros em mililitros, multiplique o número por 1000 — por exemplo, meio litro de suco são 500 ml.",
+  "explanationSequenceDescending": "Nesta sequência, os números diminuem seguindo um padrão, como uma contagem regressiva de um foguete prestes a decolar. Descubra quanto cada número diminui em relação ao anterior e aplique esse mesmo padrão para encontrar o próximo.",
+  "explanationDiagonals": "A diagonal é uma linha que liga dois vértices (cantos) que não são vizinhos — como um corte que atravessa a figura. Para contar as diagonais de um polígono com n lados, use a fórmula n×(n-3)÷2.",
+  "explanationDatasetSum": "A soma é o resultado de adicionar todos os números do conjunto de dados, um por um — como somar os pontos de vários jogos para saber o total da temporada.",
+  "explanationDatasetRange": "A amplitude mostra o quanto os dados variam: é a diferença entre o maior e o menor valor do conjunto. amplitude = valor máximo − valor mínimo. Por exemplo, se as idades variam de 8 a 12 anos, a amplitude é 12−8 = 4.",
   "wordProblemAddFruits": "Ana tinha {a} maçãs. Ela colheu mais {b} maçãs no pomar. Quantas maçãs ela tem agora?",
   "@wordProblemAddFruits": {
-    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   },
   "wordProblemAddCoins": "Pedro tinha {a} moedas de brinquedo. Ele ganhou mais {b} moedas jogando com os amigos. Quantas moedas ele tem agora?",
   "@wordProblemAddCoins": {
-    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   },
   "wordProblemSubtractCandies": "Mariana tinha {a} balas. Ela deu {b} balas para o seu amigo. Quantas balas restaram?",
   "@wordProblemSubtractCandies": {
-    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   },
   "wordProblemSubtractStickers": "Lucas tinha {a} adesivos. Ele perdeu {b} adesivos no caminho da escola. Quantos adesivos sobraram?",
   "@wordProblemSubtractStickers": {
-    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   },
   "wordProblemMultiplyBoxes": "Cada caixa tem {a} brinquedos. Se há {b} caixas, quantos brinquedos há no total?",
   "@wordProblemMultiplyBoxes": {
-    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   },
   "wordProblemMultiplyRows": "Em uma plantação, cada fileira tem {a} árvores. Há {b} fileiras. Quantas árvores há no total?",
   "@wordProblemMultiplyRows": {
-    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   },
   "wordProblemDivideFriends": "{a} figurinhas serão divididas igualmente entre {b} amigos. Quantas figurinhas cada amigo vai receber?",
   "@wordProblemDivideFriends": {
-    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   },
   "wordProblemDivideBaskets": "{a} laranjas serão colocadas em {b} cestas, com a mesma quantidade em cada cesta. Quantas laranjas cabem em cada cesta?",
   "@wordProblemDivideBaskets": {
-    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   },
-  "explanationUnitMmToCm": "1 centímetro tem 10 milímetros. Para transformar milímetros em centímetros, divida o número por 10.",
-  "explanationUnitCmToMm": "1 centímetro tem 10 milímetros. Para transformar centímetros em milímetros, multiplique o número por 10.",
-  "explanationSequenceMultiplicative": "Nesta sequência, cada número é obtido multiplicando o número anterior pelo mesmo valor fixo. Descubra por quanto cada número é multiplicado e aplique esse mesmo padrão ao último número para encontrar o próximo."
+  "explanationUnitMmToCm": "1 centímetro tem 10 milímetros — olhe de perto uma régua: entre cada marcação de centímetro há 10 marcações pequenas de milímetro. Para transformar milímetros em centímetros, divida o número por 10.",
+  "explanationUnitCmToMm": "1 centímetro tem 10 milímetros. Para transformar centímetros em milímetros, multiplique o número por 10 — por exemplo, um lápis de 15 cm mede 150 mm.",
+  "explanationSequenceMultiplicative": "Nesta sequência, cada número é obtido multiplicando o número anterior pelo mesmo valor fixo — como o número de curtidas de um vídeo que dobra todos os dias. Descubra por quanto cada número é multiplicado e aplique esse mesmo padrão ao último número para encontrar o próximo."
 }
