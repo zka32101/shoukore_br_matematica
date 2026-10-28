@@ -9,6 +9,7 @@ import 'badge_collection_screen.dart';
 import 'character_collection_repository.dart';
 import 'character_definition.dart';
 import 'collection_screen.dart';
+import 'cross_promo_section.dart';
 import 'curriculum_repository.dart';
 import 'data_privacy_screen.dart';
 import 'growth_repository.dart';
@@ -446,6 +447,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
+                _SectionLabel(label: 'Mais da Colecinho!'),
+                const CrossPromoSection(),
                 _SectionLabel(label: l10n.settingsNotificationsSection),
                 Card(
                   child: ListTile(

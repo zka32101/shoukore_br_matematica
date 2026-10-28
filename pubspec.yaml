@@ -18,6 +18,7 @@ dependencies:
     git:
       url: https://github.com/zka32101/shoukore_core_global.git
       ref: main
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

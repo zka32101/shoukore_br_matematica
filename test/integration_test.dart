@@ -150,6 +150,12 @@ void main() {
       expect(find.byKey(const Key('badgeCard_mat_numeros_1')), findsOneWidget);
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
+
+      // クロスプロモ: シリーズ最初のアプリのため案内先がまだ無く、
+      // 「近日公開」のティーザーが表示される(他アプリが追加されたら
+      // 自動でアプリ一覧に切り替わる設計)。
+      await tester.ensureVisible(find.byKey(const Key('crossPromoComingSoonCard')));
+
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
 
       // Números以外の4つのeixo（Álgebra/Geometria/Grandezas e Medidas/
