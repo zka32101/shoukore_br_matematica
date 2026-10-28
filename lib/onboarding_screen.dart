@@ -3,9 +3,15 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 import 'package:shoukore_core_global/shoukore_core_global_entitlement_revenuecat.dart';
 
+import 'curriculum_repository.dart';
 import 'l10n/app_localizations.dart';
 
-/// 初回起動時のオンボーディング（ウェルカム→Ahaモーメント→ペイウォール）。
+/// 初回起動時のオンボーディング（ウェルカム→年齢確認/保護者同意→
+/// Ahaモーメント→ペイウォール）。
+///
+/// 年齢確認・保護者同意（LGPD第14条・ECA Digital対応）は、設定画面から
+/// 任意で訪れるだけでは実質誰も通らないため、オンボーディングの必須
+/// ステップとして組み込む（スキップボタンは置かない）。
 ///
 /// Ahaモーメントの最初の1問は、カリキュラム連動のQuestionSourceではなく
 /// 固定の簡単な問題を使う（最初の1問は必ず正解できる難易度にする方針のため）。
@@ -14,11 +20,16 @@ class OnboardingScreen extends StatefulWidget {
     super.key,
     required this.completionStore,
     required this.onCompleted,
+    required this.consentStore,
     this.entitlementReader,
   });
 
   final OnboardingCompletionStore completionStore;
   final VoidCallback onCompleted;
+
+  /// ホーム画面の設定タイルと同じ同意記録を共有するため、アプリ直下から
+  /// 渡される単一インスタンス。
+  final ConsentStore consentStore;
 
   /// RevenueCat APIキー未設定（開発中・CI）の場合はnullのままにする。
   /// nullの場合、ペイウォールは実際のOffering取得を試みず、固定の価格表示＋
@@ -31,6 +42,9 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   static const _ahaTracker = AhaMomentTracker();
+  static const _repository = CurriculumRepository();
+  static const _clock = SystemClock();
+  static const _locale = Locale('pt', 'BR');
 
   final PageController _pageController = PageController();
   bool _quizCorrect = false;
@@ -64,6 +78,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           physics: const NeverScrollableScrollPhysics(),
           children: [
             _WelcomePage(l10n: l10n, onNext: () => _goToPage(1)),
+            _AgeGatePage(
+              l10n: l10n,
+              repository: _repository,
+              clock: _clock,
+              locale: _locale,
+              consentStore: widget.consentStore,
+              onNext: () => _goToPage(2),
+            ),
             _AhaQuizPage(
               l10n: l10n,
               correct: _quizCorrect,
@@ -73,7 +95,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   correct: correct,
                 );
               }),
-              onContinue: () => _goToPage(2),
+              onContinue: () => _goToPage(3),
             ),
             _PaywallPage(
               l10n: l10n,
@@ -83,6 +105,152 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// 必須の年齢確認/保護者同意ステップ。生年を入力させ、地域の同意年齢
+/// (`RegionalProfile.ageOfConsent`)未満なら保護者同意の質問を続けて表示する。
+/// どちらの場合も同意状態を記録してから次に進む（スキップ不可）。
+class _AgeGatePage extends StatefulWidget {
+  const _AgeGatePage({
+    required this.l10n,
+    required this.repository,
+    required this.clock,
+    required this.locale,
+    required this.consentStore,
+    required this.onNext,
+  });
+
+  final AppLocalizations l10n;
+  final CurriculumRepository repository;
+  final Clock clock;
+  final Locale locale;
+  final ConsentStore consentStore;
+  final VoidCallback onNext;
+
+  @override
+  State<_AgeGatePage> createState() => _AgeGatePageState();
+}
+
+class _AgeGatePageState extends State<_AgeGatePage> {
+  final TextEditingController _birthYearController = TextEditingController();
+  String? _errorText;
+  bool _submitting = false;
+
+  // nullは「まだ生年未確定」、trueなら保護者同意の質問を表示する。
+  bool? _consentStepNeeded;
+
+  @override
+  void dispose() {
+    _birthYearController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitBirthYear() async {
+    final birthYear = int.tryParse(_birthYearController.text);
+    final currentYear = widget.clock.now().year;
+    if (birthYear == null || birthYear < 1900 || birthYear > currentYear) {
+      setState(() => _errorText = widget.l10n.ageGateInvalidYearError);
+      return;
+    }
+    setState(() {
+      _errorText = null;
+      _submitting = true;
+    });
+    final profile = await widget.repository.loadRegionalProfile(widget.locale);
+    final requiresConsent = const AgeGate().requiresGuardianConsent(
+      birthYear: birthYear,
+      profile: profile,
+      clock: widget.clock,
+    );
+    if (!mounted) return;
+    if (!requiresConsent) {
+      await widget.consentStore.setConsent(const ConsentRecord(parentalConsentGiven: false));
+      widget.onNext();
+      return;
+    }
+    setState(() {
+      _submitting = false;
+      _consentStepNeeded = true;
+    });
+  }
+
+  Future<void> _answerConsent(bool accepted) async {
+    await widget.consentStore.setConsent(ConsentRecord(
+      parentalConsentGiven: accepted,
+      consentedAt: accepted ? widget.clock.now() : null,
+    ));
+    widget.onNext();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = widget.l10n;
+    if (_consentStepNeeded == true) {
+      return Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              l10n.consentTitle,
+              key: const Key('onboardingConsentTitle'),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(l10n.consentBody, textAlign: TextAlign.center),
+            const SizedBox(height: 24),
+            FilledButton(
+              key: const Key('onboardingConsentAcceptButton'),
+              onPressed: () => _answerConsent(true),
+              child: Text(l10n.consentAcceptButton),
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              key: const Key('onboardingConsentDeclineButton'),
+              onPressed: () => _answerConsent(false),
+              child: Text(l10n.consentDeclineButton),
+            ),
+          ],
+        ),
+      );
+    }
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.verified_user_outlined, size: 48, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(height: 16),
+          Text(
+            l10n.ageGateTitle,
+            key: const Key('onboardingAgeGateTitle'),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            key: const Key('onboardingBirthYearField'),
+            controller: _birthYearController,
+            keyboardType: TextInputType.number,
+            autofocus: true,
+            decoration: InputDecoration(
+              hintText: l10n.ageGateBirthYearHint,
+              errorText: _errorText,
+            ),
+          ),
+          const SizedBox(height: 24),
+          FilledButton(
+            key: const Key('onboardingAgeGateConfirmButton'),
+            onPressed: _submitting ? null : _submitBirthYear,
+            child: Text(l10n.ageGateConfirmButton),
+          ),
+        ],
       ),
     );
   }

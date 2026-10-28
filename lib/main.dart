@@ -42,6 +42,10 @@ class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
   bool _loadingOnboardingState = true;
   bool _onboardingCompleted = false;
 
+  // オンボーディングの年齢確認/保護者同意ステップとホーム画面の設定タイルが
+  // 同じ同意記録を共有するよう、アプリ直下で1つだけ保持する。
+  final ConsentStore _consentStore = InMemoryConsentStore();
+
   final RevenueCatEntitlementReader? _entitlementReader = _revenueCatApiKey.isEmpty
       ? null
       : RevenueCatEntitlementReader(
@@ -99,10 +103,14 @@ class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
       home: _loadingOnboardingState
           ? const Scaffold(body: Center(child: CircularProgressIndicator()))
           : _onboardingCompleted
-              ? HomeScreen(entitlementReader: _entitlementReader)
+              ? HomeScreen(
+                  entitlementReader: _entitlementReader,
+                  consentStore: _consentStore,
+                )
               : OnboardingScreen(
                   completionStore: _onboardingStore,
                   entitlementReader: _entitlementReader,
+                  consentStore: _consentStore,
                   onCompleted: () => setState(() => _onboardingCompleted = true),
                 ),
     );

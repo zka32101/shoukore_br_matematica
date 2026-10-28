@@ -623,5 +623,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "ageGateInvalidYearError": "Digite um ano de nascimento válido."
 }

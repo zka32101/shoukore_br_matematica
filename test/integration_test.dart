@@ -22,9 +22,16 @@ void main() {
       await tester.pumpWidget(const ShoukoreBrMatematicaApp());
       await tester.pumpAndSettle();
 
-      // 初回起動時はオンボーディング（ウェルカム→Ahaモーメント→ペイウォール）が
-      // 表示され、完了するとホーム画面に遷移する。
+      // 初回起動時はオンボーディング（ウェルカム→年齢確認(必須)→
+      // Ahaモーメント→ペイウォール）が表示され、完了するとホーム画面に
+      // 遷移する。
       await tester.tap(find.byKey(const Key('onboardingWelcomeNextButton')));
+      await tester.pumpAndSettle();
+
+      // 年齢確認（必須、スキップ不可）: 大人の生年(1990年)を入れると
+      // pt_BRの同意年齢(12歳)以上のため保護者同意ステップは出ずに進む。
+      await tester.enterText(find.byKey(const Key('onboardingBirthYearField')), '1990');
+      await tester.tap(find.byKey(const Key('onboardingAgeGateConfirmButton')));
       await tester.pumpAndSettle();
 
       // Ahaモーメント: 最初の1問は必ず正解できる固定問題（2+3=5）。

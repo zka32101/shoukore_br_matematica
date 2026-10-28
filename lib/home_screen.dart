@@ -29,12 +29,16 @@ import 'unit_name_resolver.dart';
 import 'weekly_report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, this.entitlementReader});
+  const HomeScreen({super.key, this.entitlementReader, this.consentStore});
 
   /// RevenueCat APIキー未設定（開発中・CI）の場合はnullのままにする。
   /// nullの場合、premiumToggleButtonは課金状態を模擬するデバッグ用トグルの
   /// ままになる。
   final EntitlementReader? entitlementReader;
+
+  /// オンボーディングの年齢確認と同じ同意記録を共有するため、アプリ直下
+  /// から渡す。未指定時は自前で生成する（単体テスト等での単独利用向け）。
+  final ConsentStore? consentStore;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -65,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
     collectionStore: _characterCollectionStore,
   );
   final QuestionCache _questionCache = QuestionCache();
-  final ConsentStore _consentStore = InMemoryConsentStore();
+  late final ConsentStore _consentStore = widget.consentStore ?? InMemoryConsentStore();
   ConsentRecord? _consent;
 
   final NotificationScheduler _notificationScheduler = InMemoryNotificationScheduler();
@@ -128,6 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ? await widget.entitlementReader!.current()
         : _entitlement;
     final characterResult = await _characterCollectionRepository.refresh(curriculum.units);
+    final consent = await _consentStore.getConsent();
     if (!mounted) return;
     setState(() {
       _curriculum = curriculum;
@@ -137,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _screenTimeRepository = screenTimeRepository;
       _entitlement = entitlement;
       _characterSnapshot = characterResult.snapshot;
+      _consent = consent;
     });
     await _refreshMasteredUnits(curriculum.units);
   }
