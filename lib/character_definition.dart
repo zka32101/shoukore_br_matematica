@@ -32,17 +32,15 @@ class CharacterDefinition {
   final IconData icon;
   final Color color;
 
-  /// `level`（1〜5）に対応する画像アセットのパス。現時点でアセットを
-  /// 持つのは新規5体（Tucaninho/Tamanduinho/Tatuzinho/Capivito/Araruna）
-  /// のみで、他のキャラは`null`（UI側はアイコン表示にフォールバックする）。
-  String? imageAssetPath(int level) {
-    if (!_hasImageAsset.contains(id)) return null;
+  /// `level`（1〜5）に対応する画像アセットのパス。全12体で同じ命名規則
+  /// （`assets/characters/<id>_lv<N>.png`）を使う。アセットがまだ
+  /// 配置されていないキャラでも、UI側（`CharacterCard`のerrorBuilder）が
+  /// アイコン表示にフォールバックするため問題ない。
+  String imageAssetPath(int level) {
     final clampedLevel = level.clamp(1, 5);
     return 'assets/characters/${id}_lv$clampedLevel.png';
   }
 }
-
-const _hasImageAsset = {'tucaninho', 'tamanduinho', 'tatuzinho', 'capivito', 'araruna'};
 
 /// ブラジル算数版の12体（BNCCのeixoごとに配分、単元数の多いeixoに3体）。
 /// `Gogo`/`Dracotrê`/`Ichiko`/`Fukuju`/`Fouku`/`Divido`/`Niniko`は日本版
