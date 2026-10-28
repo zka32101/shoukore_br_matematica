@@ -446,6 +446,42 @@
       "length": 3,
       "multiplier": 3,
       "explanationId": "explanation_sequence_multiplicative"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_add_word_store",
+      "operator": "add",
+      "minOperand": 1,
+      "maxOperand": 20,
+      "explanationId": "explanation_add",
+      "wordProblemId": "word_problem_add_store"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_sub_word_change",
+      "operator": "subtract",
+      "minOperand": 1,
+      "maxOperand": 50,
+      "explanationId": "explanation_subtract",
+      "wordProblemId": "word_problem_subtract_change"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_mul_word_store",
+      "operator": "multiply",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_multiply",
+      "wordProblemId": "word_problem_multiply_store"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_div_word_store",
+      "operator": "divide",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_divide",
+      "wordProblemId": "word_problem_divide_store"
     }
   ],
   "units": [
@@ -457,7 +493,8 @@
       "order": 1,
       "templateIds": [
         "tpl_add_1_10",
-        "tpl_add_word_fruits"
+        "tpl_add_word_fruits",
+        "tpl_add_word_store"
       ],
       "habilidadeCodes": [
         "EF01MA01",
@@ -477,7 +514,8 @@
         "tpl_sub_1_20",
         "tpl_add_word_coins",
         "tpl_sub_word_candies",
-        "tpl_sub_word_stickers"
+        "tpl_sub_word_stickers",
+        "tpl_sub_word_change"
       ],
       "habilidadeCodes": [
         "EF02MA01",
@@ -494,7 +532,8 @@
       "order": 1,
       "templateIds": [
         "tpl_mul_1_10",
-        "tpl_mul_word_boxes"
+        "tpl_mul_word_boxes",
+        "tpl_mul_word_store"
       ],
       "habilidadeCodes": [
         "EF03MA01",
@@ -531,7 +570,8 @@
       "order": 1,
       "templateIds": [
         "tpl_div_1_10",
-        "tpl_div_word_baskets"
+        "tpl_div_word_baskets",
+        "tpl_div_word_store"
       ],
       "habilidadeCodes": [
         "EF05MA01",

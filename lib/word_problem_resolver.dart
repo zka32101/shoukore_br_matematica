@@ -42,6 +42,14 @@ String? _resolveWordProblem(AppLocalizations l10n, String wordProblemId, int a, 
       return l10n.wordProblemDivideFriends(a, b);
     case 'word_problem_divide_baskets':
       return l10n.wordProblemDivideBaskets(a, b);
+    case 'word_problem_add_store':
+      return l10n.wordProblemAddStore(a, b);
+    case 'word_problem_subtract_change':
+      return l10n.wordProblemSubtractChange(a, b);
+    case 'word_problem_multiply_store':
+      return l10n.wordProblemMultiplyStore(a, b);
+    case 'word_problem_divide_store':
+      return l10n.wordProblemDivideStore(a, b);
     default:
       return null;
   }

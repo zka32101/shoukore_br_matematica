@@ -136,15 +136,13 @@ void main() {
         await tester.tap(find.byKey(Key('unit_$otherUnitId')));
         await tester.pumpAndSettle();
 
-        // Geometria/Grandezas/Probabilidadeは図形名・単位変換・データの
-        // 実生活イメージにつながる出題文(questionPromptText)が表示される
-        // (Álgebraの数列はまだ対応していないため対象外)。
-        if (otherUnitId != 'mat_algebra_1') {
-          expect(
-            find.byKey(const Key('questionPromptText'), skipOffstage: false),
-            findsOneWidget,
-          );
-        }
+        // Álgebra/Geometria/Grandezas/Probabilidadeいずれも、数列・図形名・
+        // 単位変換・データの実生活イメージにつながる出題文(questionPromptText)
+        // が表示される。
+        expect(
+          find.byKey(const Key('questionPromptText'), skipOffstage: false),
+          findsOneWidget,
+        );
 
         final otherChoiceButtons = find.byType(ElevatedButton);
         expect(otherChoiceButtons, findsWidgets);

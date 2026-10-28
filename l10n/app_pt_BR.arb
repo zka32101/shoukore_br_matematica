@@ -331,5 +331,57 @@
   "unitName_mat_probabilidade_2": "Estatística: maior e menor (2º ano)",
   "unitName_mat_probabilidade_3": "Estatística: moda",
   "unitName_mat_probabilidade_4": "Estatística: moda (4º ano)",
-  "unitName_mat_probabilidade_5": "Estatística: moda e amplitude"
+  "unitName_mat_probabilidade_5": "Estatística: moda e amplitude",
+  "wordProblemAddStore": "Você comprou um brinquedo de R$ {a} e um doce de R$ {b} na loja. Quanto você gastou no total?",
+  "@wordProblemAddStore": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemSubtractChange": "Você pagou R$ {a} e o brinquedo custava R$ {b}. Quanto de troco você recebe?",
+  "@wordProblemSubtractChange": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemMultiplyStore": "Na loja, cada maçã custa R$ {a}. Se você comprar {b} maçãs, quanto vai pagar no total?",
+  "@wordProblemMultiplyStore": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemDivideStore": "Você tem R$ {a} para dividir igualmente entre {b} amigos nas compras da loja. Quanto cada um pode gastar?",
+  "@wordProblemDivideStore": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "sequencePrompt": "Qual é o próximo número desta sequência: {terms}, ...?",
+  "@sequencePrompt": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  }
 }

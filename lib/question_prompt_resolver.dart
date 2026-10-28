@@ -26,6 +26,9 @@ String? resolveQuestionPrompt(AppLocalizations l10n, Question question) {
   if (params.containsKey('values') && params.containsKey('operation')) {
     return _resolveDatasetPrompt(l10n, params);
   }
+  if (params.containsKey('terms')) {
+    return l10n.sequencePrompt(params['terms']!.split(',').join(', '));
+  }
   return null;
 }
 
