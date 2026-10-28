@@ -157,12 +157,18 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
       }
 
+      // 各単元訪問でキャラコレクションのお祝いSnackBarが溜まっている可能性があり、
+      // 後続のdataPrivacy画面でのSnackBar検証がキュー待ちの影響を受けて
+      // flakyになるため、ここで実時間タイマーを進めて確実に吐き出しておく。
+      await tester.pump(const Duration(seconds: 5));
+      await tester.pumpAndSettle();
+
       // 既定(pt_BR)はscreenTimeLimitMinutes:0（無制限）のため、利用時間タイルは
       // 制限なしの状態で表示される。デモ用トグルをONにすると1分制限が模擬される。
       expect(find.byKey(const Key('screenTimeStatusTile')), findsOneWidget);
       await tester.tap(find.byKey(const Key('screenTimeLimitToggleButton')));
       await tester.pumpAndSettle();
-      expect(find.textContaining('remaining: 1min'), findsOneWidget);
+      expect(find.textContaining('Restam: 1 min'), findsOneWidget);
       await tester.tap(find.byKey(const Key('screenTimeLimitToggleButton')));
       await tester.pumpAndSettle();
 

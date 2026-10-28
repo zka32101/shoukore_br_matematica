@@ -58,7 +58,7 @@
   "explanationSubtract": "A subtração mostra quanto resta depois de tirar uma parte de um total. Imagine que você tinha 8 figurinhas e deu 3 para um amigo: quantas sobraram? 8-3 significa \"de 8, tire 3\", e o resultado é 5. Dica: o resultado da subtração nunca pode ser maior que o número de onde você começou.",
   "explanationMultiply": "A multiplicação é um jeito rápido de somar o mesmo número várias vezes. Em vez de somar 3+3+3+3, você pode calcular 3×4, que significa \"4 grupos de 3\", e o resultado é 12. Pense em 4 caixas com 3 bolas cada: no total são 12 bolas!",
   "explanationDivide": "A divisão separa uma quantidade em partes iguais. Imagine 12 biscoitos divididos igualmente entre 4 amigos: quantos cada um recebe? 12÷4 significa \"separar 12 em 4 partes iguais\", e o resultado é 3. Dica: multiplicação e divisão são operações inversas — se 4×3=12, então 12÷4=3.",
-  "onboardingWelcomeTitle": "Bem-vindo ao 小学コレ！ Matemática",
+  "onboardingWelcomeTitle": "Bem-vindo ao Colecinho!Matemática",
   "onboardingWelcomeBody": "Aprenda matemática seguindo a BNCC, cuide do seu bichinho e conquiste moedas a cada acerto!",
   "onboardingWelcomeNextButton": "Vamos começar!",
   "onboardingQuizTitle": "Experimente uma questão",
@@ -283,5 +283,53 @@
         "type": "String"
       }
     }
-  }
+  },
+  "homeTitle": "Colecinho!Matemática",
+  "reportAndSettingsSection": "Relatório e configurações",
+  "screenTimeUsed": "Usado hoje: {used} min · Restam: {remaining} min",
+  "@screenTimeUsed": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "screenTimeSubtitle": "Tempo de estudo de hoje",
+  "unitGradeLabel": "{grade}º ano",
+  "@unitGradeLabel": {
+    "placeholders": {
+      "grade": {
+        "type": "int"
+      }
+    }
+  },
+  "nextQuestionButton": "Próxima",
+  "unitName_mat_numeros_1": "Números: somar até 10",
+  "unitName_mat_numeros_2": "Números: somar e subtrair",
+  "unitName_mat_numeros_3": "Números: multiplicação",
+  "unitName_mat_numeros_4": "Números: multiplicar e dividir",
+  "unitName_mat_numeros_5": "Números: divisão",
+  "unitName_mat_algebra_1": "Álgebra: sequências até 5",
+  "unitName_mat_algebra_2": "Álgebra: sequências até 10",
+  "unitName_mat_algebra_3": "Álgebra: sequências até 20",
+  "unitName_mat_algebra_4": "Álgebra: sequências até 30",
+  "unitName_mat_algebra_5": "Álgebra: sequências até 50",
+  "unitName_mat_geometria_1": "Geometria: figuras planas",
+  "unitName_mat_geometria_2": "Geometria: polígonos",
+  "unitName_mat_geometria_3": "Geometria: pentágono e hexágono",
+  "unitName_mat_geometria_4": "Geometria: hexágono e heptágono",
+  "unitName_mat_geometria_5": "Geometria: heptágono e octógono",
+  "unitName_mat_grandezas_1": "Medidas: milímetros e centímetros",
+  "unitName_mat_grandezas_2": "Medidas: centímetros e metros",
+  "unitName_mat_grandezas_3": "Medidas: metros e quilômetros",
+  "unitName_mat_grandezas_4": "Medidas: gramas e quilogramas",
+  "unitName_mat_grandezas_5": "Medidas: mililitros e litros",
+  "unitName_mat_probabilidade_1": "Estatística: maior e menor",
+  "unitName_mat_probabilidade_2": "Estatística: maior e menor (2º ano)",
+  "unitName_mat_probabilidade_3": "Estatística: moda",
+  "unitName_mat_probabilidade_4": "Estatística: moda (4º ano)",
+  "unitName_mat_probabilidade_5": "Estatística: moda e amplitude"
 }
