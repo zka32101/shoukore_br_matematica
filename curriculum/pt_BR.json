@@ -212,6 +212,125 @@
       "minValue": 1,
       "maxValue": 5,
       "explanationId": "explanation_dataset_mode"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_m_to_cm",
+      "fromUnitKey": "unit_cm",
+      "toUnitKey": "unit_m",
+      "factor": 100,
+      "minValue": 1,
+      "maxValue": 9,
+      "reverse": true,
+      "explanationId": "explanation_unit_m_to_cm"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_km_to_m",
+      "fromUnitKey": "unit_m",
+      "toUnitKey": "unit_km",
+      "factor": 1000,
+      "minValue": 1,
+      "maxValue": 9,
+      "reverse": true,
+      "explanationId": "explanation_unit_km_to_m"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_kg_to_g",
+      "fromUnitKey": "unit_g",
+      "toUnitKey": "unit_kg",
+      "factor": 1000,
+      "minValue": 1,
+      "maxValue": 9,
+      "reverse": true,
+      "explanationId": "explanation_unit_kg_to_g"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_l_to_ml",
+      "fromUnitKey": "unit_ml",
+      "toUnitKey": "unit_l",
+      "factor": 1000,
+      "minValue": 1,
+      "maxValue": 9,
+      "reverse": true,
+      "explanationId": "explanation_unit_l_to_ml"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_desc_1_10",
+      "startMin": 5,
+      "startMax": 10,
+      "stepMin": 1,
+      "stepMax": 2,
+      "length": 4,
+      "descending": true,
+      "explanationId": "explanation_sequence_descending"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_desc_1_20",
+      "startMin": 10,
+      "startMax": 20,
+      "stepMin": 1,
+      "stepMax": 3,
+      "length": 4,
+      "descending": true,
+      "explanationId": "explanation_sequence_descending"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_desc_1_30",
+      "startMin": 15,
+      "startMax": 30,
+      "stepMin": 2,
+      "stepMax": 5,
+      "length": 4,
+      "descending": true,
+      "explanationId": "explanation_sequence_descending"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_diagonals_square",
+      "shapeNameKey": "shape_square",
+      "sides": 4,
+      "questionKind": "diagonals",
+      "explanationId": "explanation_diagonals"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_diagonals_pentagon",
+      "shapeNameKey": "shape_pentagon",
+      "sides": 5,
+      "questionKind": "diagonals",
+      "explanationId": "explanation_diagonals"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_diagonals_hexagon",
+      "shapeNameKey": "shape_hexagon",
+      "sides": 6,
+      "questionKind": "diagonals",
+      "explanationId": "explanation_diagonals"
+    },
+    {
+      "kind": "dataset",
+      "id": "tpl_dataset_sum",
+      "operation": "sum",
+      "valueCount": 4,
+      "minValue": 1,
+      "maxValue": 20,
+      "explanationId": "explanation_dataset_sum"
+    },
+    {
+      "kind": "dataset",
+      "id": "tpl_dataset_range",
+      "operation": "range",
+      "valueCount": 5,
+      "minValue": 1,
+      "maxValue": 20,
+      "explanationId": "explanation_dataset_range"
     }
   ],
   "units": [
@@ -320,7 +439,8 @@
       "titleKey": "unit_algebra_2",
       "order": 2,
       "templateIds": [
-        "tpl_sequence_1_10"
+        "tpl_sequence_1_10",
+        "tpl_sequence_desc_1_10"
       ],
       "habilidadeCodes": [
         "EF02MA09",
@@ -336,7 +456,8 @@
       "titleKey": "unit_algebra_3",
       "order": 2,
       "templateIds": [
-        "tpl_sequence_1_20"
+        "tpl_sequence_1_20",
+        "tpl_sequence_desc_1_20"
       ],
       "habilidadeCodes": [
         "EF03MA10",
@@ -351,7 +472,8 @@
       "titleKey": "unit_algebra_4",
       "order": 2,
       "templateIds": [
-        "tpl_sequence_1_30"
+        "tpl_sequence_1_30",
+        "tpl_sequence_desc_1_30"
       ],
       "habilidadeCodes": [
         "EF04MA11",
@@ -401,7 +523,8 @@
       "templateIds": [
         "tpl_shape_triangle",
         "tpl_shape_square",
-        "tpl_shape_pentagon"
+        "tpl_shape_pentagon",
+        "tpl_diagonals_square"
       ],
       "habilidadeCodes": [
         "EF02MA14",
@@ -417,7 +540,8 @@
       "order": 3,
       "templateIds": [
         "tpl_shape_pentagon",
-        "tpl_shape_hexagon"
+        "tpl_shape_hexagon",
+        "tpl_diagonals_pentagon"
       ],
       "habilidadeCodes": [
         "EF03MA14",
@@ -434,7 +558,8 @@
       "order": 3,
       "templateIds": [
         "tpl_shape_hexagon",
-        "tpl_shape_heptagon"
+        "tpl_shape_heptagon",
+        "tpl_diagonals_hexagon"
       ],
       "habilidadeCodes": [
         "EF04MA16",
@@ -481,7 +606,8 @@
       "titleKey": "unit_grandezas_2",
       "order": 4,
       "templateIds": [
-        "tpl_cm_to_m"
+        "tpl_cm_to_m",
+        "tpl_m_to_cm"
       ],
       "habilidadeCodes": [
         "EF02MA16",
@@ -496,7 +622,8 @@
       "titleKey": "unit_grandezas_3",
       "order": 4,
       "templateIds": [
-        "tpl_m_to_km"
+        "tpl_m_to_km",
+        "tpl_km_to_m"
       ],
       "habilidadeCodes": [
         "EF03MA17",
@@ -513,7 +640,8 @@
       "titleKey": "unit_grandezas_4",
       "order": 4,
       "templateIds": [
-        "tpl_g_to_kg"
+        "tpl_g_to_kg",
+        "tpl_kg_to_g"
       ],
       "habilidadeCodes": [
         "EF04MA20",
@@ -528,7 +656,8 @@
       "titleKey": "unit_grandezas_5",
       "order": 4,
       "templateIds": [
-        "tpl_ml_to_l"
+        "tpl_ml_to_l",
+        "tpl_l_to_ml"
       ],
       "habilidadeCodes": [
         "EF05MA19",
@@ -599,7 +728,8 @@
       "templateIds": [
         "tpl_dataset_max",
         "tpl_dataset_min",
-        "tpl_dataset_mode"
+        "tpl_dataset_mode",
+        "tpl_dataset_sum"
       ],
       "habilidadeCodes": [
         "EF04MA26",
@@ -615,7 +745,8 @@
       "titleKey": "unit_probabilidade_5",
       "order": 5,
       "templateIds": [
-        "tpl_dataset_mode"
+        "tpl_dataset_mode",
+        "tpl_dataset_range"
       ],
       "habilidadeCodes": [
         "EF05MA22",

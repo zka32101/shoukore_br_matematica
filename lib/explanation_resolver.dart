@@ -40,6 +40,22 @@ String? resolveExplanation(AppLocalizations l10n, String explanationId) {
       return l10n.explanationDatasetMin;
     case 'explanation_dataset_mode':
       return l10n.explanationDatasetMode;
+    case 'explanation_unit_m_to_cm':
+      return l10n.explanationUnitMToCm;
+    case 'explanation_unit_km_to_m':
+      return l10n.explanationUnitKmToM;
+    case 'explanation_unit_kg_to_g':
+      return l10n.explanationUnitKgToG;
+    case 'explanation_unit_l_to_ml':
+      return l10n.explanationUnitLToMl;
+    case 'explanation_sequence_descending':
+      return l10n.explanationSequenceDescending;
+    case 'explanation_diagonals':
+      return l10n.explanationDiagonals;
+    case 'explanation_dataset_sum':
+      return l10n.explanationDatasetSum;
+    case 'explanation_dataset_range':
+      return l10n.explanationDatasetRange;
     default:
       return null;
   }

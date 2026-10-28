@@ -8,6 +8,7 @@ class SequencePatternTemplate {
     required this.stepMax,
     this.length = 4,
     this.explanationId = '',
+    this.descending = false,
   })  : assert(startMin <= startMax),
         assert(stepMin <= stepMax),
         assert(length >= 2);
@@ -20,6 +21,7 @@ class SequencePatternTemplate {
         stepMax: j['stepMax'] as int,
         length: (j['length'] as int?) ?? 4,
         explanationId: (j['explanationId'] as String?) ?? '',
+        descending: (j['descending'] as bool?) ?? false,
       );
 
   final String id;
@@ -33,4 +35,8 @@ class SequencePatternTemplate {
   /// 提示する数列の項数（この次の項を答えさせる）。
   final int length;
   final String explanationId;
+
+  /// `true`の場合、数が減っていく数列（公差を引き算で適用）にする。
+  /// `startMin`/`startMax`は数列の最初の項（最大値側）の生成範囲のまま。
+  final bool descending;
 }

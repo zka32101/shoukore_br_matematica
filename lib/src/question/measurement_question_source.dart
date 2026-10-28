@@ -57,9 +57,28 @@ class MeasurementQuestionSource implements QuestionSource {
     final unit = _findUnit(unitId);
     final template = _pickTemplate(unit);
 
-    final answer = template.minValue +
+    final generated = template.minValue +
         _random.nextInt(template.maxValue - template.minValue + 1);
-    final fromValue = answer * template.factor;
+
+    // reverse: false（既定）: generatedはtoUnit側の値。fromUnit側の値
+    // (displayValue)はfactor倍して見せ、toUnit側の値(generated)を答えさせる。
+    // reverse: true: generatedはtoUnit（大きい単位）側の値。それをそのまま
+    // 見せ、fromUnit（小さい単位）側の値(= generated * factor)を答えさせる。
+    final int answer;
+    final int displayValue;
+    final String displayUnitKey;
+    final String answerUnitKey;
+    if (!template.reverse) {
+      answer = generated;
+      displayValue = generated * template.factor;
+      displayUnitKey = template.fromUnitKey;
+      answerUnitKey = template.toUnitKey;
+    } else {
+      answer = generated * template.factor;
+      displayValue = generated;
+      displayUnitKey = template.toUnitKey;
+      answerUnitKey = template.fromUnitKey;
+    }
 
     final choices = <int>{answer};
     final offsets = [1, -1, 2, -2];
@@ -81,9 +100,9 @@ class MeasurementQuestionSource implements QuestionSource {
       answer: answer.toString(),
       explanationId: template.explanationId,
       params: {
-        'value': fromValue.toString(),
-        'fromUnitKey': template.fromUnitKey,
-        'toUnitKey': template.toUnitKey,
+        'value': displayValue.toString(),
+        'fromUnitKey': displayUnitKey,
+        'toUnitKey': answerUnitKey,
       },
     );
   }

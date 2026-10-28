@@ -59,7 +59,8 @@ class SequenceQuestionSource implements QuestionSource {
 
     final start = template.startMin + _random.nextInt(template.startMax - template.startMin + 1);
     final stepSpan = template.stepMax - template.stepMin + 1;
-    final step = max(template.stepMin + _random.nextInt(stepSpan), 1);
+    final stepMagnitude = max(template.stepMin + _random.nextInt(stepSpan), 1);
+    final step = template.descending ? -stepMagnitude : stepMagnitude;
 
     final terms = List<int>.generate(template.length, (i) => start + step * i);
     final answer = start + step * template.length;

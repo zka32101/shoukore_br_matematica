@@ -56,13 +56,19 @@ class StatisticsQuestionSource implements QuestionSource {
     switch (template.operation) {
       case DataSetOperation.max:
       case DataSetOperation.min:
+      case DataSetOperation.sum:
+      case DataSetOperation.range:
         final values = List<int>.generate(
           template.valueCount,
           (_) => _randomInRange(template.minValue, template.maxValue),
         );
-        final answer = template.operation == DataSetOperation.max
-            ? values.reduce(max)
-            : values.reduce(min);
+        final answer = switch (template.operation) {
+          DataSetOperation.max => values.reduce(max),
+          DataSetOperation.min => values.reduce(min),
+          DataSetOperation.sum => values.reduce((a, b) => a + b),
+          DataSetOperation.range => values.reduce(max) - values.reduce(min),
+          DataSetOperation.mode => throw StateError('handled in separate branch'),
+        };
         return (values, answer);
       case DataSetOperation.mode:
         final modeValue = _randomInRange(template.minValue, template.maxValue);

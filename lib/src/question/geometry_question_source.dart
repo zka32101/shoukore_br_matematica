@@ -56,7 +56,9 @@ class GeometryQuestionSource implements QuestionSource {
   }) async {
     final unit = _findUnit(unitId);
     final template = _pickTemplate(unit);
-    final answer = template.sides;
+    final answer = template.questionKind == ShapeQuestionKind.diagonals
+        ? template.diagonalCount
+        : template.sides;
 
     final choices = <int>{answer};
     final offsets = [1, -1, 2, -2];

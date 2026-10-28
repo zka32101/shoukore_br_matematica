@@ -1,4 +1,4 @@
-enum DataSetOperation { max, min, mode }
+enum DataSetOperation { max, min, mode, sum, range }
 
 DataSetOperation _operationFromJson(String v) {
   switch (v) {
@@ -8,6 +8,10 @@ DataSetOperation _operationFromJson(String v) {
       return DataSetOperation.min;
     case 'mode':
       return DataSetOperation.mode;
+    case 'sum':
+      return DataSetOperation.sum;
+    case 'range':
+      return DataSetOperation.range;
     default:
       throw ArgumentError('unknown operation: $v');
   }

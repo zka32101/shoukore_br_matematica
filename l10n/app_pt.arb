@@ -87,5 +87,13 @@
   "explanationUnitMlToL": "1 litro tem 1000 mililitros. Para transformar mililitros em litros, divida o número por 1000.",
   "explanationDatasetMax": "O valor máximo é o maior número do conjunto de dados. Compare todos os números e escolha o maior.",
   "explanationDatasetMin": "O valor mínimo é o menor número do conjunto de dados. Compare todos os números e escolha o menor.",
-  "explanationDatasetMode": "A moda é o valor que aparece mais vezes no conjunto de dados. Conte quantas vezes cada número aparece e escolha o que se repete mais."
+  "explanationDatasetMode": "A moda é o valor que aparece mais vezes no conjunto de dados. Conte quantas vezes cada número aparece e escolha o que se repete mais.",
+  "explanationUnitMToCm": "1 metro tem 100 centímetros. Para transformar metros em centímetros, multiplique o número por 100.",
+  "explanationUnitKmToM": "1 quilômetro tem 1000 metros. Para transformar quilômetros em metros, multiplique o número por 1000.",
+  "explanationUnitKgToG": "1 quilograma tem 1000 gramas. Para transformar quilogramas em gramas, multiplique o número por 1000.",
+  "explanationUnitLToMl": "1 litro tem 1000 mililitros. Para transformar litros em mililitros, multiplique o número por 1000.",
+  "explanationSequenceDescending": "Nesta sequência, os números diminuem seguindo um padrão. Descubra quanto cada número diminui em relação ao anterior e aplique esse padrão para encontrar o próximo.",
+  "explanationDiagonals": "A diagonal liga dois vértices que não são vizinhos. Para contar as diagonais de um polígono com n lados, use a fórmula n×(n-3)÷2.",
+  "explanationDatasetSum": "A soma é o resultado de adicionar todos os números do conjunto de dados, um por um.",
+  "explanationDatasetRange": "A amplitude é a diferença entre o maior e o menor valor do conjunto de dados: amplitude = valor máximo − valor mínimo."
 }

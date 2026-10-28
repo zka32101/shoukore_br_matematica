@@ -8,6 +8,7 @@ class UnitConversionTemplate {
     required this.minValue,
     required this.maxValue,
     this.explanationId = '',
+    this.reverse = false,
   })  : assert(factor > 0),
         assert(minValue <= maxValue);
 
@@ -19,6 +20,7 @@ class UnitConversionTemplate {
         minValue: j['minValue'] as int,
         maxValue: j['maxValue'] as int,
         explanationId: (j['explanationId'] as String?) ?? '',
+        reverse: (j['reverse'] as bool?) ?? false,
       );
 
   final String id;
@@ -28,8 +30,12 @@ class UnitConversionTemplate {
   /// `fromUnit` を `toUnit` に変換する倍率（例: cm→m なら100）。
   final int factor;
 
-  /// 変換後の値（toUnit側）の生成範囲。
+  /// `reverse: false`（既定）の場合、toUnit側の値の生成範囲。
+  /// `reverse: true`の場合、toUnit（大きい単位）側の値をこの範囲で生成し、
+  /// fromUnit（小さい単位）側の値を答えさせる（例: m→cmのように、大きい
+  /// 単位から小さい単位への変換を出題する）。
   final int minValue;
   final int maxValue;
   final String explanationId;
+  final bool reverse;
 }
