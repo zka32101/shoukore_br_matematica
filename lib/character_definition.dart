@@ -33,7 +33,10 @@ class CharacterDefinition {
   final Color color;
 }
 
-/// ブラジル算数版の8体（BNCCのeixoごとに配分、単元数の多いeixoに2体）。
+/// ブラジル算数版の12体（BNCCのeixoごとに配分、単元数の多いeixoに3体）。
+/// `Gogo`/`Ichiko`/`Fukuju`/`Niniko`は日本版キャラを流用したもの
+/// （参照元画像: `H:\マイドライブ\images\小学コレ！\JP_日本\算数\
+/// 01_キャラクター\算数キャラ`）。
 const characterDefinitions = <CharacterDefinition>[
   CharacterDefinition(
     id: 'tucaninho',
@@ -54,13 +57,40 @@ const characterDefinitions = <CharacterDefinition>[
     color: Colors.brown,
   ),
   CharacterDefinition(
+    id: 'gogo',
+    eixoKeyword: 'numeros',
+    order: 2,
+    name: 'Gogo',
+    motif: 'Coelho azul (日本版「ゴーゴ」流用)',
+    icon: Icons.cruelty_free,
+    color: Colors.lightBlue,
+  ),
+  CharacterDefinition(
     id: 'dracotre',
     eixoKeyword: 'algebra',
     order: 0,
     name: 'Dracotrê',
-    motif: 'Dragão de três cabeças',
+    motif: 'Dragão de três cabeças (日本版「トライ」流用)',
     icon: Icons.whatshot,
     color: Colors.deepPurple,
+  ),
+  CharacterDefinition(
+    id: 'ichiko',
+    eixoKeyword: 'algebra',
+    order: 1,
+    name: 'Ichiko',
+    motif: 'Coelho unicórnio (日本版「イチコ」流用)',
+    icon: Icons.auto_awesome,
+    color: Colors.amber,
+  ),
+  CharacterDefinition(
+    id: 'fukuju',
+    eixoKeyword: 'algebra',
+    order: 2,
+    name: 'Fukuju',
+    motif: 'Coruja (日本版「フクジュ」流用)',
+    icon: Icons.nightlight_round,
+    color: Colors.teal,
   ),
   CharacterDefinition(
     id: 'tatuzinho',
@@ -106,6 +136,15 @@ const characterDefinitions = <CharacterDefinition>[
     motif: 'Arara-azul',
     icon: Icons.bar_chart,
     color: Colors.indigo,
+  ),
+  CharacterDefinition(
+    id: 'niniko',
+    eixoKeyword: 'probabilidade',
+    order: 1,
+    name: 'Niniko',
+    motif: 'Dupla de raposas (日本版「ニニコ」流用)',
+    icon: Icons.pets,
+    color: Colors.pinkAccent,
   ),
 ];
 
