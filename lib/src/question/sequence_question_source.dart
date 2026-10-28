@@ -104,7 +104,10 @@ class SequenceQuestionSource implements QuestionSource {
       choices: choiceList.map((c) => c.toString()).toList(),
       answer: answer.toString(),
       explanationId: template.explanationId,
-      params: {'terms': terms.join(',')},
+      params: {
+        'terms': terms.join(','),
+        if (template.scenarioId.isNotEmpty) 'scenarioId': template.scenarioId,
+      },
     );
   }
 

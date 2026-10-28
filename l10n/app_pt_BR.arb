@@ -565,5 +565,63 @@
   "guardianGatePassedMessage": "Verificação concluída com sucesso.",
   "guardianGateFailedMessage": "Resposta incorreta na verificação.",
   "settingsParentsSection": "Ferramentas para os responsáveis",
-  "settingsNotificationsSection": "Notificações"
+  "settingsNotificationsSection": "Notificações",
+  "sequenceScenarioSavings": "Toda semana, Maria guarda uma quantidade de moedas que segue este padrão: {terms}, ... Quantas moedas ela vai guardar na próxima semana?",
+  "@sequenceScenarioSavings": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "sequenceScenarioPlant": "A altura de uma planta (em cm) foi medida toda semana: {terms}, ... Qual será a altura na próxima semana?",
+  "@sequenceScenarioPlant": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "measurementScenarioPencil": "O lápis de Ana mede {value} {fromUnit}. Quantos {toUnit} isso equivale?",
+  "@measurementScenarioPencil": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      },
+      "toUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "measurementScenarioTrip": "A viagem de carro até a casa da vovó tem {value} {fromUnit}. Quantos {toUnit} isso equivale?",
+  "@measurementScenarioTrip": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      },
+      "toUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "measurementScenarioJuice": "A jarra de suco da festa tem {value} {fromUnit}. Quantos {toUnit} isso equivale?",
+  "@measurementScenarioJuice": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      },
+      "toUnit": {
+        "type": "String"
+      }
+    }
+  }
 }

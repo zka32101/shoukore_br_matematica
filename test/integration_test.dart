@@ -213,9 +213,21 @@ void main() {
 
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
 
-      // 学習データ管理画面: 書き出し内容の確認・保護者同意の撤回ができる。
+      // 学習データ管理画面: 同意撤回・全データ削除という不可逆な操作に
+      // 進めるため、タップすると保護者ゲート(2桁×2桁の乗算)が先に表示される。
+      // ダイアログの文言から乱数のa×bを読み取って解答する。
       await tester.ensureVisible(find.byKey(const Key('dataPrivacyTile')));
       await tester.tap(find.byKey(const Key('dataPrivacyTile')));
+      await tester.pumpAndSettle();
+
+      final challengeFinder = find.textContaining('Digite o resultado de:');
+      expect(challengeFinder, findsOneWidget);
+      final challengeText = tester.widget<Text>(challengeFinder).data!;
+      final challengeMatch = RegExp(r'(\d+) × (\d+)').firstMatch(challengeText)!;
+      final challengeA = int.parse(challengeMatch.group(1)!);
+      final challengeB = int.parse(challengeMatch.group(2)!);
+      await tester.enterText(find.byType(TextField), '${challengeA * challengeB}');
+      await tester.tap(find.text('Confirmar'));
       await tester.pumpAndSettle();
 
       expect(find.text('Consentimento dos responsáveis: concedido'), findsOneWidget);

@@ -10,6 +10,7 @@ class SequencePatternTemplate {
     this.explanationId = '',
     this.descending = false,
     this.multiplier = 0,
+    this.scenarioId = '',
   })  : assert(startMin <= startMax),
         assert(stepMin <= stepMax),
         assert(length >= 2),
@@ -25,6 +26,7 @@ class SequencePatternTemplate {
         explanationId: (j['explanationId'] as String?) ?? '',
         descending: (j['descending'] as bool?) ?? false,
         multiplier: (j['multiplier'] as int?) ?? 0,
+        scenarioId: (j['scenarioId'] as String?) ?? '',
       );
 
   final String id;
@@ -46,4 +48,8 @@ class SequencePatternTemplate {
   /// 2以上の場合、等差数列ではなく倍数パターン（例: ×2, ×3）の数列として
   /// 生成する（`stepMin`/`stepMax`は無視される）。既定の0は等差数列。
   final int multiplier;
+
+  /// 設定時、応用シナリオ(学校・実生活の場面)の出題文で表示する
+  /// (アプリ側question_prompt_resolver.dartが解決)。空なら汎用の出題文。
+  final String scenarioId;
 }

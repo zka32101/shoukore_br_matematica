@@ -27,9 +27,21 @@ String? resolveQuestionPrompt(AppLocalizations l10n, Question question) {
     return _resolveDatasetPrompt(l10n, params);
   }
   if (params.containsKey('terms')) {
-    return l10n.sequencePrompt(params['terms']!.split(',').join(', '));
+    return _resolveSequencePrompt(l10n, params);
   }
   return null;
+}
+
+String _resolveSequencePrompt(AppLocalizations l10n, Map<String, String> params) {
+  final terms = params['terms']!.split(',').join(', ');
+  switch (params['scenarioId']) {
+    case 'scenario_savings':
+      return l10n.sequenceScenarioSavings(terms);
+    case 'scenario_plant':
+      return l10n.sequenceScenarioPlant(terms);
+    default:
+      return l10n.sequencePrompt(terms);
+  }
 }
 
 String _resolveShapeName(AppLocalizations l10n, String shapeNameKey) {
@@ -98,6 +110,12 @@ String _resolveMeasurementPrompt(AppLocalizations l10n, Map<String, String> para
       return l10n.measurementScenarioClassroom(value, fromUnit, toUnit);
     case 'scenario_canteen':
       return l10n.measurementScenarioCanteen(value, fromUnit, toUnit);
+    case 'scenario_pencil':
+      return l10n.measurementScenarioPencil(value, fromUnit, toUnit);
+    case 'scenario_trip':
+      return l10n.measurementScenarioTrip(value, fromUnit, toUnit);
+    case 'scenario_juice':
+      return l10n.measurementScenarioJuice(value, fromUnit, toUnit);
     default:
       return l10n.measurementPrompt(toUnit, value, fromUnit);
   }

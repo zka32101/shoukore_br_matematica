@@ -499,17 +499,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     leading: const Icon(Icons.privacy_tip_outlined),
                     title: Text(l10n.dataPrivacyTile),
                     trailing: const Icon(Icons.chevron_right),
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => DataPrivacyScreen(
-                          consentStore: _consentStore,
-                          progressStore: _progressStore,
-                          onDataErased: () {
-                            if (mounted) setState(() => _consent = null);
-                          },
+                    // 同意撤回・全データ削除という不可逆な操作に進めるため、
+                    // 児童が誤って（または意図的に）開けないよう保護者ゲート
+                    // で一度確認する。
+                    onTap: () async {
+                      final passed = await showGuardianGateDialog(context);
+                      if (!passed || !context.mounted) return;
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => DataPrivacyScreen(
+                            consentStore: _consentStore,
+                            progressStore: _progressStore,
+                            onDataErased: () {
+                              if (mounted) setState(() => _consent = null);
+                            },
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ),
                 Card(

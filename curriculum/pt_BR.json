@@ -613,6 +613,62 @@
       "maxValue": 5,
       "explanationId": "explanation_dataset_mode",
       "scenarioId": "scenario_recess"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_savings",
+      "startMin": 2,
+      "startMax": 10,
+      "stepMin": 1,
+      "stepMax": 3,
+      "length": 4,
+      "explanationId": "explanation_sequence",
+      "scenarioId": "scenario_savings"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_plant",
+      "startMin": 5,
+      "startMax": 15,
+      "stepMin": 1,
+      "stepMax": 4,
+      "length": 4,
+      "explanationId": "explanation_sequence",
+      "scenarioId": "scenario_plant"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_mm_to_cm_pencil",
+      "fromUnitKey": "unit_mm",
+      "toUnitKey": "unit_cm",
+      "factor": 10,
+      "minValue": 1,
+      "maxValue": 9,
+      "reverse": true,
+      "explanationId": "explanation_unit_cm_to_mm",
+      "scenarioId": "scenario_pencil"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_m_to_km_trip",
+      "fromUnitKey": "unit_m",
+      "toUnitKey": "unit_km",
+      "factor": 1000,
+      "minValue": 1,
+      "maxValue": 9,
+      "explanationId": "explanation_unit_m_to_km",
+      "scenarioId": "scenario_trip"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_ml_to_l_juice",
+      "fromUnitKey": "unit_ml",
+      "toUnitKey": "unit_l",
+      "factor": 1000,
+      "minValue": 1,
+      "maxValue": 9,
+      "explanationId": "explanation_unit_ml_to_l",
+      "scenarioId": "scenario_juice"
     }
   ],
   "units": [
@@ -743,7 +799,8 @@
       "order": 2,
       "templateIds": [
         "tpl_sequence_1_10",
-        "tpl_sequence_desc_1_10"
+        "tpl_sequence_desc_1_10",
+        "tpl_sequence_savings"
       ],
       "habilidadeCodes": [
         "EF02MA09",
@@ -776,7 +833,8 @@
       "order": 2,
       "templateIds": [
         "tpl_sequence_1_30",
-        "tpl_sequence_desc_1_30"
+        "tpl_sequence_desc_1_30",
+        "tpl_sequence_plant"
       ],
       "habilidadeCodes": [
         "EF04MA11",
@@ -899,7 +957,8 @@
       "order": 4,
       "templateIds": [
         "tpl_mm_to_cm",
-        "tpl_cm_to_mm"
+        "tpl_cm_to_mm",
+        "tpl_mm_to_cm_pencil"
       ],
       "habilidadeCodes": [
         "EF01MA15",
@@ -933,7 +992,8 @@
       "order": 4,
       "templateIds": [
         "tpl_m_to_km",
-        "tpl_km_to_m"
+        "tpl_km_to_m",
+        "tpl_m_to_km_trip"
       ],
       "habilidadeCodes": [
         "EF03MA17",
@@ -968,7 +1028,8 @@
       "order": 4,
       "templateIds": [
         "tpl_ml_to_l",
-        "tpl_l_to_ml"
+        "tpl_l_to_ml",
+        "tpl_ml_to_l_juice"
       ],
       "habilidadeCodes": [
         "EF05MA19",
