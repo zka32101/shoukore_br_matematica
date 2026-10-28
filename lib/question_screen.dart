@@ -352,7 +352,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   key: const Key('nextQuestionButton'),
                   onPressed: _loadQuestion,
                   icon: const Icon(Icons.arrow_forward),
-                  label: const Text('next'),
+                  label: Text(AppLocalizations.of(context)!.nextQuestionButton),
                 ),
               ],
             ),
