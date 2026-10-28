@@ -12,6 +12,34 @@ String? resolveExplanation(AppLocalizations l10n, String explanationId) {
       return l10n.explanationMultiply;
     case 'explanation_divide':
       return l10n.explanationDivide;
+    case 'explanation_sequence':
+      return l10n.explanationSequence;
+    case 'explanation_shape_triangle':
+      return l10n.explanationShapeTriangle;
+    case 'explanation_shape_square':
+      return l10n.explanationShapeSquare;
+    case 'explanation_shape_pentagon':
+      return l10n.explanationShapePentagon;
+    case 'explanation_shape_hexagon':
+      return l10n.explanationShapeHexagon;
+    case 'explanation_shape_heptagon':
+      return l10n.explanationShapeHeptagon;
+    case 'explanation_shape_octagon':
+      return l10n.explanationShapeOctagon;
+    case 'explanation_unit_cm_to_m':
+      return l10n.explanationUnitCmToM;
+    case 'explanation_unit_m_to_km':
+      return l10n.explanationUnitMToKm;
+    case 'explanation_unit_g_to_kg':
+      return l10n.explanationUnitGToKg;
+    case 'explanation_unit_ml_to_l':
+      return l10n.explanationUnitMlToL;
+    case 'explanation_dataset_max':
+      return l10n.explanationDatasetMax;
+    case 'explanation_dataset_min':
+      return l10n.explanationDatasetMin;
+    case 'explanation_dataset_mode':
+      return l10n.explanationDatasetMode;
     default:
       return null;
   }

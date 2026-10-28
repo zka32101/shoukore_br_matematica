@@ -2,66 +2,628 @@
   "locale": "pt_BR",
   "note": "BNCC anos iniciais (1º-5º ano) の算数(Matemática)本格拡充版。5 eixos全学年(1º-5º ano)を網羅。各単元の habilidadeCodes/verified は、このセッションからBNCC公式PDF等の一次資料に直接アクセスできなかったため、Web検索で断片的に確認できた範囲のみ verified:true とし、それ以外は verified:false（知識ベースの推測、要検証）としている。verified:false の単元は必ず現地教員レビューで内容・学年配当を確認してから本番投入すること。理科(Ciências)はBNCC単元未検証のため引き続き後回し。",
   "subjects": [
-    {"id": "matematica", "eixos": ["numeros", "algebra", "geometria", "grandezas_medidas", "probabilidade_estatistica"]}
+    {
+      "id": "matematica",
+      "eixos": [
+        "numeros",
+        "algebra",
+        "geometria",
+        "grandezas_medidas",
+        "probabilidade_estatistica"
+      ]
+    }
   ],
   "templates": [
-    {"kind": "arithmetic", "id": "tpl_add_1_10", "operator": "add", "minOperand": 1, "maxOperand": 10, "explanationId": "explanation_add"},
-    {"kind": "arithmetic", "id": "tpl_add_1_100", "operator": "add", "minOperand": 1, "maxOperand": 100, "explanationId": "explanation_add"},
-    {"kind": "arithmetic", "id": "tpl_sub_1_20", "operator": "subtract", "minOperand": 1, "maxOperand": 20, "explanationId": "explanation_subtract"},
-    {"kind": "arithmetic", "id": "tpl_mul_1_10", "operator": "multiply", "minOperand": 1, "maxOperand": 10, "explanationId": "explanation_multiply"},
-    {"kind": "arithmetic", "id": "tpl_div_1_10", "operator": "divide", "minOperand": 1, "maxOperand": 10, "explanationId": "explanation_divide"},
-
-    {"kind": "sequence", "id": "tpl_sequence_1_5", "startMin": 1, "startMax": 5, "stepMin": 1, "stepMax": 2, "length": 3},
-    {"kind": "sequence", "id": "tpl_sequence_1_10", "startMin": 1, "startMax": 10, "stepMin": 1, "stepMax": 3, "length": 4},
-    {"kind": "sequence", "id": "tpl_sequence_1_20", "startMin": 1, "startMax": 20, "stepMin": 1, "stepMax": 3, "length": 4},
-    {"kind": "sequence", "id": "tpl_sequence_1_30", "startMin": 1, "startMax": 30, "stepMin": 2, "stepMax": 5, "length": 4},
-    {"kind": "sequence", "id": "tpl_sequence_1_50", "startMin": 1, "startMax": 50, "stepMin": 2, "stepMax": 9, "length": 5},
-
-    {"kind": "shape", "id": "tpl_shape_triangle", "shapeNameKey": "shape_triangle", "sides": 3},
-    {"kind": "shape", "id": "tpl_shape_square", "shapeNameKey": "shape_square", "sides": 4},
-    {"kind": "shape", "id": "tpl_shape_pentagon", "shapeNameKey": "shape_pentagon", "sides": 5},
-    {"kind": "shape", "id": "tpl_shape_hexagon", "shapeNameKey": "shape_hexagon", "sides": 6},
-    {"kind": "shape", "id": "tpl_shape_heptagon", "shapeNameKey": "shape_heptagon", "sides": 7},
-    {"kind": "shape", "id": "tpl_shape_octagon", "shapeNameKey": "shape_octagon", "sides": 8},
-
-    {"kind": "unitConversion", "id": "tpl_cm_to_m", "fromUnitKey": "unit_cm", "toUnitKey": "unit_m", "factor": 100, "minValue": 1, "maxValue": 9},
-    {"kind": "unitConversion", "id": "tpl_m_to_km", "fromUnitKey": "unit_m", "toUnitKey": "unit_km", "factor": 1000, "minValue": 1, "maxValue": 9},
-    {"kind": "unitConversion", "id": "tpl_g_to_kg", "fromUnitKey": "unit_g", "toUnitKey": "unit_kg", "factor": 1000, "minValue": 1, "maxValue": 9},
-    {"kind": "unitConversion", "id": "tpl_ml_to_l", "fromUnitKey": "unit_ml", "toUnitKey": "unit_l", "factor": 1000, "minValue": 1, "maxValue": 9},
-
-    {"kind": "dataset", "id": "tpl_dataset_max", "operation": "max", "valueCount": 5, "minValue": 1, "maxValue": 20},
-    {"kind": "dataset", "id": "tpl_dataset_min", "operation": "min", "valueCount": 5, "minValue": 1, "maxValue": 20},
-    {"kind": "dataset", "id": "tpl_dataset_mode", "operation": "mode", "valueCount": 5, "minValue": 1, "maxValue": 5}
+    {
+      "kind": "arithmetic",
+      "id": "tpl_add_1_10",
+      "operator": "add",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_add"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_add_1_100",
+      "operator": "add",
+      "minOperand": 1,
+      "maxOperand": 100,
+      "explanationId": "explanation_add"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_sub_1_20",
+      "operator": "subtract",
+      "minOperand": 1,
+      "maxOperand": 20,
+      "explanationId": "explanation_subtract"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_mul_1_10",
+      "operator": "multiply",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_multiply"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_div_1_10",
+      "operator": "divide",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_divide"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_1_5",
+      "startMin": 1,
+      "startMax": 5,
+      "stepMin": 1,
+      "stepMax": 2,
+      "length": 3,
+      "explanationId": "explanation_sequence"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_1_10",
+      "startMin": 1,
+      "startMax": 10,
+      "stepMin": 1,
+      "stepMax": 3,
+      "length": 4,
+      "explanationId": "explanation_sequence"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_1_20",
+      "startMin": 1,
+      "startMax": 20,
+      "stepMin": 1,
+      "stepMax": 3,
+      "length": 4,
+      "explanationId": "explanation_sequence"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_1_30",
+      "startMin": 1,
+      "startMax": 30,
+      "stepMin": 2,
+      "stepMax": 5,
+      "length": 4,
+      "explanationId": "explanation_sequence"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_1_50",
+      "startMin": 1,
+      "startMax": 50,
+      "stepMin": 2,
+      "stepMax": 9,
+      "length": 5,
+      "explanationId": "explanation_sequence"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_shape_triangle",
+      "shapeNameKey": "shape_triangle",
+      "sides": 3,
+      "explanationId": "explanation_shape_triangle"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_shape_square",
+      "shapeNameKey": "shape_square",
+      "sides": 4,
+      "explanationId": "explanation_shape_square"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_shape_pentagon",
+      "shapeNameKey": "shape_pentagon",
+      "sides": 5,
+      "explanationId": "explanation_shape_pentagon"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_shape_hexagon",
+      "shapeNameKey": "shape_hexagon",
+      "sides": 6,
+      "explanationId": "explanation_shape_hexagon"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_shape_heptagon",
+      "shapeNameKey": "shape_heptagon",
+      "sides": 7,
+      "explanationId": "explanation_shape_heptagon"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_shape_octagon",
+      "shapeNameKey": "shape_octagon",
+      "sides": 8,
+      "explanationId": "explanation_shape_octagon"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_cm_to_m",
+      "fromUnitKey": "unit_cm",
+      "toUnitKey": "unit_m",
+      "factor": 100,
+      "minValue": 1,
+      "maxValue": 9,
+      "explanationId": "explanation_unit_cm_to_m"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_m_to_km",
+      "fromUnitKey": "unit_m",
+      "toUnitKey": "unit_km",
+      "factor": 1000,
+      "minValue": 1,
+      "maxValue": 9,
+      "explanationId": "explanation_unit_m_to_km"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_g_to_kg",
+      "fromUnitKey": "unit_g",
+      "toUnitKey": "unit_kg",
+      "factor": 1000,
+      "minValue": 1,
+      "maxValue": 9,
+      "explanationId": "explanation_unit_g_to_kg"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_ml_to_l",
+      "fromUnitKey": "unit_ml",
+      "toUnitKey": "unit_l",
+      "factor": 1000,
+      "minValue": 1,
+      "maxValue": 9,
+      "explanationId": "explanation_unit_ml_to_l"
+    },
+    {
+      "kind": "dataset",
+      "id": "tpl_dataset_max",
+      "operation": "max",
+      "valueCount": 5,
+      "minValue": 1,
+      "maxValue": 20,
+      "explanationId": "explanation_dataset_max"
+    },
+    {
+      "kind": "dataset",
+      "id": "tpl_dataset_min",
+      "operation": "min",
+      "valueCount": 5,
+      "minValue": 1,
+      "maxValue": 20,
+      "explanationId": "explanation_dataset_min"
+    },
+    {
+      "kind": "dataset",
+      "id": "tpl_dataset_mode",
+      "operation": "mode",
+      "valueCount": 5,
+      "minValue": 1,
+      "maxValue": 5,
+      "explanationId": "explanation_dataset_mode"
+    }
   ],
   "units": [
-    {"id": "mat_numeros_1", "subjectId": "matematica", "grade": 1, "titleKey": "unit_numeros_1", "order": 1, "templateIds": ["tpl_add_1_10"], "habilidadeCodes": ["EF01MA01", "EF01MA06", "EF01MA08"], "verified": true},
-    {"id": "mat_numeros_2", "subjectId": "matematica", "grade": 2, "titleKey": "unit_numeros_2", "order": 1, "templateIds": ["tpl_add_1_100", "tpl_sub_1_20"], "habilidadeCodes": ["EF02MA01", "EF02MA06", "EF02MA08"], "verified": true},
-    {"id": "mat_numeros_3", "subjectId": "matematica", "grade": 3, "titleKey": "unit_numeros_3", "order": 1, "templateIds": ["tpl_mul_1_10"], "habilidadeCodes": ["EF03MA01", "EF03MA03", "EF03MA08"], "verified": true},
-    {"id": "mat_numeros_4", "subjectId": "matematica", "grade": 4, "titleKey": "unit_numeros_4", "order": 1, "templateIds": ["tpl_mul_1_10", "tpl_div_1_10"], "habilidadeCodes": ["EF04MA01", "EF04MA06", "EF04MA07", "EF04MA08"], "verified": true},
-    {"id": "mat_numeros_5", "subjectId": "matematica", "grade": 5, "titleKey": "unit_numeros_5", "order": 1, "templateIds": ["tpl_div_1_10"], "habilidadeCodes": ["EF05MA01", "EF05MA07", "EF05MA08"], "verified": true},
-
-    {"id": "mat_algebra_1", "subjectId": "matematica", "grade": 1, "titleKey": "unit_algebra_1", "order": 2, "templateIds": ["tpl_sequence_1_5"], "habilidadeCodes": ["EF01MA09", "EF01MA10"], "verified": true},
-    {"id": "mat_algebra_2", "subjectId": "matematica", "grade": 2, "titleKey": "unit_algebra_2", "order": 2, "templateIds": ["tpl_sequence_1_10"], "habilidadeCodes": ["EF02MA09", "EF02MA10", "EF02MA11"], "verified": true},
-    {"id": "mat_algebra_3", "subjectId": "matematica", "grade": 3, "titleKey": "unit_algebra_3", "order": 2, "templateIds": ["tpl_sequence_1_20"], "habilidadeCodes": ["EF03MA10", "EF03MA11"], "verified": false},
-    {"id": "mat_algebra_4", "subjectId": "matematica", "grade": 4, "titleKey": "unit_algebra_4", "order": 2, "templateIds": ["tpl_sequence_1_30"], "habilidadeCodes": ["EF04MA11", "EF04MA12", "EF04MA14", "EF04MA15"], "verified": false},
-    {"id": "mat_algebra_5", "subjectId": "matematica", "grade": 5, "titleKey": "unit_algebra_5", "order": 2, "templateIds": ["tpl_sequence_1_50"], "habilidadeCodes": ["EF05MA10", "EF05MA11", "EF05MA12"], "verified": false},
-
-    {"id": "mat_geometria_1", "subjectId": "matematica", "grade": 1, "titleKey": "unit_geometria_1", "order": 3, "templateIds": ["tpl_shape_triangle", "tpl_shape_square"], "habilidadeCodes": ["EF01MA14"], "verified": false},
-    {"id": "mat_geometria_2", "subjectId": "matematica", "grade": 2, "titleKey": "unit_geometria_2", "order": 3, "templateIds": ["tpl_shape_triangle", "tpl_shape_square", "tpl_shape_pentagon"], "habilidadeCodes": ["EF02MA14", "EF02MA15"], "verified": false},
-    {"id": "mat_geometria_3", "subjectId": "matematica", "grade": 3, "titleKey": "unit_geometria_3", "order": 3, "templateIds": ["tpl_shape_pentagon", "tpl_shape_hexagon"], "habilidadeCodes": ["EF03MA14", "EF03MA15", "EF03MA16"], "verified": false},
-    {"id": "mat_geometria_4", "subjectId": "matematica", "grade": 4, "titleKey": "unit_geometria_4", "order": 3, "templateIds": ["tpl_shape_hexagon", "tpl_shape_heptagon"], "habilidadeCodes": ["EF04MA16", "EF04MA17", "EF04MA18"], "verified": false},
-    {"id": "mat_geometria_5", "subjectId": "matematica", "grade": 5, "titleKey": "unit_geometria_5", "order": 3, "templateIds": ["tpl_shape_heptagon", "tpl_shape_octagon"], "habilidadeCodes": ["EF05MA16", "EF05MA17", "EF05MA18"], "verified": false},
-
-    {"id": "mat_grandezas_1", "subjectId": "matematica", "grade": 1, "titleKey": "unit_grandezas_1", "order": 4, "templateIds": [], "habilidadeCodes": ["EF01MA15", "EF01MA16", "EF01MA17"], "verified": true},
-    {"id": "mat_grandezas_2", "subjectId": "matematica", "grade": 2, "titleKey": "unit_grandezas_2", "order": 4, "templateIds": ["tpl_cm_to_m"], "habilidadeCodes": ["EF02MA16", "EF02MA17"], "verified": false},
-    {"id": "mat_grandezas_3", "subjectId": "matematica", "grade": 3, "titleKey": "unit_grandezas_3", "order": 4, "templateIds": ["tpl_m_to_km"], "habilidadeCodes": ["EF03MA17", "EF03MA18", "EF03MA19", "EF03MA20"], "verified": false},
-    {"id": "mat_grandezas_4", "subjectId": "matematica", "grade": 4, "titleKey": "unit_grandezas_4", "order": 4, "templateIds": ["tpl_g_to_kg"], "habilidadeCodes": ["EF04MA20", "EF04MA21"], "verified": false},
-    {"id": "mat_grandezas_5", "subjectId": "matematica", "grade": 5, "titleKey": "unit_grandezas_5", "order": 4, "templateIds": ["tpl_ml_to_l"], "habilidadeCodes": ["EF05MA19", "EF05MA20", "EF05MA21"], "verified": true},
-
-    {"id": "mat_probabilidade_1", "subjectId": "matematica", "grade": 1, "titleKey": "unit_probabilidade_1", "order": 5, "templateIds": ["tpl_dataset_max", "tpl_dataset_min"], "habilidadeCodes": ["EF01MA20", "EF01MA21", "EF01MA22"], "verified": true},
-    {"id": "mat_probabilidade_2", "subjectId": "matematica", "grade": 2, "titleKey": "unit_probabilidade_2", "order": 5, "templateIds": ["tpl_dataset_max", "tpl_dataset_min"], "habilidadeCodes": ["EF02MA21", "EF02MA22", "EF02MA23"], "verified": true},
-    {"id": "mat_probabilidade_3", "subjectId": "matematica", "grade": 3, "titleKey": "unit_probabilidade_3", "order": 5, "templateIds": ["tpl_dataset_max", "tpl_dataset_min", "tpl_dataset_mode"], "habilidadeCodes": ["EF03MA25", "EF03MA26", "EF03MA27", "EF03MA28"], "verified": true},
-    {"id": "mat_probabilidade_4", "subjectId": "matematica", "grade": 4, "titleKey": "unit_probabilidade_4", "order": 5, "templateIds": ["tpl_dataset_max", "tpl_dataset_min", "tpl_dataset_mode"], "habilidadeCodes": ["EF04MA26", "EF04MA27", "EF04MA28"], "verified": false},
-    {"id": "mat_probabilidade_5", "subjectId": "matematica", "grade": 5, "titleKey": "unit_probabilidade_5", "order": 5, "templateIds": ["tpl_dataset_mode"], "habilidadeCodes": ["EF05MA22", "EF05MA23", "EF05MA24", "EF05MA25"], "verified": false}
+    {
+      "id": "mat_numeros_1",
+      "subjectId": "matematica",
+      "grade": 1,
+      "titleKey": "unit_numeros_1",
+      "order": 1,
+      "templateIds": [
+        "tpl_add_1_10"
+      ],
+      "habilidadeCodes": [
+        "EF01MA01",
+        "EF01MA06",
+        "EF01MA08"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_numeros_2",
+      "subjectId": "matematica",
+      "grade": 2,
+      "titleKey": "unit_numeros_2",
+      "order": 1,
+      "templateIds": [
+        "tpl_add_1_100",
+        "tpl_sub_1_20"
+      ],
+      "habilidadeCodes": [
+        "EF02MA01",
+        "EF02MA06",
+        "EF02MA08"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_numeros_3",
+      "subjectId": "matematica",
+      "grade": 3,
+      "titleKey": "unit_numeros_3",
+      "order": 1,
+      "templateIds": [
+        "tpl_mul_1_10"
+      ],
+      "habilidadeCodes": [
+        "EF03MA01",
+        "EF03MA03",
+        "EF03MA08"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_numeros_4",
+      "subjectId": "matematica",
+      "grade": 4,
+      "titleKey": "unit_numeros_4",
+      "order": 1,
+      "templateIds": [
+        "tpl_mul_1_10",
+        "tpl_div_1_10"
+      ],
+      "habilidadeCodes": [
+        "EF04MA01",
+        "EF04MA06",
+        "EF04MA07",
+        "EF04MA08"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_numeros_5",
+      "subjectId": "matematica",
+      "grade": 5,
+      "titleKey": "unit_numeros_5",
+      "order": 1,
+      "templateIds": [
+        "tpl_div_1_10"
+      ],
+      "habilidadeCodes": [
+        "EF05MA01",
+        "EF05MA07",
+        "EF05MA08"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_algebra_1",
+      "subjectId": "matematica",
+      "grade": 1,
+      "titleKey": "unit_algebra_1",
+      "order": 2,
+      "templateIds": [
+        "tpl_sequence_1_5"
+      ],
+      "habilidadeCodes": [
+        "EF01MA09",
+        "EF01MA10"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_algebra_2",
+      "subjectId": "matematica",
+      "grade": 2,
+      "titleKey": "unit_algebra_2",
+      "order": 2,
+      "templateIds": [
+        "tpl_sequence_1_10"
+      ],
+      "habilidadeCodes": [
+        "EF02MA09",
+        "EF02MA10",
+        "EF02MA11"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_algebra_3",
+      "subjectId": "matematica",
+      "grade": 3,
+      "titleKey": "unit_algebra_3",
+      "order": 2,
+      "templateIds": [
+        "tpl_sequence_1_20"
+      ],
+      "habilidadeCodes": [
+        "EF03MA10",
+        "EF03MA11"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_algebra_4",
+      "subjectId": "matematica",
+      "grade": 4,
+      "titleKey": "unit_algebra_4",
+      "order": 2,
+      "templateIds": [
+        "tpl_sequence_1_30"
+      ],
+      "habilidadeCodes": [
+        "EF04MA11",
+        "EF04MA12",
+        "EF04MA14",
+        "EF04MA15"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_algebra_5",
+      "subjectId": "matematica",
+      "grade": 5,
+      "titleKey": "unit_algebra_5",
+      "order": 2,
+      "templateIds": [
+        "tpl_sequence_1_50"
+      ],
+      "habilidadeCodes": [
+        "EF05MA10",
+        "EF05MA11",
+        "EF05MA12"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_geometria_1",
+      "subjectId": "matematica",
+      "grade": 1,
+      "titleKey": "unit_geometria_1",
+      "order": 3,
+      "templateIds": [
+        "tpl_shape_triangle",
+        "tpl_shape_square"
+      ],
+      "habilidadeCodes": [
+        "EF01MA14"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_geometria_2",
+      "subjectId": "matematica",
+      "grade": 2,
+      "titleKey": "unit_geometria_2",
+      "order": 3,
+      "templateIds": [
+        "tpl_shape_triangle",
+        "tpl_shape_square",
+        "tpl_shape_pentagon"
+      ],
+      "habilidadeCodes": [
+        "EF02MA14",
+        "EF02MA15"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_geometria_3",
+      "subjectId": "matematica",
+      "grade": 3,
+      "titleKey": "unit_geometria_3",
+      "order": 3,
+      "templateIds": [
+        "tpl_shape_pentagon",
+        "tpl_shape_hexagon"
+      ],
+      "habilidadeCodes": [
+        "EF03MA14",
+        "EF03MA15",
+        "EF03MA16"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_geometria_4",
+      "subjectId": "matematica",
+      "grade": 4,
+      "titleKey": "unit_geometria_4",
+      "order": 3,
+      "templateIds": [
+        "tpl_shape_hexagon",
+        "tpl_shape_heptagon"
+      ],
+      "habilidadeCodes": [
+        "EF04MA16",
+        "EF04MA17",
+        "EF04MA18"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_geometria_5",
+      "subjectId": "matematica",
+      "grade": 5,
+      "titleKey": "unit_geometria_5",
+      "order": 3,
+      "templateIds": [
+        "tpl_shape_heptagon",
+        "tpl_shape_octagon"
+      ],
+      "habilidadeCodes": [
+        "EF05MA16",
+        "EF05MA17",
+        "EF05MA18"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_grandezas_1",
+      "subjectId": "matematica",
+      "grade": 1,
+      "titleKey": "unit_grandezas_1",
+      "order": 4,
+      "templateIds": [],
+      "habilidadeCodes": [
+        "EF01MA15",
+        "EF01MA16",
+        "EF01MA17"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_grandezas_2",
+      "subjectId": "matematica",
+      "grade": 2,
+      "titleKey": "unit_grandezas_2",
+      "order": 4,
+      "templateIds": [
+        "tpl_cm_to_m"
+      ],
+      "habilidadeCodes": [
+        "EF02MA16",
+        "EF02MA17"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_grandezas_3",
+      "subjectId": "matematica",
+      "grade": 3,
+      "titleKey": "unit_grandezas_3",
+      "order": 4,
+      "templateIds": [
+        "tpl_m_to_km"
+      ],
+      "habilidadeCodes": [
+        "EF03MA17",
+        "EF03MA18",
+        "EF03MA19",
+        "EF03MA20"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_grandezas_4",
+      "subjectId": "matematica",
+      "grade": 4,
+      "titleKey": "unit_grandezas_4",
+      "order": 4,
+      "templateIds": [
+        "tpl_g_to_kg"
+      ],
+      "habilidadeCodes": [
+        "EF04MA20",
+        "EF04MA21"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_grandezas_5",
+      "subjectId": "matematica",
+      "grade": 5,
+      "titleKey": "unit_grandezas_5",
+      "order": 4,
+      "templateIds": [
+        "tpl_ml_to_l"
+      ],
+      "habilidadeCodes": [
+        "EF05MA19",
+        "EF05MA20",
+        "EF05MA21"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_probabilidade_1",
+      "subjectId": "matematica",
+      "grade": 1,
+      "titleKey": "unit_probabilidade_1",
+      "order": 5,
+      "templateIds": [
+        "tpl_dataset_max",
+        "tpl_dataset_min"
+      ],
+      "habilidadeCodes": [
+        "EF01MA20",
+        "EF01MA21",
+        "EF01MA22"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_probabilidade_2",
+      "subjectId": "matematica",
+      "grade": 2,
+      "titleKey": "unit_probabilidade_2",
+      "order": 5,
+      "templateIds": [
+        "tpl_dataset_max",
+        "tpl_dataset_min"
+      ],
+      "habilidadeCodes": [
+        "EF02MA21",
+        "EF02MA22",
+        "EF02MA23"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_probabilidade_3",
+      "subjectId": "matematica",
+      "grade": 3,
+      "titleKey": "unit_probabilidade_3",
+      "order": 5,
+      "templateIds": [
+        "tpl_dataset_max",
+        "tpl_dataset_min",
+        "tpl_dataset_mode"
+      ],
+      "habilidadeCodes": [
+        "EF03MA25",
+        "EF03MA26",
+        "EF03MA27",
+        "EF03MA28"
+      ],
+      "verified": true
+    },
+    {
+      "id": "mat_probabilidade_4",
+      "subjectId": "matematica",
+      "grade": 4,
+      "titleKey": "unit_probabilidade_4",
+      "order": 5,
+      "templateIds": [
+        "tpl_dataset_max",
+        "tpl_dataset_min",
+        "tpl_dataset_mode"
+      ],
+      "habilidadeCodes": [
+        "EF04MA26",
+        "EF04MA27",
+        "EF04MA28"
+      ],
+      "verified": false
+    },
+    {
+      "id": "mat_probabilidade_5",
+      "subjectId": "matematica",
+      "grade": 5,
+      "titleKey": "unit_probabilidade_5",
+      "order": 5,
+      "templateIds": [
+        "tpl_dataset_mode"
+      ],
+      "habilidadeCodes": [
+        "EF05MA22",
+        "EF05MA23",
+        "EF05MA24",
+        "EF05MA25"
+      ],
+      "verified": false
+    }
   ]
 }

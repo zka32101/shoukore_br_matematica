@@ -73,5 +73,19 @@
   "autoHintLabel": "Dica",
   "autoHintAvailableMessage": "Veja a explicação antes de responder, já que esta unidade ainda está em prática.",
   "consecutiveIncorrectAlertTitle": "Alerta para os responsáveis",
-  "consecutiveIncorrectAlertMessage": "Seu filho(a) errou várias questões seguidas nesta unidade. Pode ser um bom momento para ajudar."
+  "consecutiveIncorrectAlertMessage": "Seu filho(a) errou várias questões seguidas nesta unidade. Pode ser um bom momento para ajudar.",
+  "explanationSequence": "Em uma sequência, os números seguem um padrão que se repete. Primeiro, descubra quanto cada número aumenta (ou diminui) em relação ao anterior. Depois, aplique esse mesmo padrão ao último número para encontrar o próximo.",
+  "explanationShapeTriangle": "Um triângulo tem 3 lados e 3 vértices. \"Tri\" significa três, como em \"tricolor\".",
+  "explanationShapeSquare": "Um quadrado tem 4 lados iguais e 4 vértices.",
+  "explanationShapePentagon": "Um pentágono tem 5 lados. \"Penta\" significa cinco.",
+  "explanationShapeHexagon": "Um hexágono tem 6 lados. Pense nas células de uma colmeia de abelhas: elas têm esse formato!",
+  "explanationShapeHeptagon": "Um heptágono tem 7 lados. \"Hepta\" significa sete.",
+  "explanationShapeOctagon": "Um octógono tem 8 lados. Pense na placa de PARE: ela tem esse formato!",
+  "explanationUnitCmToM": "1 metro tem 100 centímetros. Para transformar centímetros em metros, divida o número por 100.",
+  "explanationUnitMToKm": "1 quilômetro tem 1000 metros. Para transformar metros em quilômetros, divida o número por 1000.",
+  "explanationUnitGToKg": "1 quilograma tem 1000 gramas. Para transformar gramas em quilogramas, divida o número por 1000.",
+  "explanationUnitMlToL": "1 litro tem 1000 mililitros. Para transformar mililitros em litros, divida o número por 1000.",
+  "explanationDatasetMax": "O valor máximo é o maior número do conjunto de dados. Compare todos os números e escolha o maior.",
+  "explanationDatasetMin": "O valor mínimo é o menor número do conjunto de dados. Compare todos os números e escolha o menor.",
+  "explanationDatasetMode": "A moda é o valor que aparece mais vezes no conjunto de dados. Conte quantas vezes cada número aparece e escolha o que se repete mais."
 }
