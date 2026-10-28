@@ -68,5 +68,10 @@
   "onboardingPaywallYearlyPrice": "R$ 99,90/ano",
   "onboardingPaywallTrialNote": "2 semanas grátis para testar",
   "onboardingPaywallStartTrialButton": "Iniciar teste grátis",
-  "onboardingPaywallSkipButton": "Continuar sem assinar"
+  "onboardingPaywallSkipButton": "Continuar sem assinar",
+  "misconceptionHintSubtractionAsAddition": "Parece que você somou em vez de subtrair. Tente calcular a diferença entre os números!",
+  "autoHintLabel": "Dica",
+  "autoHintAvailableMessage": "Veja a explicação antes de responder, já que esta unidade ainda está em prática.",
+  "consecutiveIncorrectAlertTitle": "Alerta para os responsáveis",
+  "consecutiveIncorrectAlertMessage": "Seu filho(a) errou várias questões seguidas nesta unidade. Pode ser um bom momento para ajudar."
 }

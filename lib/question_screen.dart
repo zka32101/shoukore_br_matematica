@@ -4,6 +4,7 @@ import 'package:shoukore_core_global/shoukore_core_global.dart';
 import 'explanation_resolver.dart';
 import 'growth_repository.dart';
 import 'l10n/app_localizations.dart';
+import 'misconception_hint_resolver.dart';
 import 'question_cache.dart';
 
 class QuestionScreen extends StatefulWidget {
@@ -30,11 +31,16 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionScreenState extends State<QuestionScreen> {
   static const _weakNotesAnalyzer = WeakNotesAnalyzer();
+  static const _autoHintPolicy = AutoHintPolicy();
+  static const _consecutiveIncorrectAlert = ConsecutiveIncorrectAnswerAlert();
 
   Question? _question;
   Mastery? _mastery;
   String? _feedback;
   String? _overcomeMisconception;
+  String? _misconceptionHint;
+  bool _autoHintVisible = false;
+  bool _consecutiveIncorrectAlertShown = false;
 
   @override
   void initState() {
@@ -53,6 +59,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
       _question = question;
       _mastery = mastery;
       _feedback = null;
+      _misconceptionHint = null;
+      _autoHintVisible = _autoHintPolicy.shouldShowHint(mastery);
     });
   }
 
@@ -88,10 +96,32 @@ class _QuestionScreenState extends State<QuestionScreen> {
           misconceptionTag: topMisconception,
         );
 
+    String? misconceptionHint;
+    final misconceptionTag = question.misconceptionTags[chosenId];
+    if (!correct && misconceptionTag != null && mounted) {
+      misconceptionHint = resolveMisconceptionHint(AppLocalizations.of(context)!, misconceptionTag);
+    }
+
+    if (!correct &&
+        !_consecutiveIncorrectAlertShown &&
+        _consecutiveIncorrectAlert.shouldAlert(attempts) &&
+        mounted) {
+      _consecutiveIncorrectAlertShown = true;
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          key: const Key('consecutiveIncorrectAlertSnackBar'),
+          content: Text('${l10n.consecutiveIncorrectAlertTitle}: '
+              '${l10n.consecutiveIncorrectAlertMessage}'),
+        ),
+      );
+    }
+
     setState(() {
       _feedback = correct ? 'correct' : 'incorrect';
       _mastery = mastery;
       _overcomeMisconception = overcome ? topMisconception : null;
+      _misconceptionHint = misconceptionHint;
     });
   }
 
@@ -138,6 +168,40 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     ),
                   ),
                 ),
+                if (_autoHintVisible && question.explanationId.isNotEmpty)
+                  Builder(builder: (context) {
+                    final hint = resolveExplanation(
+                      AppLocalizations.of(context)!,
+                      question.explanationId,
+                    );
+                    if (hint == null) return const SizedBox.shrink();
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Card(
+                        color: theme.colorScheme.secondaryContainer,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(Icons.lightbulb_outline,
+                                  color: theme.colorScheme.onSecondaryContainer),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  hint,
+                                  key: const Key('autoHintText'),
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: theme.colorScheme.onSecondaryContainer,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
                 const SizedBox(height: 20),
                 Wrap(
                   spacing: 12,
@@ -189,6 +253,29 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     ),
                   ),
                 ],
+                if (_misconceptionHint != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.psychology_outlined, color: theme.colorScheme.primary),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                _misconceptionHint!,
+                                key: const Key('misconceptionHintText'),
+                                style: theme.textTheme.bodyMedium,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 if (_feedback != null && question.explanationId.isNotEmpty)
                   Builder(builder: (context) {
                     final explanation = resolveExplanation(
