@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  purchases_flutter: ^10.19.0
   shoukore_core_global:
     git:
       url: https://github.com/zka32101/shoukore_core_global.git

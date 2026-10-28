@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
+import 'package:shoukore_core_global/shoukore_core_global_entitlement_revenuecat.dart';
 
 import 'l10n/app_localizations.dart';
 
@@ -12,10 +14,16 @@ class OnboardingScreen extends StatefulWidget {
     super.key,
     required this.completionStore,
     required this.onCompleted,
+    this.entitlementReader,
   });
 
   final OnboardingCompletionStore completionStore;
   final VoidCallback onCompleted;
+
+  /// RevenueCat APIキー未設定（開発中・CI）の場合はnullのままにする。
+  /// nullの場合、ペイウォールは実際のOffering取得を試みず、固定の価格表示＋
+  /// スキップのみのフォールバック表示になる。
+  final RevenueCatEntitlementReader? entitlementReader;
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -72,7 +80,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             _PaywallPage(
               l10n: l10n,
-              onStartTrial: _finish,
+              entitlementReader: widget.entitlementReader,
+              onPurchased: (_) => _finish(),
               onSkip: _finish,
             ),
           ],
@@ -218,20 +227,59 @@ class _AhaQuizPage extends StatelessWidget {
   }
 }
 
-class _PaywallPage extends StatelessWidget {
+class _PaywallPage extends StatefulWidget {
   const _PaywallPage({
     required this.l10n,
-    required this.onStartTrial,
+    required this.entitlementReader,
+    required this.onPurchased,
     required this.onSkip,
   });
 
   final AppLocalizations l10n;
-  final VoidCallback onStartTrial;
+  final RevenueCatEntitlementReader? entitlementReader;
+  final ValueChanged<Entitlement> onPurchased;
   final VoidCallback onSkip;
 
   @override
+  State<_PaywallPage> createState() => _PaywallPageState();
+}
+
+class _PaywallPageState extends State<_PaywallPage> {
+  Offering? _offering;
+  bool _purchasing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOfferings();
+  }
+
+  Future<void> _loadOfferings() async {
+    if (widget.entitlementReader == null) return;
+    try {
+      final offerings = await Purchases.getOfferings();
+      if (mounted) setState(() => _offering = offerings.current);
+    } catch (_) {
+      // RevenueCat未設定・取得失敗時は固定の価格表示＋スキップのみに
+      // フォールバックする（下のbuildでofferingがnullの場合の表示）。
+    }
+  }
+
+  Future<void> _purchase(Package package) async {
+    setState(() => _purchasing = true);
+    try {
+      final entitlement = await widget.entitlementReader!.purchasePackage(package);
+      widget.onPurchased(entitlement);
+    } catch (_) {
+      if (mounted) setState(() => _purchasing = false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final l10n = widget.l10n;
     final theme = Theme.of(context);
+    final packages = _offering?.availablePackages ?? const <Package>[];
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -252,32 +300,52 @@ class _PaywallPage extends StatelessWidget {
             style: theme.textTheme.bodyLarge,
           ),
           const SizedBox(height: 24),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Text(l10n.onboardingPaywallMonthlyPrice, style: theme.textTheme.titleMedium),
-                  Text(l10n.onboardingPaywallYearlyPrice, style: theme.textTheme.titleMedium),
-                  const SizedBox(height: 8),
-                  Text(
-                    l10n.onboardingPaywallTrialNote,
-                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.primary),
+          if (packages.isNotEmpty)
+            Column(
+              children: [
+                for (final package in packages)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: FilledButton(
+                      key: Key('onboardingPurchasePackage_${package.identifier}'),
+                      onPressed: _purchasing ? null : () => _purchase(package),
+                      child: Text(
+                        '${package.storeProduct.title} - ${package.storeProduct.priceString}',
+                      ),
+                    ),
                   ),
-                ],
+              ],
+            )
+          else
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Text(l10n.onboardingPaywallMonthlyPrice, style: theme.textTheme.titleMedium),
+                    Text(l10n.onboardingPaywallYearlyPrice, style: theme.textTheme.titleMedium),
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.onboardingPaywallTrialNote,
+                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.primary),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
           const SizedBox(height: 24),
-          FilledButton(
-            key: const Key('onboardingStartTrialButton'),
-            onPressed: onStartTrial,
-            child: Text(l10n.onboardingPaywallStartTrialButton),
-          ),
+          if (packages.isEmpty)
+            FilledButton(
+              key: const Key('onboardingStartTrialButton'),
+              // Offeringが取得できない場合（RevenueCat未設定・開発中・CI）は
+              // 購入フローへ進めないため、押しても従来通りスキップ扱いにする。
+              onPressed: widget.onSkip,
+              child: Text(l10n.onboardingPaywallStartTrialButton),
+            ),
           const SizedBox(height: 8),
           TextButton(
             key: const Key('onboardingSkipButton'),
-            onPressed: onSkip,
+            onPressed: widget.onSkip,
             child: Text(l10n.onboardingPaywallSkipButton),
           ),
         ],

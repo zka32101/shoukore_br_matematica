@@ -18,7 +18,12 @@ import 'src/question/curriculum_loader.dart';
 import 'weekly_report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.entitlementReader});
+
+  /// RevenueCat APIキー未設定（開発中・CI）の場合はnullのままにする。
+  /// nullの場合、premiumToggleButtonは課金状態を模擬するデバッグ用トグルの
+  /// ままになる。
+  final EntitlementReader? entitlementReader;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -78,6 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
       boundary: DailyBoundary(regionalProfile),
       store: _screenTimeStore,
     );
+    final entitlement = widget.entitlementReader != null
+        ? await widget.entitlementReader!.current()
+        : _entitlement;
     if (!mounted) return;
     setState(() {
       _curriculum = curriculum;
@@ -85,6 +93,21 @@ class _HomeScreenState extends State<HomeScreen> {
       _growthRepository = growthRepository;
       _regionalProfile = regionalProfile;
       _screenTimeRepository = screenTimeRepository;
+      _entitlement = entitlement;
+    });
+  }
+
+  Future<void> _togglePremiumOrRefreshEntitlement() async {
+    if (widget.entitlementReader != null) {
+      final entitlement = await widget.entitlementReader!.current();
+      if (mounted) setState(() => _entitlement = entitlement);
+      return;
+    }
+    setState(() {
+      _entitlement = Entitlement(
+        unlockedSubjectIds: _entitlement.unlockedSubjectIds,
+        isPremium: !_entitlement.isPremium,
+      );
     });
   }
 
@@ -172,12 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(
               _entitlement.isPremium ? Icons.workspace_premium : Icons.workspace_premium_outlined,
             ),
-            onPressed: () => setState(() {
-              _entitlement = Entitlement(
-                unlockedSubjectIds: _entitlement.unlockedSubjectIds,
-                isPremium: !_entitlement.isPremium,
-              );
-            }),
+            onPressed: _togglePremiumOrRefreshEntitlement,
           ),
           IconButton(
             key: const Key('screenTimeLimitToggleButton'),
