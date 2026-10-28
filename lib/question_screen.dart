@@ -6,6 +6,7 @@ import 'growth_repository.dart';
 import 'l10n/app_localizations.dart';
 import 'misconception_hint_resolver.dart';
 import 'question_cache.dart';
+import 'word_problem_resolver.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({
@@ -168,6 +169,24 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     ),
                   ),
                 ),
+                if (question.params.containsKey('a') && question.params.containsKey('b'))
+                  Builder(builder: (context) {
+                    final prompt = resolveArithmeticPrompt(
+                      AppLocalizations.of(context)!,
+                      operator: question.params['operator'] ?? '',
+                      a: int.parse(question.params['a']!),
+                      b: int.parse(question.params['b']!),
+                      wordProblemId: question.params['wordProblemId'],
+                    );
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text(
+                        prompt,
+                        key: const Key('questionPromptText'),
+                        style: theme.textTheme.headlineSmall,
+                      ),
+                    );
+                  }),
                 if (_autoHintVisible && question.explanationId.isNotEmpty)
                   Builder(builder: (context) {
                     final hint = resolveExplanation(

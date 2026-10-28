@@ -95,5 +95,37 @@
   "explanationSequenceDescending": "Nesta sequência, os números diminuem seguindo um padrão. Descubra quanto cada número diminui em relação ao anterior e aplique esse padrão para encontrar o próximo.",
   "explanationDiagonals": "A diagonal liga dois vértices que não são vizinhos. Para contar as diagonais de um polígono com n lados, use a fórmula n×(n-3)÷2.",
   "explanationDatasetSum": "A soma é o resultado de adicionar todos os números do conjunto de dados, um por um.",
-  "explanationDatasetRange": "A amplitude é a diferença entre o maior e o menor valor do conjunto de dados: amplitude = valor máximo − valor mínimo."
+  "explanationDatasetRange": "A amplitude é a diferença entre o maior e o menor valor do conjunto de dados: amplitude = valor máximo − valor mínimo.",
+  "wordProblemAddFruits": "Ana tinha {a} maçãs. Ela colheu mais {b} maçãs no pomar. Quantas maçãs ela tem agora?",
+  "@wordProblemAddFruits": {
+    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+  },
+  "wordProblemAddCoins": "Pedro tinha {a} moedas de brinquedo. Ele ganhou mais {b} moedas jogando com os amigos. Quantas moedas ele tem agora?",
+  "@wordProblemAddCoins": {
+    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+  },
+  "wordProblemSubtractCandies": "Mariana tinha {a} balas. Ela deu {b} balas para o seu amigo. Quantas balas restaram?",
+  "@wordProblemSubtractCandies": {
+    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+  },
+  "wordProblemSubtractStickers": "Lucas tinha {a} adesivos. Ele perdeu {b} adesivos no caminho da escola. Quantos adesivos sobraram?",
+  "@wordProblemSubtractStickers": {
+    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+  },
+  "wordProblemMultiplyBoxes": "Cada caixa tem {a} brinquedos. Se há {b} caixas, quantos brinquedos há no total?",
+  "@wordProblemMultiplyBoxes": {
+    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+  },
+  "wordProblemMultiplyRows": "Em uma plantação, cada fileira tem {a} árvores. Há {b} fileiras. Quantas árvores há no total?",
+  "@wordProblemMultiplyRows": {
+    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+  },
+  "wordProblemDivideFriends": "{a} figurinhas serão divididas igualmente entre {b} amigos. Quantas figurinhas cada amigo vai receber?",
+  "@wordProblemDivideFriends": {
+    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+  },
+  "wordProblemDivideBaskets": "{a} laranjas serão colocadas em {b} cestas, com a mesma quantidade em cada cesta. Quantas laranjas cabem em cada cesta?",
+  "@wordProblemDivideBaskets": {
+    "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
+  }
 }

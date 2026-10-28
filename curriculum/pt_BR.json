@@ -331,6 +331,78 @@
       "minValue": 1,
       "maxValue": 20,
       "explanationId": "explanation_dataset_range"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_add_word_fruits",
+      "operator": "add",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_add",
+      "wordProblemId": "word_problem_add_fruits"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_add_word_coins",
+      "operator": "add",
+      "minOperand": 1,
+      "maxOperand": 100,
+      "explanationId": "explanation_add",
+      "wordProblemId": "word_problem_add_coins"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_sub_word_candies",
+      "operator": "subtract",
+      "minOperand": 1,
+      "maxOperand": 20,
+      "explanationId": "explanation_subtract",
+      "wordProblemId": "word_problem_subtract_candies"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_mul_word_boxes",
+      "operator": "multiply",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_multiply",
+      "wordProblemId": "word_problem_multiply_boxes"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_mul_word_rows",
+      "operator": "multiply",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_multiply",
+      "wordProblemId": "word_problem_multiply_rows"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_div_word_friends",
+      "operator": "divide",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_divide",
+      "wordProblemId": "word_problem_divide_friends"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_div_word_baskets",
+      "operator": "divide",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_divide",
+      "wordProblemId": "word_problem_divide_baskets"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_sub_word_stickers",
+      "operator": "subtract",
+      "minOperand": 1,
+      "maxOperand": 20,
+      "explanationId": "explanation_subtract",
+      "wordProblemId": "word_problem_subtract_stickers"
     }
   ],
   "units": [
@@ -341,7 +413,8 @@
       "titleKey": "unit_numeros_1",
       "order": 1,
       "templateIds": [
-        "tpl_add_1_10"
+        "tpl_add_1_10",
+        "tpl_add_word_fruits"
       ],
       "habilidadeCodes": [
         "EF01MA01",
@@ -358,7 +431,10 @@
       "order": 1,
       "templateIds": [
         "tpl_add_1_100",
-        "tpl_sub_1_20"
+        "tpl_sub_1_20",
+        "tpl_add_word_coins",
+        "tpl_sub_word_candies",
+        "tpl_sub_word_stickers"
       ],
       "habilidadeCodes": [
         "EF02MA01",
@@ -374,7 +450,8 @@
       "titleKey": "unit_numeros_3",
       "order": 1,
       "templateIds": [
-        "tpl_mul_1_10"
+        "tpl_mul_1_10",
+        "tpl_mul_word_boxes"
       ],
       "habilidadeCodes": [
         "EF03MA01",
@@ -391,7 +468,9 @@
       "order": 1,
       "templateIds": [
         "tpl_mul_1_10",
-        "tpl_div_1_10"
+        "tpl_div_1_10",
+        "tpl_mul_word_rows",
+        "tpl_div_word_friends"
       ],
       "habilidadeCodes": [
         "EF04MA01",
@@ -408,7 +487,8 @@
       "titleKey": "unit_numeros_5",
       "order": 1,
       "templateIds": [
-        "tpl_div_1_10"
+        "tpl_div_1_10",
+        "tpl_div_word_baskets"
       ],
       "habilidadeCodes": [
         "EF05MA01",

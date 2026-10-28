@@ -104,7 +104,12 @@ class ArithmeticQuestionSource implements QuestionSource {
       choices: choices.map((c) => c.toString()).toList(),
       answer: answer.toString(),
       explanationId: template.explanationId,
-      params: {'a': a.toString(), 'b': b.toString()},
+      params: {
+        'a': a.toString(),
+        'b': b.toString(),
+        'operator': template.operator.name,
+        if (template.wordProblemId.isNotEmpty) 'wordProblemId': template.wordProblemId,
+      },
       misconceptionTags: misconceptionChoice != null && choices.contains(misconceptionChoice)
           ? {misconceptionChoice.toString(): misconceptionTag}
           : const {},
