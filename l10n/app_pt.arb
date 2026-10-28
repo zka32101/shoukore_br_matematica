@@ -285,7 +285,6 @@
     }
   },
   "homeTitle": "Colecinho!Matemática",
-  "reportAndSettingsSection": "Relatório e configurações",
   "screenTimeUsed": "Usado hoje: {used} min · Restam: {remaining} min",
   "@screenTimeUsed": {
     "placeholders": {
@@ -562,5 +561,9 @@
     }
   },
   "questionFeedbackCorrect": "Isso mesmo!",
-  "questionFeedbackIncorrect": "Quase! Tente a próxima."
+  "questionFeedbackIncorrect": "Quase! Tente a próxima.",
+  "guardianGatePassedMessage": "Verificação concluída com sucesso.",
+  "guardianGateFailedMessage": "Resposta incorreta na verificação.",
+  "settingsParentsSection": "Ferramentas para os responsáveis",
+  "settingsNotificationsSection": "Notificações"
 }

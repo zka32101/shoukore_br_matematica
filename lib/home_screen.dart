@@ -440,7 +440,26 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                _SectionLabel(label: l10n.reportAndSettingsSection),
+                _SectionLabel(label: l10n.settingsNotificationsSection),
+                Card(
+                  child: ListTile(
+                    key: const Key('dailyReminderTile'),
+                    leading: const Icon(Icons.notifications_outlined),
+                    title: Text(l10n.dailyReminderTile),
+                    subtitle: Text(
+                      _dailyReminderScheduledAt != null
+                          ? l10n.dailyReminderScheduled(
+                              _dailyReminderScheduledAt!.hour,
+                              _dailyReminderScheduledAt!.minute,
+                            )
+                          : l10n.dailyReminderNotScheduled,
+                      key: const Key('dailyReminderStatusText'),
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: _toggleDailyReminder,
+                  ),
+                ),
+                _SectionLabel(label: l10n.settingsParentsSection),
                 Card(
                   child: ListTile(
                     key: const Key('weeklyReportTile'),
@@ -476,24 +495,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Card(
                   child: ListTile(
-                    key: const Key('dailyReminderTile'),
-                    leading: const Icon(Icons.notifications_outlined),
-                    title: Text(l10n.dailyReminderTile),
-                    subtitle: Text(
-                      _dailyReminderScheduledAt != null
-                          ? l10n.dailyReminderScheduled(
-                              _dailyReminderScheduledAt!.hour,
-                              _dailyReminderScheduledAt!.minute,
-                            )
-                          : l10n.dailyReminderNotScheduled,
-                      key: const Key('dailyReminderStatusText'),
-                    ),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: _toggleDailyReminder,
-                  ),
-                ),
-                Card(
-                  child: ListTile(
                     key: const Key('dataPrivacyTile'),
                     leading: const Icon(Icons.privacy_tip_outlined),
                     title: Text(l10n.dataPrivacyTile),
@@ -523,7 +524,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           key: const Key('guardianGateResultSnackBar'),
-                          content: Text(passed ? 'guardian_gate_passed' : 'guardian_gate_failed'),
+                          content: Text(
+                            passed
+                                ? l10n.guardianGatePassedMessage
+                                : l10n.guardianGateFailedMessage,
+                          ),
                         ),
                       );
                     },
