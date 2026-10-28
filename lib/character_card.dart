@@ -16,6 +16,9 @@ class CharacterCard extends StatelessWidget {
     final theme = Theme.of(context);
     final owned = level > 0;
     final color = owned ? definition.color : theme.colorScheme.outlineVariant;
+    // 未所持のキャラは、画像アセットがあってもネタバレしないようアイコンの
+    // ままにする（"???"表示と一貫させる）。
+    final imagePath = owned ? definition.imageAssetPath(level) : null;
     return SizedBox(
       width: 96,
       height: 110,
@@ -33,7 +36,20 @@ class CharacterCard extends StatelessWidget {
                     radius: 22,
                     backgroundColor: color,
                     foregroundColor: Colors.white,
-                    child: Icon(definition.icon, size: 20),
+                    child: imagePath == null
+                        ? Icon(definition.icon, size: 20)
+                        : ClipOval(
+                            child: Image.asset(
+                              imagePath,
+                              key: const Key('characterImage'),
+                              width: 44,
+                              height: 44,
+                              fit: BoxFit.cover,
+                              // アセットがまだ配置されていない開発・CI環境でも
+                              // 落ちないよう、読み込み失敗時はアイコンに戻す。
+                              errorBuilder: (_, __, ___) => Icon(definition.icon, size: 20),
+                            ),
+                          ),
                   ),
                   const SizedBox(height: 6),
                   Text(

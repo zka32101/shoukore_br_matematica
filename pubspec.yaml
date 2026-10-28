@@ -28,3 +28,4 @@ flutter:
   uses-material-design: true
   assets:
     - curriculum/pt_BR.json
+    - assets/characters/
