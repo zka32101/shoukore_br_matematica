@@ -482,6 +482,78 @@
       "maxOperand": 10,
       "explanationId": "explanation_divide",
       "wordProblemId": "word_problem_divide_store"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_add_word_people",
+      "operator": "add",
+      "minOperand": 1,
+      "maxOperand": 20,
+      "explanationId": "explanation_add",
+      "wordProblemId": "word_problem_add_people"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_add_word_budget",
+      "operator": "add",
+      "minOperand": 1,
+      "maxOperand": 20,
+      "explanationId": "explanation_add",
+      "wordProblemId": "word_problem_add_budget"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_sub_word_people",
+      "operator": "subtract",
+      "minOperand": 1,
+      "maxOperand": 20,
+      "explanationId": "explanation_subtract",
+      "wordProblemId": "word_problem_subtract_people"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_sub_word_budget",
+      "operator": "subtract",
+      "minOperand": 1,
+      "maxOperand": 50,
+      "explanationId": "explanation_subtract",
+      "wordProblemId": "word_problem_subtract_budget"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_mul_word_people",
+      "operator": "multiply",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_multiply",
+      "wordProblemId": "word_problem_multiply_people"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_mul_word_budget",
+      "operator": "multiply",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_multiply",
+      "wordProblemId": "word_problem_multiply_budget"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_div_word_people",
+      "operator": "divide",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_divide",
+      "wordProblemId": "word_problem_divide_people"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_div_word_budget",
+      "operator": "divide",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_divide",
+      "wordProblemId": "word_problem_divide_budget"
     }
   ],
   "units": [
@@ -494,7 +566,8 @@
       "templateIds": [
         "tpl_add_1_10",
         "tpl_add_word_fruits",
-        "tpl_add_word_store"
+        "tpl_add_word_store",
+        "tpl_add_word_budget"
       ],
       "habilidadeCodes": [
         "EF01MA01",
@@ -515,7 +588,10 @@
         "tpl_add_word_coins",
         "tpl_sub_word_candies",
         "tpl_sub_word_stickers",
-        "tpl_sub_word_change"
+        "tpl_sub_word_change",
+        "tpl_add_word_people",
+        "tpl_sub_word_people",
+        "tpl_sub_word_budget"
       ],
       "habilidadeCodes": [
         "EF02MA01",
@@ -533,7 +609,8 @@
       "templateIds": [
         "tpl_mul_1_10",
         "tpl_mul_word_boxes",
-        "tpl_mul_word_store"
+        "tpl_mul_word_store",
+        "tpl_mul_word_people"
       ],
       "habilidadeCodes": [
         "EF03MA01",
@@ -552,7 +629,9 @@
         "tpl_mul_1_10",
         "tpl_div_1_10",
         "tpl_mul_word_rows",
-        "tpl_div_word_friends"
+        "tpl_div_word_friends",
+        "tpl_mul_word_budget",
+        "tpl_div_word_people"
       ],
       "habilidadeCodes": [
         "EF04MA01",
@@ -571,7 +650,8 @@
       "templateIds": [
         "tpl_div_1_10",
         "tpl_div_word_baskets",
-        "tpl_div_word_store"
+        "tpl_div_word_store",
+        "tpl_div_word_budget"
       ],
       "habilidadeCodes": [
         "EF05MA01",

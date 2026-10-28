@@ -50,6 +50,22 @@ String? _resolveWordProblem(AppLocalizations l10n, String wordProblemId, int a, 
       return l10n.wordProblemMultiplyStore(a, b);
     case 'word_problem_divide_store':
       return l10n.wordProblemDivideStore(a, b);
+    case 'word_problem_add_people':
+      return l10n.wordProblemAddPeople(a, b);
+    case 'word_problem_subtract_people':
+      return l10n.wordProblemSubtractPeople(a, b);
+    case 'word_problem_multiply_people':
+      return l10n.wordProblemMultiplyPeople(a, b);
+    case 'word_problem_divide_people':
+      return l10n.wordProblemDividePeople(a, b);
+    case 'word_problem_add_budget':
+      return l10n.wordProblemAddBudget(a, b);
+    case 'word_problem_subtract_budget':
+      return l10n.wordProblemSubtractBudget(a, b);
+    case 'word_problem_multiply_budget':
+      return l10n.wordProblemMultiplyBudget(a, b);
+    case 'word_problem_divide_budget':
+      return l10n.wordProblemDivideBudget(a, b);
     default:
       return null;
   }

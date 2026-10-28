@@ -383,5 +383,93 @@
         "type": "String"
       }
     }
+  },
+  "wordProblemAddPeople": "Na sala tem {a} meninos e {b} meninas. Quantos alunos há no total?",
+  "@wordProblemAddPeople": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemSubtractPeople": "Na excursão tinham {a} alunos, mas {b} ficaram doentes em casa. Quantos alunos foram à excursão?",
+  "@wordProblemSubtractPeople": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemMultiplyPeople": "O ônibus escolar tem {a} fileiras de bancos, com {b} alunos em cada fileira. Quantos alunos cabem no ônibus?",
+  "@wordProblemMultiplyPeople": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemDividePeople": "{a} alunos serão divididos em grupos de {b} para o trabalho em equipe. Quantos grupos serão formados?",
+  "@wordProblemDividePeople": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemAddBudget": "A turma juntou R$ {a} e ganhou mais R$ {b} de doação para a festa. Quanto a turma tem agora?",
+  "@wordProblemAddBudget": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemSubtractBudget": "A turma tinha R$ {a} de orçamento para a festa e gastou R$ {b} com decoração. Quanto ainda resta?",
+  "@wordProblemSubtractBudget": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemMultiplyBudget": "Cada um dos {b} alunos vai contribuir com R$ {a} para o passeio da turma. Quanto será arrecadado no total?",
+  "@wordProblemMultiplyBudget": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemDivideBudget": "O orçamento de R$ {a} para o passeio será dividido igualmente entre {b} alunos. Quanto cada um deve pagar?",
+  "@wordProblemDivideBudget": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   }
 }
