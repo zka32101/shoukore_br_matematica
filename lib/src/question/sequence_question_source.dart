@@ -57,20 +57,40 @@ class SequenceQuestionSource implements QuestionSource {
     final unit = _findUnit(unitId);
     final template = _pickTemplate(unit);
 
-    final start = template.startMin + _random.nextInt(template.startMax - template.startMin + 1);
-    final stepSpan = template.stepMax - template.stepMin + 1;
-    final stepMagnitude = max(template.stepMin + _random.nextInt(stepSpan), 1);
-    final step = template.descending ? -stepMagnitude : stepMagnitude;
+    final start = max(
+      template.startMin + _random.nextInt(template.startMax - template.startMin + 1),
+      1,
+    );
 
-    final terms = List<int>.generate(template.length, (i) => start + step * i);
-    final answer = start + step * template.length;
+    final List<int> terms;
+    final int answer;
+    final List<int> offsets;
+    if (template.multiplier >= 2) {
+      // 倍数パターン（例: 2, 4, 8, 16, ...）。公差ではなく倍率で次の項を求める。
+      var term = start;
+      terms = List<int>.generate(template.length, (_) {
+        final current = term;
+        term *= template.multiplier;
+        return current;
+      });
+      answer = term;
+      final lastTerm = terms.last;
+      // 典型的な誤解: 倍率ではなく直前の項を足してしまう（lastTerm*2）。
+      offsets = [lastTerm * 2 - answer, template.multiplier, -template.multiplier, template.multiplier * 2];
+    } else {
+      final stepSpan = template.stepMax - template.stepMin + 1;
+      final stepMagnitude = max(template.stepMin + _random.nextInt(stepSpan), 1);
+      final step = template.descending ? -stepMagnitude : stepMagnitude;
+      terms = List<int>.generate(template.length, (i) => start + step * i);
+      answer = start + step * template.length;
+      offsets = [step, -step, step * 2, -step * 2];
+    }
 
     final choices = <int>{answer};
-    final offsets = [step, -step, step * 2, -step * 2];
     var i = 0;
     while (choices.length < 4 && i < offsets.length) {
       final candidate = answer + offsets[i];
-      choices.add(candidate);
+      if (candidate >= 0) choices.add(candidate);
       i++;
     }
     final choiceList = choices.toList()..shuffle(_random);

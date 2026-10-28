@@ -127,5 +127,8 @@
   "wordProblemDivideBaskets": "{a} laranjas serão colocadas em {b} cestas, com a mesma quantidade em cada cesta. Quantas laranjas cabem em cada cesta?",
   "@wordProblemDivideBaskets": {
     "placeholders": {"a": {"type": "int"}, "b": {"type": "int"}}
-  }
+  },
+  "explanationUnitMmToCm": "1 centímetro tem 10 milímetros. Para transformar milímetros em centímetros, divida o número por 10.",
+  "explanationUnitCmToMm": "1 centímetro tem 10 milímetros. Para transformar centímetros em milímetros, multiplique o número por 10.",
+  "explanationSequenceMultiplicative": "Nesta sequência, cada número é obtido multiplicando o número anterior pelo mesmo valor fixo. Descubra por quanto cada número é multiplicado e aplique esse mesmo padrão ao último número para encontrar o próximo."
 }

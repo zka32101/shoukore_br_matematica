@@ -9,9 +9,11 @@ class SequencePatternTemplate {
     this.length = 4,
     this.explanationId = '',
     this.descending = false,
+    this.multiplier = 0,
   })  : assert(startMin <= startMax),
         assert(stepMin <= stepMax),
-        assert(length >= 2);
+        assert(length >= 2),
+        assert(multiplier == 0 || multiplier >= 2);
 
   factory SequencePatternTemplate.fromJson(Map<String, dynamic> j) => SequencePatternTemplate(
         id: j['id'] as String,
@@ -22,6 +24,7 @@ class SequencePatternTemplate {
         length: (j['length'] as int?) ?? 4,
         explanationId: (j['explanationId'] as String?) ?? '',
         descending: (j['descending'] as bool?) ?? false,
+        multiplier: (j['multiplier'] as int?) ?? 0,
       );
 
   final String id;
@@ -39,4 +42,8 @@ class SequencePatternTemplate {
   /// `true`の場合、数が減っていく数列（公差を引き算で適用）にする。
   /// `startMin`/`startMax`は数列の最初の項（最大値側）の生成範囲のまま。
   final bool descending;
+
+  /// 2以上の場合、等差数列ではなく倍数パターン（例: ×2, ×3）の数列として
+  /// 生成する（`stepMin`/`stepMax`は無視される）。既定の0は等差数列。
+  final int multiplier;
 }

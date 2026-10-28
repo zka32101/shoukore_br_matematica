@@ -403,6 +403,49 @@
       "maxOperand": 20,
       "explanationId": "explanation_subtract",
       "wordProblemId": "word_problem_subtract_stickers"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_mm_to_cm",
+      "fromUnitKey": "unit_mm",
+      "toUnitKey": "unit_cm",
+      "factor": 10,
+      "minValue": 1,
+      "maxValue": 9,
+      "explanationId": "explanation_unit_mm_to_cm"
+    },
+    {
+      "kind": "unitConversion",
+      "id": "tpl_cm_to_mm",
+      "fromUnitKey": "unit_mm",
+      "toUnitKey": "unit_cm",
+      "factor": 10,
+      "minValue": 1,
+      "maxValue": 9,
+      "reverse": true,
+      "explanationId": "explanation_unit_cm_to_mm"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_mult_x2",
+      "startMin": 1,
+      "startMax": 3,
+      "stepMin": 1,
+      "stepMax": 1,
+      "length": 3,
+      "multiplier": 2,
+      "explanationId": "explanation_sequence_multiplicative"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_mult_x3",
+      "startMin": 1,
+      "startMax": 3,
+      "stepMin": 1,
+      "stepMax": 1,
+      "length": 3,
+      "multiplier": 3,
+      "explanationId": "explanation_sequence_multiplicative"
     }
   ],
   "units": [
@@ -504,7 +547,8 @@
       "titleKey": "unit_algebra_1",
       "order": 2,
       "templateIds": [
-        "tpl_sequence_1_5"
+        "tpl_sequence_1_5",
+        "tpl_sequence_mult_x2"
       ],
       "habilidadeCodes": [
         "EF01MA09",
@@ -570,7 +614,8 @@
       "titleKey": "unit_algebra_5",
       "order": 2,
       "templateIds": [
-        "tpl_sequence_1_50"
+        "tpl_sequence_1_50",
+        "tpl_sequence_mult_x3"
       ],
       "habilidadeCodes": [
         "EF05MA10",
@@ -671,7 +716,10 @@
       "grade": 1,
       "titleKey": "unit_grandezas_1",
       "order": 4,
-      "templateIds": [],
+      "templateIds": [
+        "tpl_mm_to_cm",
+        "tpl_cm_to_mm"
+      ],
       "habilidadeCodes": [
         "EF01MA15",
         "EF01MA16",

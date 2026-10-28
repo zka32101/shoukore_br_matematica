@@ -56,6 +56,12 @@ String? resolveExplanation(AppLocalizations l10n, String explanationId) {
       return l10n.explanationDatasetSum;
     case 'explanation_dataset_range':
       return l10n.explanationDatasetRange;
+    case 'explanation_unit_mm_to_cm':
+      return l10n.explanationUnitMmToCm;
+    case 'explanation_unit_cm_to_mm':
+      return l10n.explanationUnitCmToMm;
+    case 'explanation_sequence_multiplicative':
+      return l10n.explanationSequenceMultiplicative;
     default:
       return null;
   }
