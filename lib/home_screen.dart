@@ -362,6 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                _SectionLabel(label: 'Seu progresso'),
                 _GrowthHeroCard(
                   key: const Key('growthStatusTile'),
                   stageIcon: _stageVisual[_growthRepository!.stage]!.$1,

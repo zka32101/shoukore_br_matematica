@@ -70,7 +70,7 @@
   "onboardingPaywallBody": "Desbloqueie todas as unidades de matemática da BNCC, com relatórios para os responsáveis e controle de tempo de uso.",
   "onboardingPaywallMonthlyPrice": "R$ 14,90/mês",
   "onboardingPaywallYearlyPrice": "R$ 99,90/ano",
-  "onboardingPaywallTrialNote": "2 semanas grátis para testar",
+  "onboardingPaywallTrialNote": "14 dias grátis para testar tudo, sem compromisso",
   "onboardingPaywallStartTrialButton": "Iniciar teste grátis",
   "onboardingPaywallSkipButton": "Continuar sem assinar",
   "misconceptionHintSubtractionAsAddition": "Parece que você somou em vez de subtrair. Tente calcular a diferença entre os números!",
@@ -471,5 +471,9 @@
         "type": "int"
       }
     }
-  }
+  },
+  "onboardingPaywallBenefitNoAds": "Sem anúncios",
+  "onboardingPaywallBenefitFullTrial": "14 dias de teste grátis com acesso completo a tudo",
+  "onboardingPaywallBenefitReports": "Relatórios semanais para os responsáveis",
+  "onboardingPaywallBenefitScreenTime": "Controle de tempo de uso"
 }

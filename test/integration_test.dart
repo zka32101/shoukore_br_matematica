@@ -35,6 +35,9 @@ void main() {
       await tester.pumpAndSettle();
 
       // ペイウォール: 無料継続（スキップ）を選んでホームへ。
+      // 特典リスト追加で画面が伸びスクロールが必要になる場合があるため、
+      // タップ前にensureVisibleでスキップボタンを表示範囲に入れる。
+      await tester.ensureVisible(find.byKey(const Key('onboardingSkipButton')));
       await tester.tap(find.byKey(const Key('onboardingSkipButton')));
       await tester.pumpAndSettle();
 

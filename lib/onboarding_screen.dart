@@ -63,10 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            _WelcomePage(
-              l10n: l10n,
-              onNext: () => _goToPage(1),
-            ),
+            _WelcomePage(l10n: l10n, onNext: () => _goToPage(1)),
             _AhaQuizPage(
               l10n: l10n,
               correct: _quizCorrect,
@@ -116,7 +113,9 @@ class _WelcomePage extends StatelessWidget {
             l10n.onboardingWelcomeTitle,
             key: const Key('onboardingWelcomeTitle'),
             textAlign: TextAlign.center,
-            style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 12),
           Text(
@@ -164,7 +163,9 @@ class _AhaQuizPage extends StatelessWidget {
         children: [
           Text(
             l10n.onboardingQuizTitle,
-            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 24),
           Text(
@@ -184,7 +185,9 @@ class _AhaQuizPage extends StatelessWidget {
                   height: 56,
                   child: ElevatedButton(
                     key: Key('onboardingQuizChoice_$choice'),
-                    onPressed: correct ? null : () => onAnswered(choice == _correctChoice),
+                    onPressed: correct
+                        ? null
+                        : () => onAnswered(choice == _correctChoice),
                     child: Text('$choice'),
                   ),
                 ),
@@ -198,7 +201,11 @@ class _AhaQuizPage extends StatelessWidget {
               curve: Curves.elasticOut,
               child: Column(
                 children: [
-                  Icon(Icons.celebration, size: 48, color: theme.colorScheme.primary),
+                  Icon(
+                    Icons.celebration,
+                    size: 48,
+                    color: theme.colorScheme.primary,
+                  ),
                   const SizedBox(height: 8),
                   Text(
                     l10n.onboardingQuizCorrectFeedback,
@@ -268,7 +275,9 @@ class _PaywallPageState extends State<_PaywallPage> {
   Future<void> _purchase(Package package) async {
     setState(() => _purchasing = true);
     try {
-      final entitlement = await widget.entitlementReader!.purchasePackage(package);
+      final entitlement = await widget.entitlementReader!.purchasePackage(
+        package,
+      );
       widget.onPurchased(entitlement);
     } catch (_) {
       if (mounted) setState(() => _purchasing = false);
@@ -282,73 +291,132 @@ class _PaywallPageState extends State<_PaywallPage> {
     final packages = _offering?.availablePackages ?? const <Package>[];
     return Padding(
       padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.workspace_premium, size: 48, color: theme.colorScheme.primary),
-          const SizedBox(height: 16),
-          Text(
-            l10n.onboardingPaywallTitle,
-            key: const Key('onboardingPaywallTitle'),
-            textAlign: TextAlign.center,
-            style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            l10n.onboardingPaywallBody,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyLarge,
-          ),
-          const SizedBox(height: 24),
-          if (packages.isNotEmpty)
-            Column(
-              children: [
-                for (final package in packages)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: FilledButton(
-                      key: Key('onboardingPurchasePackage_${package.identifier}'),
-                      onPressed: _purchasing ? null : () => _purchase(package),
-                      child: Text(
-                        '${package.storeProduct.title} - ${package.storeProduct.priceString}',
-                      ),
-                    ),
-                  ),
-              ],
-            )
-          else
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text(l10n.onboardingPaywallMonthlyPrice, style: theme.textTheme.titleMedium),
-                    Text(l10n.onboardingPaywallYearlyPrice, style: theme.textTheme.titleMedium),
-                    const SizedBox(height: 8),
-                    Text(
-                      l10n.onboardingPaywallTrialNote,
-                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.primary),
-                    ),
-                  ],
-                ),
+      // 要点リストを追加して内容が増えたため、画面が小さい端末でも
+      // RenderFlexオーバーフローにならないようスクロール可能にする。
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.workspace_premium,
+              size: 48,
+              color: theme.colorScheme.primary,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              l10n.onboardingPaywallTitle,
+              key: const Key('onboardingPaywallTitle'),
+              textAlign: TextAlign.center,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
-          const SizedBox(height: 24),
-          if (packages.isEmpty)
-            FilledButton(
-              key: const Key('onboardingStartTrialButton'),
-              // Offeringが取得できない場合（RevenueCat未設定・開発中・CI）は
-              // 購入フローへ進めないため、押しても従来通りスキップ扱いにする。
-              onPressed: widget.onSkip,
-              child: Text(l10n.onboardingPaywallStartTrialButton),
+            const SizedBox(height: 12),
+            Text(
+              l10n.onboardingPaywallBody,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyLarge,
             ),
-          const SizedBox(height: 8),
-          TextButton(
-            key: const Key('onboardingSkipButton'),
-            onPressed: widget.onSkip,
-            child: Text(l10n.onboardingPaywallSkipButton),
-          ),
-        ],
+            const SizedBox(height: 16),
+            // 「広告なし」「14日間すべて利用可能」など、児童の保護者が購入判断
+            // しやすいよう要点を一目で分かるリスト形式で示す。
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final benefit in [
+                    l10n.onboardingPaywallBenefitNoAds,
+                    l10n.onboardingPaywallBenefitFullTrial,
+                    l10n.onboardingPaywallBenefitReports,
+                    l10n.onboardingPaywallBenefitScreenTime,
+                  ])
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            size: 18,
+                            color: theme.colorScheme.primary,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              benefit,
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            if (packages.isNotEmpty)
+              Column(
+                children: [
+                  for (final package in packages)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: FilledButton(
+                        key: Key(
+                          'onboardingPurchasePackage_${package.identifier}',
+                        ),
+                        onPressed: _purchasing
+                            ? null
+                            : () => _purchase(package),
+                        child: Text(
+                          '${package.storeProduct.title} - ${package.storeProduct.priceString}',
+                        ),
+                      ),
+                    ),
+                ],
+              )
+            else
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Text(
+                        l10n.onboardingPaywallMonthlyPrice,
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      Text(
+                        l10n.onboardingPaywallYearlyPrice,
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        l10n.onboardingPaywallTrialNote,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            const SizedBox(height: 24),
+            if (packages.isEmpty)
+              FilledButton(
+                key: const Key('onboardingStartTrialButton'),
+                // Offeringが取得できない場合（RevenueCat未設定・開発中・CI）は
+                // 購入フローへ進めないため、押しても従来通りスキップ扱いにする。
+                onPressed: widget.onSkip,
+                child: Text(l10n.onboardingPaywallStartTrialButton),
+              ),
+            const SizedBox(height: 8),
+            TextButton(
+              key: const Key('onboardingSkipButton'),
+              onPressed: widget.onSkip,
+              child: Text(l10n.onboardingPaywallSkipButton),
+            ),
+          ],
+        ),
       ),
     );
   }
