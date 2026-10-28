@@ -112,7 +112,7 @@ class StatisticsQuestionSource implements QuestionSource {
       choices: choiceList.map((c) => c.toString()).toList(),
       answer: answer.toString(),
       explanationId: template.explanationId,
-      params: {'values': values.join(',')},
+      params: {'values': values.join(','), 'operation': template.operation.name},
     );
   }
 

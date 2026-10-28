@@ -110,6 +110,17 @@ void main() {
       expect(find.byKey(const Key('characterCard_araruna')), findsOneWidget);
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
+
+      // ホームのバッジタイルから、単元マスター状況の独立画面に遷移できる。
+      // 無限出題でも「マスターした」ことが分かるようにするための画面。
+      await tester.ensureVisible(find.byKey(const Key('badgeCollectionTile')));
+      expect(find.byKey(const Key('badgeCollectionTileProgressText')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('badgeCollectionTile')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('badgeProgressText')), findsOneWidget);
+      expect(find.byKey(const Key('badgeCard_mat_numeros_1')), findsOneWidget);
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
 
       // Números以外の4つのeixo（Álgebra/Geometria/Grandezas e Medidas/
@@ -124,6 +135,16 @@ void main() {
         await tester.ensureVisible(find.byKey(Key('unit_$otherUnitId')));
         await tester.tap(find.byKey(Key('unit_$otherUnitId')));
         await tester.pumpAndSettle();
+
+        // Geometria/Grandezas/Probabilidadeは図形名・単位変換・データの
+        // 実生活イメージにつながる出題文(questionPromptText)が表示される
+        // (Álgebraの数列はまだ対応していないため対象外)。
+        if (otherUnitId != 'mat_algebra_1') {
+          expect(
+            find.byKey(const Key('questionPromptText'), skipOffstage: false),
+            findsOneWidget,
+          );
+        }
 
         final otherChoiceButtons = find.byType(ElevatedButton);
         expect(otherChoiceButtons, findsWidgets);

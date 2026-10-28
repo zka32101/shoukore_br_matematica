@@ -6,7 +6,7 @@ import 'growth_repository.dart';
 import 'l10n/app_localizations.dart';
 import 'misconception_hint_resolver.dart';
 import 'question_cache.dart';
-import 'word_problem_resolver.dart';
+import 'question_prompt_resolver.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({
@@ -169,19 +169,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     ),
                   ),
                 ),
-                if (question.params.containsKey('a') && question.params.containsKey('b'))
-                  // KeyedSubtree: 条件付きで出現/消滅するリスト項目にはKeyを付け、
-                  // Flutterが位置ベースで無関係な要素の状態を取り違えないようにする。
-                  KeyedSubtree(
-                    key: const ValueKey('promptSlot'),
-                    child: Builder(builder: (context) {
-                    final prompt = resolveArithmeticPrompt(
+                // KeyedSubtree: 条件付きで出現/消滅するリスト項目にはKeyを付け、
+                // Flutterが位置ベースで無関係な要素の状態を取り違えないようにする。
+                KeyedSubtree(
+                  key: const ValueKey('promptSlot'),
+                  child: Builder(builder: (context) {
+                    final prompt = resolveQuestionPrompt(
                       AppLocalizations.of(context)!,
-                      operator: question.params['operator'] ?? '',
-                      a: int.parse(question.params['a']!),
-                      b: int.parse(question.params['b']!),
-                      wordProblemId: question.params['wordProblemId'],
+                      question,
                     );
+                    if (prompt == null) return const SizedBox.shrink();
                     return Padding(
                       padding: const EdgeInsets.only(top: 16),
                       child: Text(
@@ -191,7 +188,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       ),
                     );
                   }),
-                  ),
+                ),
                 if (_autoHintVisible && question.explanationId.isNotEmpty)
                   KeyedSubtree(
                     key: const ValueKey('autoHintSlot'),

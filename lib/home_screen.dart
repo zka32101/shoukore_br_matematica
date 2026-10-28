@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart' hide InMemoryProgressStore;
 
 import 'age_gate_dialog.dart';
+import 'badge_collection_screen.dart';
 import 'character_collection_repository.dart';
 import 'character_definition.dart';
 import 'collection_screen.dart';
@@ -404,6 +405,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => CollectionScreen(snapshot: _characterSnapshot),
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    key: const Key('badgeCollectionTile'),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.amber.withValues(alpha: 0.2),
+                      foregroundColor: Colors.amber[800],
+                      child: const Icon(Icons.emoji_events),
+                    ),
+                    title: const Text('Minhas Medalhas'),
+                    subtitle: Text(
+                      '${_masteredUnitIds.length} / '
+                      '${curriculum.units.where((u) => u.templateIds.isNotEmpty).length} '
+                      'unidades dominadas',
+                      key: const Key('badgeCollectionTileProgressText'),
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => BadgeCollectionScreen(
+                          units: curriculum.units,
+                          masteredUnitIds: _masteredUnitIds,
+                        ),
                       ),
                     ),
                   ),

@@ -194,6 +194,94 @@
   "unitMasteredMessage": "Parabéns! Você dominou a unidade {unitId}! 🏆",
   "@unitMasteredMessage": {
     "description": "単元マスター時のお祝いメッセージ",
-    "placeholders": {"unitId": {"type": "String"}}
+    "placeholders": {
+      "unitId": {
+        "type": "String"
+      }
+    }
+  },
+  "shapeNameTriangle": "triângulo",
+  "shapeNameSquare": "quadrado",
+  "shapeNamePentagon": "pentágono",
+  "shapeNameHexagon": "hexágono",
+  "shapeNameHeptagon": "heptágono",
+  "shapeNameOctagon": "octógono",
+  "shapePromptSides": "Quantos lados tem um {shape}?",
+  "@shapePromptSides": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "shapePromptDiagonals": "Quantas diagonais tem um {shape}?",
+  "@shapePromptDiagonals": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "unitNameCm": "centímetros",
+  "unitNameM": "metros",
+  "unitNameKm": "quilômetros",
+  "unitNameG": "gramas",
+  "unitNameKg": "quilogramas",
+  "unitNameMl": "mililitros",
+  "unitNameL": "litros",
+  "unitNameMm": "milímetros",
+  "measurementPrompt": "Quantos {toUnit} há em {value} {fromUnit}?",
+  "@measurementPrompt": {
+    "placeholders": {
+      "toUnit": {
+        "type": "String"
+      },
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetPromptMax": "Veja os valores: {values}. Qual é o valor máximo?",
+  "@datasetPromptMax": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetPromptMin": "Veja os valores: {values}. Qual é o valor mínimo?",
+  "@datasetPromptMin": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetPromptMode": "Veja os valores: {values}. Qual é a moda?",
+  "@datasetPromptMode": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetPromptSum": "Veja os valores: {values}. Qual é a soma de todos?",
+  "@datasetPromptSum": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetPromptRange": "Veja os valores: {values}. Qual é a amplitude (maior − menor)?",
+  "@datasetPromptRange": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
   }
 }

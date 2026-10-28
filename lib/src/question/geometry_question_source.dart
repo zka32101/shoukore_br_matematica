@@ -79,7 +79,10 @@ class GeometryQuestionSource implements QuestionSource {
       choices: choiceList.map((c) => c.toString()).toList(),
       answer: answer.toString(),
       explanationId: template.explanationId,
-      params: {'shapeNameKey': template.shapeNameKey},
+      params: {
+        'shapeNameKey': template.shapeNameKey,
+        'questionKind': template.questionKind.name,
+      },
     );
   }
 
