@@ -91,10 +91,17 @@ void main() {
       await tester.ensureVisible(find.byKey(const Key('growthStatusTile')));
       expect(find.byKey(const Key('growthStatusTile')), findsOneWidget);
 
-      // コレクションキャラ一覧（8体）も表示される。
-      await tester.ensureVisible(find.byKey(const Key('characterCard_araruna')));
+      // ホームのコレクションタイルから、12体一覧の独立画面に遷移できる。
+      await tester.ensureVisible(find.byKey(const Key('collectionTile')));
+      expect(find.byKey(const Key('collectionTileProgressText')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('collectionTile')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('collectionProgressText')), findsOneWidget);
       expect(find.byKey(const Key('characterCard_tucaninho')), findsOneWidget);
       expect(find.byKey(const Key('characterCard_araruna')), findsOneWidget);
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
 
       // 既定(pt_BR)はscreenTimeLimitMinutes:0（無制限）のため、利用時間タイルは
       // 制限なしの状態で表示される。デモ用トグルをONにすると1分制限が模擬される。
