@@ -29,12 +29,38 @@ class GameModeUnitPickerScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final eligibleUnits = units.where((u) => u.templateIds.isNotEmpty).toList();
+    final masteredCount = eligibleUnits.where((u) => masteredUnitIds.contains(u.id)).length;
+    final totalCount = eligibleUnits.length;
+    final progress = totalCount == 0 ? 0.0 : masteredCount / totalCount;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.gameModeTitle)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Text(l10n.gameModePickUnitBody),
+          const SizedBox(height: 16),
+          // 「ゲームで学ぶ」だけの進捗を可視化し、遊ぶたびに実績が増えていく
+          // 感覚(やった感)を持てるようにする。
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.gameModeProgressLabel(masteredCount, totalCount),
+                    key: const Key('gameModeProgressText'),
+                    style: theme.textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: LinearProgressIndicator(value: progress, minHeight: 10),
+                  ),
+                ],
+              ),
+            ),
+          ),
           const SizedBox(height: 16),
           for (final unit in eligibleUnits)
             Card(

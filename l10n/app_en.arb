@@ -846,5 +846,16 @@
   "gameModeTitle": "Play to learn",
   "gameModePickUnitBody": "Choose a unit to play! Each challenge has a different way to answer: tapping, dragging, or counting.",
   "openMathGuideButton": "See in the math guide",
-  "incorrectAnswerGuideNudge": "How about taking a look at the explanation before trying again?"
+  "incorrectAnswerGuideNudge": "How about taking a look at the explanation before trying again?",
+  "gameModeProgressLabel": "{mastered} of {total} units mastered by playing",
+  "@gameModeProgressLabel": {
+    "placeholders": {
+      "mastered": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

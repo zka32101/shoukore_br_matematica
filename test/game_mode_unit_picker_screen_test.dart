@@ -41,6 +41,9 @@ void main() {
     expect(find.byKey(const Key('gameModeUnitMasteredBadge_mat_numeros_1')), findsOneWidget);
     expect(find.byKey(const Key('gameModeUnitMasteredBadge_mat_numeros_2')), findsNothing);
 
+    // ゲーム専用の進捗(1/2単元をマスター)が表示される。
+    expect(find.text('1 de 2 unidades dominadas jogando'), findsOneWidget);
+
     final lockedTile = tester.widget<ListTile>(
       find.byKey(const Key('gameModeUnitOption_mat_numeros_2')),
     );

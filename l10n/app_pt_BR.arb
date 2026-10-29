@@ -847,5 +847,16 @@
   "gameModeTitle": "Jogar para aprender",
   "gameModePickUnitBody": "Escolha uma unidade para jogar! Cada desafio tem uma forma diferente de responder: tocando, arrastando ou contando.",
   "openMathGuideButton": "Ver no guia de matemática",
-  "incorrectAnswerGuideNudge": "Que tal dar uma olhada na explicação antes de tentar de novo?"
+  "incorrectAnswerGuideNudge": "Que tal dar uma olhada na explicação antes de tentar de novo?",
+  "gameModeProgressLabel": "{mastered} de {total} unidades dominadas jogando",
+  "@gameModeProgressLabel": {
+    "placeholders": {
+      "mastered": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }
