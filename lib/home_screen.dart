@@ -290,13 +290,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return ScreenTimeGuard(effectiveProfile);
   }
 
-  static const _stageVisual = <GrowthStage, (IconData, String)>{
-    GrowthStage.egg: (Icons.egg_outlined, 'Ovo'),
-    GrowthStage.baby: (Icons.child_care, 'Filhote'),
-    GrowthStage.child: (Icons.pets, 'Jovem'),
-    GrowthStage.adult: (Icons.auto_awesome, 'Adulto'),
-  };
-
   static const _eixoVisual = <String, (IconData, Color)>{
     'numeros': (Icons.numbers, Colors.indigo),
     'algebra': (Icons.functions, Colors.deepPurple),
@@ -312,52 +305,136 @@ class _HomeScreenState extends State<HomeScreen> {
     return (Icons.menu_book_outlined, Colors.blueGrey);
   }
 
+  /// 単元タップ時の共通処理（単元カード・クイックスタートカードの両方で使う）。
+  Future<void> _openUnit(BuildContext context, AppLocalizations l10n, Unit unit) async {
+    if (!_entitlement.isUnlocked(unit.subjectId)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          key: const Key('entitlementLockedSnackBar'),
+          content: Text(l10n.entitlementLockedMessage),
+        ),
+      );
+      return;
+    }
+    if (_screenTimeGuard.isOverLimit(_screenTimeRepository!.usedToday)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          key: const Key('screenTimeLimitSnackBar'),
+          content: Text(l10n.screenTimeLimitReached),
+        ),
+      );
+      return;
+    }
+    final curriculum = _curriculum!;
+    final openedAt = _clock.now();
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => QuestionScreen(
+          unit: unit,
+          source: _source!,
+          progressStore: _progressStore,
+          clock: _clock,
+          questionCache: _questionCache,
+          growthRepository: _growthRepository!,
+        ),
+      ),
+    );
+    await _screenTimeRepository!.addUsage(_clock.now().difference(openedAt));
+    final characterResult = await _characterCollectionRepository.refresh(curriculum.units);
+    // 出題画面でgrowth状態（stage/coins）・キャラコレクションが
+    // 更新されている可能性があるため、ホームに戻った際に再描画する。
+    if (mounted) {
+      setState(() => _characterSnapshot = characterResult.snapshot);
+      _showCharacterCollectionChanges(characterResult);
+    }
+    await _refreshMasteredUnits(curriculum.units);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final curriculum = _curriculum;
     final theme = Theme.of(context);
+    final totalUnitsWithContent = curriculum == null
+        ? 0
+        : curriculum.units.where((u) => u.templateIds.isNotEmpty).length;
+    final nextUnit = curriculum == null
+        ? null
+        : curriculum.units.where((u) => u.templateIds.isNotEmpty).firstWhere(
+              (u) =>
+                  _entitlement.isUnlocked(u.subjectId) &&
+                  !_masteredUnitIds.contains(u.id),
+              orElse: () => curriculum.units.firstWhere((u) => u.templateIds.isNotEmpty),
+            );
     return Scaffold(
       backgroundColor: theme.colorScheme.surfaceContainerLowest,
-      appBar: AppBar(
-        title: Text(l10n.homeTitle),
-        actions: [
-          IconButton(
-            key: const Key('premiumToggleButton'),
-            tooltip: _entitlement.isPremium ? 'premium: ON' : 'premium: OFF',
-            icon: Icon(
-              _entitlement.isPremium ? Icons.workspace_premium : Icons.workspace_premium_outlined,
-            ),
-            onPressed: _togglePremiumOrRefreshEntitlement,
-          ),
-          // 開発用(制限1分の模擬)。ストアに出るリリースビルドでは隠す。
-          if (!kReleaseMode)
-          IconButton(
-            key: const Key('screenTimeLimitToggleButton'),
-            tooltip: _screenTimeLimitDemoEnabled ? 'limit: 1min' : 'limit: OFF',
-            icon: Icon(
-              _screenTimeLimitDemoEnabled ? Icons.timer : Icons.timer_off_outlined,
-            ),
-            onPressed: () => setState(() {
-              _screenTimeLimitDemoEnabled = !_screenTimeLimitDemoEnabled;
-            }),
-          ),
-        ],
-      ),
       body: curriculum == null
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                _SectionLabel(label: 'Seu progresso'),
-                _GrowthHeroCard(
-                  key: const Key('growthStatusTile'),
-                  stageIcon: _stageVisual[_growthRepository!.stage]!.$1,
-                  stageLabel: _stageVisual[_growthRepository!.stage]!.$2,
-                  coins: _growthRepository!.wallet.balance,
+          : CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  pinned: true,
+                  expandedHeight: 96,
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
+                  flexibleSpace: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          theme.colorScheme.primary,
+                          theme.colorScheme.primaryContainer,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                  ),
+                  title: Text(l10n.homeTitle),
+                  actions: [
+                    IconButton(
+                      key: const Key('premiumToggleButton'),
+                      tooltip: _entitlement.isPremium ? 'premium: ON' : 'premium: OFF',
+                      icon: Icon(
+                        _entitlement.isPremium
+                            ? Icons.workspace_premium
+                            : Icons.workspace_premium_outlined,
+                      ),
+                      onPressed: _togglePremiumOrRefreshEntitlement,
+                    ),
+                    // 開発用(制限1分の模擬)。ストアに出るリリースビルドでは隠す。
+                    if (!kReleaseMode)
+                      IconButton(
+                        key: const Key('screenTimeLimitToggleButton'),
+                        tooltip: _screenTimeLimitDemoEnabled ? 'limit: 1min' : 'limit: OFF',
+                        icon: Icon(
+                          _screenTimeLimitDemoEnabled ? Icons.timer : Icons.timer_off_outlined,
+                        ),
+                        onPressed: () => setState(() {
+                          _screenTimeLimitDemoEnabled = !_screenTimeLimitDemoEnabled;
+                        }),
+                      ),
+                  ],
                 ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                _StatsRow(
+                  key: const Key('growthStatusTile'),
+                  streakDays: _growthRepository!.streak.currentStreakDays,
+                  coins: _growthRepository!.wallet.balance,
+                  clearedUnits: _masteredUnitIds.length,
+                  totalUnits: totalUnitsWithContent,
+                ),
+                const SizedBox(height: 12),
+                if (nextUnit != null)
+                  _QuickStartCard(
+                    key: const Key('quickStartTile'),
+                    label: resolveUnitName(l10n, nextUnit.id),
+                    onTap: () => _openUnit(context, l10n, nextUnit),
+                  ),
                 const SizedBox(height: 12),
                 _ScreenTimeCard(
                   key: const Key('screenTimeStatusTile'),
@@ -427,50 +504,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: _visualForUnit(unit).$2,
                         locked: !_entitlement.isUnlocked(unit.subjectId),
                         mastered: _masteredUnitIds.contains(unit.id),
-                        onTap: () async {
-                          if (!_entitlement.isUnlocked(unit.subjectId)) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                key: const Key('entitlementLockedSnackBar'),
-                                content: Text(l10n.entitlementLockedMessage),
-                              ),
-                            );
-                            return;
-                          }
-                          if (_screenTimeGuard.isOverLimit(_screenTimeRepository!.usedToday)) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                key: const Key('screenTimeLimitSnackBar'),
-                                content: Text(l10n.screenTimeLimitReached),
-                              ),
-                            );
-                            return;
-                          }
-                          final openedAt = _clock.now();
-                          await Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => QuestionScreen(
-                                unit: unit,
-                                source: _source!,
-                                progressStore: _progressStore,
-                                clock: _clock,
-                                questionCache: _questionCache,
-                                growthRepository: _growthRepository!,
-                              ),
-                            ),
-                          );
-                          await _screenTimeRepository!
-                              .addUsage(_clock.now().difference(openedAt));
-                          final characterResult = await _characterCollectionRepository
-                              .refresh(curriculum.units);
-                          // 出題画面でgrowth状態（stage/coins）・キャラコレクションが
-                          // 更新されている可能性があるため、ホームに戻った際に再描画する。
-                          if (mounted) {
-                            setState(() => _characterSnapshot = characterResult.snapshot);
-                            _showCharacterCollectionChanges(characterResult);
-                          }
-                          await _refreshMasteredUnits(curriculum.units);
-                        },
+                        onTap: () => _openUnit(context, l10n, unit),
                             ),
                           ),
                       ],
@@ -641,76 +675,147 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 ),
-                ],
-              ),
+                    ],
+                  ),
+                  ),
+                ),
+              ],
             ),
     );
   }
 }
 
-/// 成長段階とコインを大きく見せるヒーローカード。
-class _GrowthHeroCard extends StatelessWidget {
-  const _GrowthHeroCard({
+/// れんぞく・コイン・クリア数を横並びでコンパクトに見せる統計カード行。
+class _StatsRow extends StatelessWidget {
+  const _StatsRow({
     super.key,
-    required this.stageIcon,
-    required this.stageLabel,
+    required this.streakDays,
     required this.coins,
+    required this.clearedUnits,
+    required this.totalUnits,
   });
 
-  final IconData stageIcon;
-  final String stageLabel;
+  final int streakDays;
   final int coins;
+  final int clearedUnits;
+  final int totalUnits;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        _StatCard(
+          icon: Icons.local_fire_department,
+          value: '$streakDays dias',
+          label: 'Sequência',
+          color: const Color(0xFFE74C3C),
+        ),
+        const SizedBox(width: 10),
+        _StatCard(
+          icon: Icons.monetization_on,
+          value: '$coins',
+          label: 'Moedas',
+          color: const Color(0xFFFFB81C),
+        ),
+        const SizedBox(width: 10),
+        _StatCard(
+          icon: Icons.emoji_events,
+          value: '$clearedUnits/$totalUnits',
+          label: 'Dominadas',
+          color: const Color(0xFF2ECC71),
+        ),
+      ],
+    );
+  }
+}
+
+class _StatCard extends StatelessWidget {
+  const _StatCard({
+    required this.icon,
+    required this.value,
+    required this.label,
+    required this.color,
+  });
+
+  final IconData icon;
+  final String value;
+  final String label;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        gradient: LinearGradient(
-          colors: [theme.colorScheme.primary, theme.colorScheme.primaryContainer],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 6, offset: const Offset(0, 2)),
+          ],
+        ),
+        child: Column(
+          children: [
+            Icon(icon, size: 22, color: color),
+            const SizedBox(height: 4),
+            Text(value, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: color)),
+            Text(label, style: theme.textTheme.bodySmall),
+          ],
         ),
       ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 32,
-            backgroundColor: Colors.white.withValues(alpha: 0.9),
-            foregroundColor: theme.colorScheme.primary,
-            child: Icon(stageIcon, size: 32),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  stageLabel,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: theme.colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Row(
+    );
+  }
+}
+
+/// JP版の「今日の算数をはじめよう！」に相当する、次に挑戦する単元への
+/// クイックスタートCTAカード。
+class _QuickStartCard extends StatelessWidget {
+  const _QuickStartCard({super.key, required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Material(
+      color: theme.colorScheme.primary,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Row(
+            children: [
+              Icon(Icons.play_circle_fill, size: 36, color: theme.colorScheme.onPrimary),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.monetization_on, size: 18, color: theme.colorScheme.onPrimary),
-                    const SizedBox(width: 4),
                     Text(
-                      '$coins moedas',
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      'Vamos praticar matemática hoje!',
+                      style: theme.textTheme.titleMedium?.copyWith(
                         color: theme.colorScheme.onPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      label,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              Icon(Icons.arrow_forward_ios, size: 18, color: theme.colorScheme.onPrimary),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

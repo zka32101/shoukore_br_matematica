@@ -51,6 +51,7 @@ void main() {
       // 特典リスト追加で画面が伸びスクロールが必要になる場合があるため、
       // タップ前にensureVisibleでスキップボタンを表示範囲に入れる。
       await tester.ensureVisible(find.byKey(const Key('onboardingSkipButton')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('onboardingSkipButton')));
       await tester.pumpAndSettle();
 
@@ -59,6 +60,8 @@ void main() {
 
       // 既定ではpremiumが無効なので単元はロックされており、タップしても出題画面に遷移しない。
       expect(find.byKey(const Key('lockIcon')), findsWidgets);
+      await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('unit_mat_numeros_1')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('entitlementLockedSnackBar')), findsOneWidget);
@@ -71,8 +74,10 @@ void main() {
 
       // 単元数が増え一覧が画面に収まらないため、保護者ゲートのタイルはスクロールして確認する。
       await tester.ensureVisible(find.byKey(const Key('guardianGateTile')));
+      await tester.pumpAndSettle();
       expect(find.text('Para os responsáveis'), findsOneWidget);
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
+      await tester.pumpAndSettle();
 
       // 単元をタップすると出題され、回答するとprogressのmasteryが更新される。
       await tester.tap(find.byKey(const Key('unit_mat_numeros_1')));
@@ -127,10 +132,12 @@ void main() {
 
       // ホームにもgrowth状態タイルが表示され、出題画面と状態を共有している。
       await tester.ensureVisible(find.byKey(const Key('growthStatusTile')));
+      await tester.pumpAndSettle();
       expect(find.byKey(const Key('growthStatusTile')), findsOneWidget);
 
       // ホームのコレクションタイルから、12体一覧の独立画面に遷移できる。
       await tester.ensureVisible(find.byKey(const Key('collectionTile')));
+      await tester.pumpAndSettle();
       expect(find.byKey(const Key('collectionTileProgressText')), findsOneWidget);
       await tester.tap(find.byKey(const Key('collectionTile')));
       await tester.pumpAndSettle();
@@ -143,6 +150,7 @@ void main() {
       // ホームのバッジタイルから、単元マスター状況の独立画面に遷移できる。
       // 無限出題でも「マスターした」ことが分かるようにするための画面。
       await tester.ensureVisible(find.byKey(const Key('badgeCollectionTile')));
+      await tester.pumpAndSettle();
       expect(find.byKey(const Key('badgeCollectionTileProgressText')), findsOneWidget);
       await tester.tap(find.byKey(const Key('badgeCollectionTile')));
       await tester.pumpAndSettle();
@@ -155,8 +163,10 @@ void main() {
       // 「近日公開」のティーザーが表示される(他アプリが追加されたら
       // 自動でアプリ一覧に切り替わる設計)。
       await tester.ensureVisible(find.byKey(const Key('crossPromoComingSoonCard')));
+      await tester.pumpAndSettle();
 
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
+      await tester.pumpAndSettle();
 
       // Números以外の4つのeixo（Álgebra/Geometria/Grandezas e Medidas/
       // Probabilidade e Estatística）もCompositeQuestionSourceで正しく
@@ -168,6 +178,7 @@ void main() {
         'mat_probabilidade_1',
       ]) {
         await tester.ensureVisible(find.byKey(Key('unit_$otherUnitId')));
+        await tester.pumpAndSettle();
         await tester.tap(find.byKey(Key('unit_$otherUnitId')));
         await tester.pumpAndSettle();
 
@@ -188,6 +199,7 @@ void main() {
         await tester.tap(find.byType(BackButton));
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
+        await tester.pumpAndSettle();
       }
 
       // 各単元訪問でキャラコレクションのお祝いSnackBarが溜まっている可能性があり、
@@ -209,6 +221,7 @@ void main() {
       // 画面表示が英語に変わることを確認し、以降の検証に影響しないよう
       // すぐにポルトガル語へ戻す。
       await tester.ensureVisible(find.byKey(const Key('languageTile')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('languageTile')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('languageOption_en')));
@@ -222,6 +235,7 @@ void main() {
       expect(find.text('Idioma'), findsOneWidget);
 
       await tester.ensureVisible(find.byKey(const Key('weeklyReportTile')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('weeklyReportTile')));
       await tester.pumpAndSettle();
 
@@ -232,9 +246,11 @@ void main() {
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
+      await tester.pumpAndSettle();
 
       // 年齢確認: 2020年生まれ（6歳、pt_BRの同意年齢12歳未満）は保護者同意が必要。
       await tester.ensureVisible(find.byKey(const Key('ageVerificationTile')));
+      await tester.pumpAndSettle();
       expect(find.byKey(const Key('consentStatusText')), findsOneWidget);
       await tester.tap(find.byKey(const Key('ageVerificationTile')));
       await tester.pumpAndSettle();
@@ -251,6 +267,7 @@ void main() {
 
       // デイリーミッションのリマインド通知: 既定は未設定、タップで設定/解除を切り替えられる。
       await tester.ensureVisible(find.byKey(const Key('dailyReminderTile')));
+      await tester.pumpAndSettle();
       expect(find.text('Nenhuma notificação agendada'), findsOneWidget);
       await tester.tap(find.byKey(const Key('dailyReminderTile')));
       await tester.pumpAndSettle();
@@ -260,11 +277,13 @@ void main() {
       expect(find.text('Nenhuma notificação agendada'), findsOneWidget);
 
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
+      await tester.pumpAndSettle();
 
       // 学習データ管理画面: 同意撤回・全データ削除という不可逆な操作に
       // 進めるため、タップすると保護者ゲート(2桁×2桁の乗算)が先に表示される。
       // ダイアログの文言から乱数のa×bを読み取って解答する。
       await tester.ensureVisible(find.byKey(const Key('dataPrivacyTile')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('dataPrivacyTile')));
       await tester.pumpAndSettle();
 
@@ -304,11 +323,13 @@ void main() {
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
+      await tester.pumpAndSettle();
 
       // 「親も交わって遊びながら学べる機能」(CLAUDE.md共通要件): ホームの
       // ファミリーチャレンジタイルから単元を選び、子ども→保護者の交代で
       // 5問分遊べることを確認する。
       await tester.ensureVisible(find.byKey(const Key('familyChallengeTile')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('familyChallengeTile')));
       await tester.pumpAndSettle();
 
@@ -352,6 +373,7 @@ void main() {
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
+      await tester.pumpAndSettle();
     },
   );
 }
