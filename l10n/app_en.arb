@@ -859,5 +859,23 @@
     }
   },
   "dailyChallengeLabel": "Today's challenge",
-  "dailyChallengeSubtitle": "Play today and don't miss your special challenge!"
+  "dailyChallengeSubtitle": "Play today and don't miss your special challenge!",
+  "premiumToggleOnTooltip": "Subscription: active",
+  "premiumToggleOffTooltip": "Subscription: inactive",
+  "datasetBarSemanticLabel": "Answer {value}",
+  "@datasetBarSemanticLabel": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitTallyTileSemanticLabel": "Counting tile {index}",
+  "@unitTallyTileSemanticLabel": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  }
 }

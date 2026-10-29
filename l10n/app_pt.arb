@@ -860,5 +860,23 @@
     }
   },
   "dailyChallengeLabel": "Desafio do dia",
-  "dailyChallengeSubtitle": "Jogue hoje e não perca o seu desafio especial!"
+  "dailyChallengeSubtitle": "Jogue hoje e não perca o seu desafio especial!",
+  "premiumToggleOnTooltip": "Assinatura: ativa",
+  "premiumToggleOffTooltip": "Assinatura: inativa",
+  "datasetBarSemanticLabel": "Responder {value}",
+  "@datasetBarSemanticLabel": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitTallyTileSemanticLabel": "Ficha de contagem {index}",
+  "@unitTallyTileSemanticLabel": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  }
 }

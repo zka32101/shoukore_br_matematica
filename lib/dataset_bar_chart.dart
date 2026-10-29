@@ -35,23 +35,27 @@ class DatasetBarChart extends StatelessWidget {
               for (var i = 0; i < values.length; i++)
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: GestureDetector(
-                    key: Key('datasetBar_$i'),
-                    onTap: () => onBarTap(values[i].toString()),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          width: 28,
-                          height: maxBarHeight * (values[i] / maxValue).clamp(0.08, 1.0),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.tertiary,
-                            borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+                  child: Semantics(
+                    button: true,
+                    label: l10n.datasetBarSemanticLabel(values[i].toString()),
+                    child: GestureDetector(
+                      key: Key('datasetBar_$i'),
+                      onTap: () => onBarTap(values[i].toString()),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            width: 28,
+                            height: maxBarHeight * (values[i] / maxValue).clamp(0.08, 1.0),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.tertiary,
+                              borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text('${values[i]}', style: theme.textTheme.bodySmall),
-                      ],
+                          const SizedBox(height: 4),
+                          Text('${values[i]}', style: theme.textTheme.bodySmall),
+                        ],
+                      ),
                     ),
                   ),
                 ),

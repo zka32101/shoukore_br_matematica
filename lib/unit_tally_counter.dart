@@ -41,25 +41,30 @@ class _UnitTallyCounterState extends State<UnitTallyCounter> {
             for (var i = 0; i < widget.count; i++)
               Builder(builder: (context) {
                 final tapped = _tappedIndexes.contains(i);
-                return GestureDetector(
-                  key: Key('unitTallyTile_$i'),
-                  onTap: () => setState(() {
-                    if (tapped) {
-                      _tappedIndexes.remove(i);
-                    } else {
-                      _tappedIndexes.add(i);
-                    }
-                  }),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 150),
-                    width: 28,
-                    height: 28,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: tapped
-                          ? theme.colorScheme.secondary
-                          : theme.colorScheme.surfaceContainerHighest,
-                      border: Border.all(color: theme.colorScheme.outlineVariant),
+                return Semantics(
+                  button: true,
+                  toggled: tapped,
+                  label: l10n.unitTallyTileSemanticLabel(i + 1),
+                  child: GestureDetector(
+                    key: Key('unitTallyTile_$i'),
+                    onTap: () => setState(() {
+                      if (tapped) {
+                        _tappedIndexes.remove(i);
+                      } else {
+                        _tappedIndexes.add(i);
+                      }
+                    }),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 150),
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: tapped
+                            ? theme.colorScheme.secondary
+                            : theme.colorScheme.surfaceContainerHighest,
+                        border: Border.all(color: theme.colorScheme.outlineVariant),
+                      ),
                     ),
                   ),
                 );

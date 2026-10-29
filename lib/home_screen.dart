@@ -462,7 +462,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   actions: [
                     IconButton(
                       key: const Key('premiumToggleButton'),
-                      tooltip: _entitlement.isPremium ? 'premium: ON' : 'premium: OFF',
+                      tooltip: _entitlement.isPremium
+                          ? l10n.premiumToggleOnTooltip
+                          : l10n.premiumToggleOffTooltip,
                       icon: Icon(
                         _entitlement.isPremium
                             ? Icons.workspace_premium
