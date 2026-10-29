@@ -125,16 +125,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
   Future<void> _openMathGuide() async {
     if (!_explanationBonusAwarded) {
       _explanationBonusAwarded = true;
-      await widget.growthRepository.earnBonusCoins(_explanationBonusCoins);
+      final granted = await widget.growthRepository.earnBonusCoins(_explanationBonusCoins);
       if (!mounted) return;
       // 画面上部のgrowthStatusText(コイン残高表示)に即反映させる。
       setState(() {});
       unawaited(HapticFeedback.lightImpact());
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           key: const Key('explanationBonusSnackBar'),
           content: Text(
-            AppLocalizations.of(context)!.explanationBonusCoinsMessage(_explanationBonusCoins),
+            granted > 0
+                ? l10n.explanationBonusCoinsMessage(granted)
+                : l10n.explanationBonusCoinsCapReachedMessage,
           ),
         ),
       );

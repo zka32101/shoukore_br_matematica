@@ -962,5 +962,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "explanationBonusCoinsCapReachedMessage": "Você já atingiu o limite diário de moedas bônus. Volte amanhã!"
 }

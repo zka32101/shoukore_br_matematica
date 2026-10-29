@@ -961,5 +961,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "explanationBonusCoinsCapReachedMessage": "You've reached today's bonus coin limit. Come back tomorrow!"
 }

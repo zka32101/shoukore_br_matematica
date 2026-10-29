@@ -71,6 +71,8 @@ class GrowthRepository {
       missionRewardClaimed: _snapshot.missionRewardClaimed,
       currentStreakDays: nextStreak.currentStreakDays,
       lastStudiedDay: nextStreak.lastStudiedDay,
+      bonusCoinsEarnedToday: _snapshot.bonusCoinsEarnedToday,
+      bonusCoinsDay: _snapshot.bonusCoinsDay,
     );
     await _store.save(_snapshot);
   }
@@ -97,15 +99,35 @@ class GrowthRepository {
       missionRewardClaimed: nextState.rewardClaimed,
       currentStreakDays: _snapshot.currentStreakDays,
       lastStudiedDay: _snapshot.lastStudiedDay,
+      bonusCoinsEarnedToday: _snapshot.bonusCoinsEarnedToday,
+      bonusCoinsDay: _snapshot.bonusCoinsDay,
     );
     await _store.save(_snapshot);
   }
 
+  /// ボーナスコイン(デイリーミッション報酬とは別枠)の1日あたりの獲得上限。
+  /// 「解説を読む」操作を連打して無制限にコインを稼げてしまわないよう、
+  /// ミッション報酬(1日最大`missionRules.rewardCoins`)とは別にここで
+  /// 上限を設ける(ミッション報酬自体はこの上限の対象外)。
+  static const bonusCoinEarningCap = CoinEarningCapPerDay(dailyCap: 20);
+
   /// 「解説を読む」など、正誤判定を伴わない学習行動に対する少額ボーナス
   /// コインを付与する(デイリーミッション報酬とは別枠。問題を解くこと
   /// 自体に加えて、解説を読み返す行動そのものも後押しするための仕組み)。
-  Future<void> earnBonusCoins(int amount) async {
-    final nextWallet = wallet.earn(amount);
+  /// 1日の上限([bonusCoinEarningCap])に達している分は切り捨てて付与し、
+  /// 実際に付与できた額を返す(呼び出し側がメッセージを出し分けるため)。
+  Future<int> earnBonusCoins(int amount) async {
+    final today = boundary.currentMissionDay(clock);
+    final sameDay =
+        _snapshot.bonusCoinsDay != null && boundary.isSameMissionDay(_snapshot.bonusCoinsDay!, today);
+    final earningState = CoinEarningState(
+      earnedToday: sameDay ? _snapshot.bonusCoinsEarnedToday : 0,
+    );
+    final remaining = bonusCoinEarningCap.dailyCap - earningState.earnedToday;
+    final grantable = amount.clamp(0, remaining < 0 ? 0 : remaining);
+
+    final nextWallet = wallet.earn(grantable);
+    final nextEarningState = bonusCoinEarningCap.recordEarning(earningState, grantable, clock.now());
     _snapshot = GrowthSnapshot(
       totalCorrectAnswers: _snapshot.totalCorrectAnswers,
       coinBalance: nextWallet.balance,
@@ -114,8 +136,11 @@ class GrowthRepository {
       missionRewardClaimed: _snapshot.missionRewardClaimed,
       currentStreakDays: _snapshot.currentStreakDays,
       lastStudiedDay: _snapshot.lastStudiedDay,
+      bonusCoinsEarnedToday: nextEarningState.earnedToday,
+      bonusCoinsDay: today,
     );
     await _store.save(_snapshot);
+    return grantable;
   }
 
   /// ショップでの購入時に呼ぶ。コイン残高を[newWallet]の値に更新する
@@ -129,6 +154,8 @@ class GrowthRepository {
       missionRewardClaimed: _snapshot.missionRewardClaimed,
       currentStreakDays: _snapshot.currentStreakDays,
       lastStudiedDay: _snapshot.lastStudiedDay,
+      bonusCoinsEarnedToday: _snapshot.bonusCoinsEarnedToday,
+      bonusCoinsDay: _snapshot.bonusCoinsDay,
     );
     await _store.save(_snapshot);
   }
