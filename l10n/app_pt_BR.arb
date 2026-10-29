@@ -691,5 +691,25 @@
       }
     }
   },
-  "weeklyChallengeCompleteMessage": "Desafio da semana completo! 🎉"
+  "weeklyChallengeCompleteMessage": "Desafio da semana completo! 🎉",
+  "shopTile": "Loja",
+  "shopTileSubtitle": "Troque suas moedas por itens para seus personagens",
+  "shopTitle": "Loja",
+  "shopBalanceLabel": "Suas moedas",
+  "shopBuyButton": "Comprar",
+  "shopOwnedLabel": "Adquirido",
+  "shopInsufficientCoinsMessage": "Moedas insuficientes para este item",
+  "shopPurchaseSuccessMessage": "Item adquirido!",
+  "shopItemHatCalculator": "Chapéu calculadora",
+  "shopItemHatCalculatorDescription": "Um chapéuzinho com botões de calculadora",
+  "shopItemHatRuler": "Chapéu régua",
+  "shopItemHatRulerDescription": "Perfeito para quem ama medir tudo",
+  "shopItemBgBlackboard": "Fundo lousa",
+  "shopItemBgBlackboardDescription": "Um fundo com contas na lousa",
+  "shopItemBgStars": "Fundo estrelado",
+  "shopItemBgStarsDescription": "Estrelas com números brilhando",
+  "shopItemFrameGold": "Moldura dourada",
+  "shopItemFrameGoldDescription": "Para os campeões da matemática",
+  "shopItemFrameRainbow": "Moldura arco-íris",
+  "shopItemFrameRainbowDescription": "Cores vibrantes para sua coleção"
 }

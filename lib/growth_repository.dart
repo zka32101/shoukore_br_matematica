@@ -100,4 +100,19 @@ class GrowthRepository {
     );
     await _store.save(_snapshot);
   }
+
+  /// ショップでの購入時に呼ぶ。コイン残高を[newWallet]の値に更新する
+  /// (実際の価格判定・差し引きはコア側の`InventoryManager.purchase`が行う)。
+  Future<void> applyWallet(CoinWallet newWallet) async {
+    _snapshot = GrowthSnapshot(
+      totalCorrectAnswers: _snapshot.totalCorrectAnswers,
+      coinBalance: newWallet.balance,
+      missionDay: _snapshot.missionDay,
+      missionCompletedCount: _snapshot.missionCompletedCount,
+      missionRewardClaimed: _snapshot.missionRewardClaimed,
+      currentStreakDays: _snapshot.currentStreakDays,
+      lastStudiedDay: _snapshot.lastStudiedDay,
+    );
+    await _store.save(_snapshot);
+  }
 }

@@ -690,5 +690,25 @@
       }
     }
   },
-  "weeklyChallengeCompleteMessage": "Weekly challenge complete! 🎉"
+  "weeklyChallengeCompleteMessage": "Weekly challenge complete! 🎉",
+  "shopTile": "Shop",
+  "shopTileSubtitle": "Trade your coins for items for your characters",
+  "shopTitle": "Shop",
+  "shopBalanceLabel": "Your coins",
+  "shopBuyButton": "Buy",
+  "shopOwnedLabel": "Owned",
+  "shopInsufficientCoinsMessage": "Not enough coins for this item",
+  "shopPurchaseSuccessMessage": "Item purchased!",
+  "shopItemHatCalculator": "Calculator hat",
+  "shopItemHatCalculatorDescription": "A little hat with calculator buttons",
+  "shopItemHatRuler": "Ruler hat",
+  "shopItemHatRulerDescription": "Perfect for those who love measuring everything",
+  "shopItemBgBlackboard": "Blackboard background",
+  "shopItemBgBlackboardDescription": "A background with sums on the blackboard",
+  "shopItemBgStars": "Starry background",
+  "shopItemBgStarsDescription": "Stars shining with numbers",
+  "shopItemFrameGold": "Gold frame",
+  "shopItemFrameGoldDescription": "For math champions",
+  "shopItemFrameRainbow": "Rainbow frame",
+  "shopItemFrameRainbowDescription": "Vibrant colors for your collection"
 }

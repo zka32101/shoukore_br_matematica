@@ -21,6 +21,7 @@ import 'math_guide_screen.dart';
 import 'question_cache.dart';
 import 'question_screen.dart';
 import 'screen_time_repository.dart';
+import 'shop_screen.dart';
 import 'src/question/arithmetic_question_source.dart';
 import 'src/question/composite_question_source.dart';
 import 'src/question/curriculum_loader.dart';
@@ -111,6 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final WeeklyChallengeStore _weeklyChallengeStore = InMemoryWeeklyChallengeStore();
   WeeklyChallengeRepository? _weeklyChallengeRepository;
 
+  final InventoryStore _inventoryStore = InMemoryInventoryStore();
+  InventorySnapshot _inventorySnapshot = InventorySnapshot.initial;
+
   @override
   void initState() {
     super.initState();
@@ -163,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
       clock: _clock,
       store: _weeklyChallengeStore,
     );
+    final inventorySnapshot = await _inventoryStore.load();
     if (!mounted) return;
     setState(() {
       _curriculum = curriculum;
@@ -174,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _characterSnapshot = characterResult.snapshot;
       _consent = consent;
       _weeklyChallengeRepository = weeklyChallengeRepository;
+      _inventorySnapshot = inventorySnapshot;
     });
     await _refreshMasteredUnits(curriculum.units);
   }
@@ -567,6 +573,30 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => CollectionScreen(snapshot: _characterSnapshot),
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    key: const Key('shopTile'),
+                    leading: CircleAvatar(
+                      backgroundColor: theme.colorScheme.secondaryContainer,
+                      foregroundColor: theme.colorScheme.onSecondaryContainer,
+                      child: const Icon(Icons.storefront),
+                    ),
+                    title: Text(l10n.shopTile),
+                    subtitle: Text(l10n.shopTileSubtitle),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ShopScreen(
+                          growthRepository: _growthRepository!,
+                          inventoryStore: _inventoryStore,
+                          inventory: _inventorySnapshot,
+                          onInventoryChanged: (snapshot) =>
+                              setState(() => _inventorySnapshot = snapshot),
+                        ),
                       ),
                     ),
                   ),
