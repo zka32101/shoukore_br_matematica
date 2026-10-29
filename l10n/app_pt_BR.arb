@@ -669,5 +669,13 @@
   },
   "familyChallengeResultTie": "Empate! Vocês dois aprenderam brincando juntos. 🎉",
   "familyChallengeResultChildWon": "A criança venceu! Parabéns pelo aprendizado em família. 🏆",
-  "familyChallengeResultParentWon": "O responsável venceu desta vez! Tentem de novo juntos. 😄"
+  "familyChallengeResultParentWon": "O responsável venceu desta vez! Tentem de novo juntos. 😄",
+  "mathGuideTile": "Guia de matemática",
+  "mathGuideTileSubtitle": "Como resolver cada tipo de problema",
+  "mathGuideTitle": "Guia de matemática",
+  "mathGuideSectionNumeros": "Números",
+  "mathGuideSectionAlgebra": "Álgebra",
+  "mathGuideSectionGeometria": "Geometria",
+  "mathGuideSectionGrandezas": "Grandezas e Medidas",
+  "mathGuideSectionProbabilidade": "Probabilidade e Estatística"
 }

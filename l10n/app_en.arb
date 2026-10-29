@@ -669,5 +669,13 @@
   },
   "familyChallengeResultTie": "It's a tie! You both learned by playing together. 🎉",
   "familyChallengeResultChildWon": "The child won! Congratulations on learning as a family. 🏆",
-  "familyChallengeResultParentWon": "The parent won this time! Try again together. 😄"
+  "familyChallengeResultParentWon": "The parent won this time! Try again together. 😄",
+  "mathGuideTile": "Math guide",
+  "mathGuideTileSubtitle": "How to solve each type of problem",
+  "mathGuideTitle": "Math guide",
+  "mathGuideSectionNumeros": "Numbers",
+  "mathGuideSectionAlgebra": "Algebra",
+  "mathGuideSectionGeometria": "Geometry",
+  "mathGuideSectionGrandezas": "Quantities and Measurements",
+  "mathGuideSectionProbabilidade": "Probability and Statistics"
 }

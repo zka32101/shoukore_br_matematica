@@ -17,6 +17,7 @@ import 'growth_repository.dart';
 import 'guardian_dialog.dart';
 import 'in_memory_progress_store.dart';
 import 'l10n/app_localizations.dart';
+import 'math_guide_screen.dart';
 import 'question_cache.dart';
 import 'question_screen.dart';
 import 'screen_time_repository.dart';
@@ -568,6 +569,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
+                if (_masteredUnitIds.isNotEmpty)
+                  _RecentBadgesPreview(
+                    key: const Key('recentBadgesPreview'),
+                    units: curriculum.units
+                        .where((u) => _masteredUnitIds.contains(u.id))
+                        .take(4)
+                        .toList(),
+                    labelFor: (unit) => resolveUnitName(l10n, unit.id),
+                    visualFor: _visualForUnit,
+                  ),
+                Card(
+                  child: ListTile(
+                    key: const Key('mathGuideTile'),
+                    leading: CircleAvatar(
+                      backgroundColor: theme.colorScheme.secondaryContainer,
+                      foregroundColor: theme.colorScheme.onSecondaryContainer,
+                      child: const Icon(Icons.menu_book),
+                    ),
+                    title: Text(l10n.mathGuideTile),
+                    subtitle: Text(l10n.mathGuideTileSubtitle),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const MathGuideScreen()),
+                    ),
+                  ),
+                ),
                 _SectionLabel(label: 'Mais da Colecinho!'),
                 const CrossPromoSection(),
                 if (widget.onDisplayLocaleChanged != null) ...[
@@ -695,6 +722,60 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 /// れんぞく・コイン・クリア数を横並びでコンパクトに見せる統計カード行。
+/// JP版の「最近獲得したバッジ」プレビューに相当する、マスター済み単元の
+/// 小さいプレビュー行(最大4枚)。全件はbadgeCollectionTileから見られる。
+class _RecentBadgesPreview extends StatelessWidget {
+  const _RecentBadgesPreview({
+    super.key,
+    required this.units,
+    required this.labelFor,
+    required this.visualFor,
+  });
+
+  final List<Unit> units;
+  final String Function(Unit) labelFor;
+  final (IconData, Color) Function(Unit) visualFor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Row(
+        children: [
+          for (final unit in units)
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Container(
+                  key: Key('recentBadge_${unit.id}'),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: visualFor(unit).$2.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: Colors.amber, width: 1.5),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.emoji_events, size: 20, color: Colors.amber[800]),
+                      const SizedBox(height: 4),
+                      Text(
+                        labelFor(unit),
+                        style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 class _StatsRow extends StatelessWidget {
   const _StatsRow({
     super.key,

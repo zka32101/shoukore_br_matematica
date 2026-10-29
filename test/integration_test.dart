@@ -180,6 +180,19 @@ void main() {
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
 
+      // ホームの算数ガイドタイルから、分野別の解き方ガイド画面に遷移できる。
+      // 既存の解説文言(explanationId)を一覧にして振り返れるようにした画面。
+      await tester.ensureVisible(find.byKey(const Key('mathGuideTile')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('mathGuideTile')));
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('mathGuideCard_explanation_add'), skipOffstage: false),
+        findsOneWidget,
+      );
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
+
       // クロスプロモ: シリーズ最初のアプリのため案内先がまだ無く、
       // 「近日公開」のティーザーが表示される(他アプリが追加されたら
       // 自動でアプリ一覧に切り替わる設計)。
