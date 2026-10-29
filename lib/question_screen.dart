@@ -17,6 +17,7 @@ import 'tts_service.dart';
 import 'unit_name_resolver.dart';
 import 'unit_tally_counter.dart';
 import 'weekly_challenge_repository.dart';
+import 'word_problem_image_resolver.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({
@@ -245,6 +246,27 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     );
                   }),
                 ),
+                // 文章題にイメージ画像があれば表示する(わかりやすいイメージ画像)。
+                // アセットが見つからない環境でも落ちないよう、読み込み失敗時は
+                // 何も表示しない(テキストのみの表示にフォールバック)。
+                if (wordProblemImageAsset(question.params['wordProblemId']) != null)
+                  KeyedSubtree(
+                    key: ValueKey('wordProblemImageSlot_${question.id}'),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.asset(
+                          wordProblemImageAsset(question.params['wordProblemId'])!,
+                          key: const Key('wordProblemImage'),
+                          height: 160,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                        ),
+                      ),
+                    ),
+                  ),
                 // 体験型コンテンツ: 図形問題では、辺を1つずつタップして数える
                 // 補助ウィジェットを表示する(正誤判定は既存の選択肢/ドラッグ&
                 // ドロップが担う。これはあくまで「数える」体験のための見た目)。

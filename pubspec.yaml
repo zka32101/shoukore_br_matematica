@@ -31,3 +31,4 @@ flutter:
   assets:
     - curriculum/pt_BR.json
     - assets/characters/
+    - assets/word_problems/
