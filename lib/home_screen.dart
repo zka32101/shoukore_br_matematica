@@ -801,27 +801,32 @@ class _StatsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // JP版は統計カードごとに無関係な3色相(赤/黄/緑)を使っているが、
+    // BR版は単元カードと同じ方針(アプリの教科色=テーマシード色に統一)に
+    // 合わせ、Material3が1つのシード色から生成する3つのトナルロール
+    // (primary/secondary/tertiary)で区別する。
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       children: [
         _StatCard(
           icon: Icons.local_fire_department,
           value: '$streakDays dias',
           label: 'Sequência',
-          color: const Color(0xFFE74C3C),
+          color: colorScheme.primary,
         ),
         const SizedBox(width: 10),
         _StatCard(
           icon: Icons.monetization_on,
           value: '$coins',
           label: 'Moedas',
-          color: const Color(0xFFFFB81C),
+          color: colorScheme.secondary,
         ),
         const SizedBox(width: 10),
         _StatCard(
           icon: Icons.emoji_events,
           value: '$clearedUnits/$totalUnits',
           label: 'Dominadas',
-          color: const Color(0xFF2ECC71),
+          color: colorScheme.tertiary,
         ),
       ],
     );
