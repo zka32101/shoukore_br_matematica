@@ -145,7 +145,7 @@ void main() {
       expect(find.textContaining('Fase: Ovo'), findsOneWidget);
 
       // 学習ストリーク: 1問回答した時点で1日目のストリークになる。
-      expect(find.textContaining('Sequência: 1 dias'), findsOneWidget);
+      expect(find.textContaining('Sequência: 1 dia'), findsOneWidget);
 
       // ホームに戻って週次レポートを開くと、直前の回答が集計に反映されている。
       await tester.tap(find.byType(BackButton));

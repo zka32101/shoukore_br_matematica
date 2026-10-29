@@ -446,9 +446,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 _ScreenTimeCard(
                   key: const Key('screenTimeStatusTile'),
                   usedMinutes: _screenTimeRepository!.usedToday.inMinutes,
-                  remainingMinutes: _screenTimeGuard
-                      .remaining(_screenTimeRepository!.usedToday)
-                      .inMinutes,
+                  remainingMinutes: _screenTimeGuard.isLimited
+                      ? _screenTimeGuard
+                          .remaining(_screenTimeRepository!.usedToday)
+                          .inMinutes
+                      : null,
                 ),
                 const SizedBox(height: 12),
                 Card(
@@ -832,11 +834,12 @@ class _ScreenTimeCard extends StatelessWidget {
   const _ScreenTimeCard({
     super.key,
     required this.usedMinutes,
-    required this.remainingMinutes,
+    this.remainingMinutes,
   });
 
   final int usedMinutes;
-  final int remainingMinutes;
+  /// 制限なしのときは null。
+  final int? remainingMinutes;
 
   @override
   Widget build(BuildContext context) {
@@ -849,7 +852,9 @@ class _ScreenTimeCard extends StatelessWidget {
           child: const Icon(Icons.schedule),
         ),
         title: Text(
-          AppLocalizations.of(context)!.screenTimeUsed(usedMinutes, remainingMinutes),
+          remainingMinutes == null
+              ? AppLocalizations.of(context)!.screenTimeUsedNoLimit(usedMinutes)
+              : AppLocalizations.of(context)!.screenTimeUsed(usedMinutes, remainingMinutes!),
           style: theme.textTheme.bodyMedium,
         ),
         subtitle: Text(AppLocalizations.of(context)!.screenTimeSubtitle),

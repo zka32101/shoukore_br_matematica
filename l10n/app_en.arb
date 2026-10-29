@@ -54,7 +54,7 @@
   "dataPrivacyCopyJsonButton": "Copy exported content as JSON",
   "dataPrivacyExportCopiedMessage": "Exported content copied to clipboard",
   "explanationSectionTitle": "Explanation",
-  "explanationAdd": "Addition is the operation that joins two or more quantities to form a bigger total. Imagine you have 3 marbles and a friend gives you 5 more: how many do you have now? Just count them all together, 3+5 = 8. Tip: order doesn't matter, 3+5 gives the same result as 5+3!",
+  "explanationAdd": "Addition is the operation that joins two or more quantities to form a bigger total. Here is an example: you have 3 marbles and a friend gives you 5 more. How many do you have now? Just count them all together: 3+5 = 8. Tip: order doesn't matter, 3+5 gives the same result as 5+3!",
   "explanationSubtract": "Subtraction shows how much is left after taking a part away from a total. Imagine you had 8 stickers and gave 3 to a friend: how many were left? 8-3 means \"take 3 away from 8\", and the result is 5. Tip: the result of a subtraction can never be greater than the number you started with.",
   "explanationMultiply": "Multiplication is a quick way to add the same number several times. Instead of adding 3+3+3+3, you can calculate 3×4, which means \"4 groups of 3\", and the result is 12. Think of 4 boxes with 3 balls each: that's 12 balls in total!",
   "explanationDivide": "Division splits a quantity into equal parts. Imagine 12 cookies shared equally among 4 friends: how many does each one get? 12÷4 means \"split 12 into 4 equal parts\", and the result is 3. Tip: multiplication and division are inverse operations — if 4×3=12, then 12÷4=3.",
@@ -285,6 +285,14 @@
     }
   },
   "homeTitle": "Colecinho!Matemática",
+  "screenTimeUsedNoLimit": "Used today: {used} min · No limit",
+  "@screenTimeUsedNoLimit": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      }
+    }
+  },
   "screenTimeUsed": "Used today: {used} min · Remaining: {remaining} min",
   "@screenTimeUsed": {
     "placeholders": {
