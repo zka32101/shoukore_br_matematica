@@ -220,12 +220,16 @@ class _HomeScreenState extends State<HomeScreen> {
   /// 新規所持・レベルアップしたキャラがいれば、お祝いのSnackBarを表示する。
   void _showCharacterCollectionChanges(CharacterCollectionRefreshResult result) {
     if (!result.hasChanges || !mounted) return;
+    final l10n = AppLocalizations.of(context)!;
     final messages = <String>[
       for (final id in result.newlyOwned)
-        'Você conheceu ${_characterById(id).name}!',
+        l10n.characterNewlyOwnedMessage(_characterById(id).name),
       for (final entry in result.leveledUp.entries)
         if (!result.newlyOwned.contains(entry.key))
-          '${_characterById(entry.key).name} evoluiu para ${characterLevelLabels[entry.value]}!',
+          l10n.characterLeveledUpMessage(
+            _characterById(entry.key).name,
+            characterLevelLabel(l10n, entry.value),
+          ),
     ];
     for (final message in messages) {
       ScaffoldMessenger.of(context).showSnackBar(

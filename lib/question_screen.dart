@@ -213,7 +213,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         const SizedBox(height: 4),
                         Text(
                           l10n.questionGrowthStatusLine(
-                            growthStageLabel(widget.growthRepository.stage),
+                            growthStageLabel(l10n, widget.growthRepository.stage),
                             widget.growthRepository.wallet.balance,
                             widget.growthRepository.missionState.completedCount,
                             widget.growthRepository.streak.currentStreakDays,

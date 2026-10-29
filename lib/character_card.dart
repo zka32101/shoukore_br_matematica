@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'character_definition.dart';
 import 'equipped_items.dart';
+import 'l10n/app_localizations.dart';
 import 'shop_catalog.dart';
 
 /// コレクションキャラ1体分の所持状態・育成レベルを表示するカード。
@@ -25,6 +26,7 @@ class CharacterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final owned = level > 0;
     final color = owned ? definition.color : theme.colorScheme.outlineVariant;
     // 未所持のキャラは、画像アセットがあってもネタバレしないようアイコンの
@@ -103,7 +105,7 @@ class CharacterCard extends StatelessWidget {
                     style: theme.textTheme.labelMedium,
                   ),
                   Text(
-                    owned ? characterLevelLabels[level] : '???',
+                    owned ? characterLevelLabel(l10n, level) : '???',
                     style: theme.textTheme.bodySmall,
                   ),
                 ],

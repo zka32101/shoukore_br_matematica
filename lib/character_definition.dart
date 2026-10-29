@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'l10n/app_localizations.dart';
+
 /// ブラジル算数版のコレクションキャラクター定義。
 ///
 /// 1つのeixo（BNCCの学習軸）に複数キャラがいる場合、[order]順に育成対象が
@@ -158,12 +160,20 @@ const characterDefinitions = <CharacterDefinition>[
   ),
 ];
 
-/// 成長段階（Lv1〜5）の表示名。
-const characterLevelLabels = <String>[
-  '',
-  'Ovo',
-  'Filhote',
-  'Jovem',
-  'Adulto',
-  'Lendário',
-];
+/// 成長段階（Lv1〜5）の表示名を引く。
+String characterLevelLabel(AppLocalizations l10n, int level) {
+  switch (level) {
+    case 1:
+      return l10n.growthStageEgg;
+    case 2:
+      return l10n.growthStageBaby;
+    case 3:
+      return l10n.growthStageChild;
+    case 4:
+      return l10n.growthStageAdult;
+    case 5:
+      return l10n.growthStageLegendary;
+    default:
+      return '';
+  }
+}

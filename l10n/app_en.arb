@@ -904,5 +904,29 @@
       }
     }
   },
-  "crossPromoComingSoonText": "Coming soon: more subjects from Colecinho!"
+  "crossPromoComingSoonText": "Coming soon: more subjects from Colecinho!",
+  "growthStageEgg": "Egg",
+  "growthStageBaby": "Hatchling",
+  "growthStageChild": "Young",
+  "growthStageAdult": "Adult",
+  "growthStageLegendary": "Legendary",
+  "characterNewlyOwnedMessage": "You met {name}!",
+  "@characterNewlyOwnedMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "characterLeveledUpMessage": "{name} evolved to {stage}!",
+  "@characterLeveledUpMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "stage": {
+        "type": "String"
+      }
+    }
+  }
 }
