@@ -12,6 +12,7 @@ import 'collection_screen.dart';
 import 'cross_promo_section.dart';
 import 'curriculum_repository.dart';
 import 'data_privacy_screen.dart';
+import 'family_challenge_unit_picker_screen.dart';
 import 'growth_repository.dart';
 import 'guardian_dialog.dart';
 import 'in_memory_progress_store.dart';
@@ -364,6 +365,45 @@ class _HomeScreenState extends State<HomeScreen> {
                   remainingMinutes: _screenTimeGuard
                       .remaining(_screenTimeRepository!.usedToday)
                       .inMinutes,
+                ),
+                const SizedBox(height: 12),
+                Card(
+                  color: theme.colorScheme.tertiaryContainer,
+                  child: ListTile(
+                    key: const Key('familyChallengeTile'),
+                    leading: Icon(
+                      Icons.diversity_3,
+                      color: theme.colorScheme.onTertiaryContainer,
+                    ),
+                    title: Text(
+                      l10n.familyChallengeTile,
+                      style: TextStyle(color: theme.colorScheme.onTertiaryContainer),
+                    ),
+                    subtitle: Text(
+                      l10n.familyChallengeTileSubtitle,
+                      style: TextStyle(color: theme.colorScheme.onTertiaryContainer),
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right,
+                      color: theme.colorScheme.onTertiaryContainer,
+                    ),
+                    onTap: !_entitlement.isUnlocked(curriculum.units.first.subjectId)
+                        ? () => ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.entitlementLockedMessage)),
+                            )
+                        : () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => FamilyChallengeUnitPickerScreen(
+                                  units: curriculum.units,
+                                  source: _source!,
+                                  progressStore: _progressStore,
+                                  growthRepository: _growthRepository!,
+                                  clock: _clock,
+                                  questionCache: _questionCache,
+                                ),
+                              ),
+                            ),
+                  ),
                 ),
                 _SectionLabel(label: 'Escolha uma unidade'),
                 LayoutBuilder(

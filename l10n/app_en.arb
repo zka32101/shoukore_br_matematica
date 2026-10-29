@@ -628,5 +628,38 @@
   "listenButtonLabel": "Listen",
   "languageTile": "Language",
   "languageDialogTitle": "Choose a language",
-  "settingsGeneralSection": "General"
+  "settingsGeneralSection": "General",
+  "familyChallengeTile": "Family Challenge",
+  "familyChallengeTileSubtitle": "Play together with your child!",
+  "familyChallengeTitle": "Family Challenge",
+  "familyChallengePickUnitBody": "Choose a unit to play together with your child. You'll take turns answering 5 questions each!",
+  "familyChallengeRoundLabel": "Round {round} of {total}",
+  "@familyChallengeRoundLabel": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "familyChallengeChildTurn": "Child's turn",
+  "familyChallengeParentTurn": "Parent's turn",
+  "familyChallengeNextButton": "Next",
+  "familyChallengeFinishButton": "Finish",
+  "familyChallengeResultScore": "Child: {childScore}/5 · Parent: {parentScore}/5",
+  "@familyChallengeResultScore": {
+    "placeholders": {
+      "childScore": {
+        "type": "int"
+      },
+      "parentScore": {
+        "type": "int"
+      }
+    }
+  },
+  "familyChallengeResultTie": "It's a tie! You both learned by playing together. 🎉",
+  "familyChallengeResultChildWon": "The child won! Congratulations on learning as a family. 🏆",
+  "familyChallengeResultParentWon": "The parent won this time! Try again together. 😄"
 }

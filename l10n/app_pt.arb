@@ -628,5 +628,38 @@
   "listenButtonLabel": "Ouvir",
   "languageTile": "Idioma",
   "languageDialogTitle": "Escolha o idioma",
-  "settingsGeneralSection": "Geral"
+  "settingsGeneralSection": "Geral",
+  "familyChallengeTile": "Desafio em Família",
+  "familyChallengeTileSubtitle": "Jogue junto com seu filho(a)!",
+  "familyChallengeTitle": "Desafio em Família",
+  "familyChallengePickUnitBody": "Escolha uma unidade para brincar junto com seu filho(a). Vocês vão se alternar respondendo 5 perguntas cada!",
+  "familyChallengeRoundLabel": "Rodada {round} de {total}",
+  "@familyChallengeRoundLabel": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "familyChallengeChildTurn": "Vez da criança",
+  "familyChallengeParentTurn": "Vez do responsável",
+  "familyChallengeNextButton": "Próximo",
+  "familyChallengeFinishButton": "Concluir",
+  "familyChallengeResultScore": "Criança: {childScore}/5 · Responsável: {parentScore}/5",
+  "@familyChallengeResultScore": {
+    "placeholders": {
+      "childScore": {
+        "type": "int"
+      },
+      "parentScore": {
+        "type": "int"
+      }
+    }
+  },
+  "familyChallengeResultTie": "Empate! Vocês dois aprenderam brincando juntos. 🎉",
+  "familyChallengeResultChildWon": "A criança venceu! Parabéns pelo aprendizado em família. 🏆",
+  "familyChallengeResultParentWon": "O responsável venceu desta vez! Tentem de novo juntos. 😄"
 }

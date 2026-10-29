@@ -304,6 +304,54 @@ void main() {
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
+
+      // 「親も交わって遊びながら学べる機能」(CLAUDE.md共通要件): ホームの
+      // ファミリーチャレンジタイルから単元を選び、子ども→保護者の交代で
+      // 5問分遊べることを確認する。
+      await tester.ensureVisible(find.byKey(const Key('familyChallengeTile')));
+      await tester.tap(find.byKey(const Key('familyChallengeTile')));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('familyChallengeUnitOption_mat_numeros_1')));
+      await tester.pumpAndSettle();
+
+      for (var round = 0; round < 5; round++) {
+        // 子どもの番→保護者の番、1ラウンドにつき2回答する。
+        for (var turn = 0; turn < 2; turn++) {
+          expect(find.byKey(const Key('familyChallengeTurnChip')), findsOneWidget);
+          expect(
+            find.byKey(const Key('familyChallengePromptText'), skipOffstage: false),
+            findsOneWidget,
+          );
+          final familyChoiceButtons = find.byKey(
+            const Key('familyChallengeNextButton'),
+            skipOffstage: false,
+          );
+          expect(familyChoiceButtons, findsNothing);
+
+          final choiceButton = find.byWidgetPredicate(
+            (widget) =>
+                widget is ElevatedButton &&
+                widget.key is ValueKey<String> &&
+                (widget.key as ValueKey<String>).value.startsWith('familyChallengeChoice_'),
+          );
+          expect(choiceButton, findsWidgets);
+          await tester.tap(choiceButton.first);
+          await tester.pumpAndSettle();
+
+          expect(find.byKey(const Key('familyChallengeFeedbackText')), findsOneWidget);
+          await tester.tap(find.byKey(const Key('familyChallengeNextButton')));
+          await tester.pumpAndSettle();
+        }
+      }
+
+      expect(find.byKey(const Key('familyChallengeResultText')), findsOneWidget);
+      expect(find.byKey(const Key('familyChallengeResultMessage')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('familyChallengeFinishButton')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
     },
   );
 }
