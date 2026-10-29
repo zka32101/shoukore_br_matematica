@@ -40,6 +40,12 @@ void main() {
       await tester.tap(find.byKey(const Key('onboardingAgeGateConfirmButton')));
       await tester.pumpAndSettle();
 
+      // 回答前は「もう一度」の文言を出さない。不正解を選んだときだけ出す。
+      expect(find.byKey(const Key('onboardingQuizFeedbackText')), findsNothing);
+      await tester.tap(find.byKey(const Key('onboardingQuizChoice_4')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('onboardingQuizFeedbackText')), findsOneWidget);
+
       // Ahaモーメント: 最初の1問は必ず正解できる固定問題（2+3=5）。
       await tester.tap(find.byKey(const Key('onboardingQuizChoice_5')));
       await tester.pumpAndSettle();

@@ -49,6 +49,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final PageController _pageController = PageController();
   bool _quizCorrect = false;
+  bool _quizAnswered = false;
 
   @override
   void dispose() {
@@ -90,7 +91,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             _AhaQuizPage(
               l10n: l10n,
               correct: _quizCorrect,
+              answered: _quizAnswered,
               onAnswered: (correct) => setState(() {
+                _quizAnswered = true;
                 _quizCorrect = _ahaTracker.reachedOnThisAnswer(
                   alreadyReached: _quizCorrect,
                   correct: correct,
@@ -309,12 +312,14 @@ class _AhaQuizPage extends StatelessWidget {
   const _AhaQuizPage({
     required this.l10n,
     required this.correct,
+    required this.answered,
     required this.onAnswered,
     required this.onContinue,
   });
 
   final AppLocalizations l10n;
   final bool correct;
+  final bool answered;
   final ValueChanged<bool> onAnswered;
   final VoidCallback onContinue;
 
@@ -392,7 +397,7 @@ class _AhaQuizPage extends StatelessWidget {
               onPressed: onContinue,
               child: Text(l10n.onboardingQuizContinueButton),
             ),
-          ] else
+          ] else if (answered)
             Text(
               l10n.onboardingQuizIncorrectFeedback,
               key: const Key('onboardingQuizFeedbackText'),
