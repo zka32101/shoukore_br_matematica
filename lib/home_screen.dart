@@ -298,19 +298,28 @@ class _HomeScreenState extends State<HomeScreen> {
     return ScreenTimeGuard(effectiveProfile);
   }
 
-  static const _eixoVisual = <String, (IconData, Color)>{
-    'numeros': (Icons.numbers, Colors.indigo),
-    'algebra': (Icons.functions, Colors.deepPurple),
-    'geometria': (Icons.change_history, Colors.teal),
-    'grandezas': (Icons.straighten, Colors.orange),
-    'probabilidade': (Icons.bar_chart, Colors.pink),
+  // eixo(分野)ごとに別々の色相を使うと、算数という1教科のまとまりが
+  // 見えにくい。教科色(アプリのテーマシード色=算数の教科色)を基準に、
+  // 明度だけを変えたトーンのパレットに統一する。
+  static const _eixoIcons = <String, IconData>{
+    'numeros': Icons.numbers,
+    'algebra': Icons.functions,
+    'geometria': Icons.change_history,
+    'grandezas': Icons.straighten,
+    'probabilidade': Icons.bar_chart,
   };
+  static const _eixoOrder = ['numeros', 'algebra', 'geometria', 'grandezas', 'probabilidade'];
 
-  (IconData, Color) _visualForUnit(Unit unit) {
-    for (final entry in _eixoVisual.entries) {
-      if (unit.id.contains(entry.key)) return entry.value;
+  (IconData, Color) _visualForUnit(Unit unit, Color subjectColor) {
+    final hsl = HSLColor.fromColor(subjectColor);
+    for (var i = 0; i < _eixoOrder.length; i++) {
+      final key = _eixoOrder[i];
+      if (unit.id.contains(key)) {
+        final lightness = 0.32 + (i * 0.11);
+        return (_eixoIcons[key]!, hsl.withLightness(lightness.clamp(0.0, 1.0)).toColor());
+      }
     }
-    return (Icons.menu_book_outlined, Colors.blueGrey);
+    return (Icons.menu_book_outlined, subjectColor);
   }
 
   /// 単元タップ時の共通処理（単元カード・クイックスタートカードの両方で使う）。
@@ -510,8 +519,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         unitKey: Key('unit_${unit.id}'),
                         label: resolveUnitName(l10n, unit.id),
                         grade: unit.grade,
-                        icon: _visualForUnit(unit).$1,
-                        color: _visualForUnit(unit).$2,
+                        icon: _visualForUnit(unit, theme.colorScheme.primary).$1,
+                        color: _visualForUnit(unit, theme.colorScheme.primary).$2,
                         locked: !_isUnitUnlocked(unit),
                         mastered: _masteredUnitIds.contains(unit.id),
                         onTap: () => _openUnit(context, l10n, unit),
@@ -577,7 +586,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         .take(4)
                         .toList(),
                     labelFor: (unit) => resolveUnitName(l10n, unit.id),
-                    visualFor: _visualForUnit,
+                    visualFor: (unit) => _visualForUnit(unit, theme.colorScheme.primary),
                   ),
                 Card(
                   child: ListTile(
