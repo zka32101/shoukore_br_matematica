@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 
+import 'answer_feedback_animation.dart';
 import 'dataset_bar_chart.dart';
 import 'explanation_resolver.dart';
 import 'growth_repository.dart';
@@ -62,6 +63,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   String? _misconceptionHint;
   bool _autoHintVisible = false;
   bool _consecutiveIncorrectAlertShown = false;
+  int _answerAttemptSequence = 0;
 
   @override
   void initState() {
@@ -158,6 +160,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
       _mastery = mastery;
       _overcomeMisconception = overcome ? topMisconception : null;
       _misconceptionHint = misconceptionHint;
+      _answerAttemptSequence++;
     });
   }
 
@@ -432,31 +435,35 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 ),
                 if (_feedback != null) ...[
                   const SizedBox(height: 20),
-                  Card(
-                    color: correct
-                        ? theme.colorScheme.primaryContainer
-                        : theme.colorScheme.errorContainer,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Icon(
-                            correct ? Icons.check_circle : Icons.cancel,
-                            color: correct
-                                ? theme.colorScheme.onPrimaryContainer
-                                : theme.colorScheme.onErrorContainer,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            correct ? l10n.questionFeedbackCorrect : l10n.questionFeedbackIncorrect,
-                            key: const Key('feedbackText'),
-                            style: theme.textTheme.titleMedium?.copyWith(
+                  AnswerFeedbackAnimation(
+                    key: ValueKey('answerFeedbackAnimation_$_answerAttemptSequence'),
+                    correct: correct,
+                    child: Card(
+                      color: correct
+                          ? theme.colorScheme.primaryContainer
+                          : theme.colorScheme.errorContainer,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            Icon(
+                              correct ? Icons.check_circle : Icons.cancel,
                               color: correct
                                   ? theme.colorScheme.onPrimaryContainer
                                   : theme.colorScheme.onErrorContainer,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 8),
+                            Text(
+                              correct ? l10n.questionFeedbackCorrect : l10n.questionFeedbackIncorrect,
+                              key: const Key('feedbackText'),
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: correct
+                                    ? theme.colorScheme.onPrimaryContainer
+                                    : theme.colorScheme.onErrorContainer,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
