@@ -12,6 +12,7 @@ import 'age_gate_dialog.dart';
 import 'badge_collection_screen.dart';
 import 'character_collection_repository.dart';
 import 'character_definition.dart';
+import 'character_growth_celebration_dialog.dart';
 import 'collection_screen.dart';
 import 'cross_promo_section.dart';
 import 'curriculum_repository.dart';
@@ -234,30 +235,29 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// 新規所持・レベルアップしたキャラがいれば、お祝いのSnackBarを表示する。
-  void _showCharacterCollectionChanges(
+  /// 新規所持・レベルアップしたキャラがいれば、専用ダイアログで1体ずつ
+  /// 祝う(以前はSnackBarのみだったが、「やった感」をさらに強めるため
+  /// キャラ画像・星の演出付きの専用画面にした)。
+  Future<void> _showCharacterCollectionChanges(
     CharacterCollectionRefreshResult result,
-  ) {
+  ) async {
     if (!result.hasChanges || !mounted) return;
-    final l10n = AppLocalizations.of(context)!;
-    final messages = <String>[
+    final celebrations = <CharacterGrowthCelebration>[
       for (final id in result.newlyOwned)
-        l10n.characterNewlyOwnedMessage(_characterById(id).name),
+        CharacterGrowthCelebration(
+          character: _characterById(id),
+          level: result.snapshot.levelByCharacterId[id] ?? 1,
+          newlyOwned: true,
+        ),
       for (final entry in result.leveledUp.entries)
         if (!result.newlyOwned.contains(entry.key))
-          l10n.characterLeveledUpMessage(
-            _characterById(entry.key).name,
-            characterLevelLabel(l10n, entry.value),
+          CharacterGrowthCelebration(
+            character: _characterById(entry.key),
+            level: entry.value,
+            newlyOwned: false,
           ),
     ];
-    for (final message in messages) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          key: const Key('characterCollectionChangeSnackBar'),
-          content: Text(message),
-        ),
-      );
-    }
+    await showCharacterGrowthCelebrations(context, celebrations);
   }
 
   CharacterDefinition _characterById(String id) =>

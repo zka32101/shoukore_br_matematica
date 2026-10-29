@@ -909,25 +909,6 @@
   "growthStageChild": "Young",
   "growthStageAdult": "Adult",
   "growthStageLegendary": "Legendary",
-  "characterNewlyOwnedMessage": "You met {name}!",
-  "@characterNewlyOwnedMessage": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "characterLeveledUpMessage": "{name} evolved to {stage}!",
-  "@characterLeveledUpMessage": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "stage": {
-        "type": "String"
-      }
-    }
-  },
   "bottomNavHome": "Home",
   "bottomNavCollection": "Collection",
   "bottomNavShop": "Shop",
@@ -962,5 +943,8 @@
       }
     }
   },
-  "explanationBonusCoinsCapReachedMessage": "You've reached today's bonus coin limit. Come back tomorrow!"
+  "explanationBonusCoinsCapReachedMessage": "You've reached today's bonus coin limit. Come back tomorrow!",
+  "characterCelebrationNewlyOwnedTitle": "New friend!",
+  "characterCelebrationLeveledUpTitle": "Leveled up!",
+  "characterCelebrationContinueButton": "Continue"
 }

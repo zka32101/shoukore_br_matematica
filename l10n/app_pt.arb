@@ -910,25 +910,6 @@
   "growthStageChild": "Jovem",
   "growthStageAdult": "Adulto",
   "growthStageLegendary": "Lendário",
-  "characterNewlyOwnedMessage": "Você conheceu {name}!",
-  "@characterNewlyOwnedMessage": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "characterLeveledUpMessage": "{name} evoluiu para {stage}!",
-  "@characterLeveledUpMessage": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "stage": {
-        "type": "String"
-      }
-    }
-  },
   "bottomNavHome": "Início",
   "bottomNavCollection": "Coleção",
   "bottomNavShop": "Loja",
@@ -963,5 +944,8 @@
       }
     }
   },
-  "explanationBonusCoinsCapReachedMessage": "Você já atingiu o limite diário de moedas bônus. Volte amanhã!"
+  "explanationBonusCoinsCapReachedMessage": "Você já atingiu o limite diário de moedas bônus. Volte amanhã!",
+  "characterCelebrationNewlyOwnedTitle": "Novo amigo!",
+  "characterCelebrationLeveledUpTitle": "Evoluiu!",
+  "characterCelebrationContinueButton": "Continuar"
 }

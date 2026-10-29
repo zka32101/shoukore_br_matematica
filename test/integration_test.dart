@@ -3,6 +3,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shoukore_br_matematica/main.dart';
 
+/// キャラの新規所持・レベルアップがあると、ホームに戻った際に専用の
+/// お祝いダイアログ(barrierDismissible:false)が表示され、後続の操作を
+/// ブロックする。複数体同時に変化すると1体ずつ順番に出るため、
+/// 無くなるまで「Continuar」を押し続けて確実に閉じる。
+Future<void> dismissCharacterGrowthCelebrations(WidgetTester tester) async {
+  final continueButton = find.byKey(
+    const Key('characterGrowthCelebrationContinueButton'),
+  );
+  while (continueButton.evaluate().isNotEmpty) {
+    await tester.tap(continueButton);
+    await tester.pumpAndSettle();
+  }
+}
+
 void main() {
   // flutter_testの既定バインディングにはClipboardチャンネルのモックが無く、
   // Clipboard.setDataを呼ぶと応答が返らずハングする。テスト環境専用のモックを登録する。
@@ -200,6 +214,10 @@ void main() {
       // ホームに戻って週次レポートを開くと、直前の回答が集計に反映されている。
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
+      // 初回正解でキャラの新規所持が発生し、お祝いダイアログが割り込むため
+      // 先に閉じる(ブロッキングダイアログなので、閉じないと後続のタップが
+      // 効かない)。
+      await dismissCharacterGrowthCelebrations(tester);
 
       // ホームにもgrowth状態タイルが表示され、出題画面と状態を共有している。
       await tester.ensureVisible(find.byKey(const Key('growthStatusTile')));
@@ -305,6 +323,9 @@ void main() {
 
         await tester.tap(find.byType(BackButton));
         await tester.pumpAndSettle();
+        // 他のeixoも初回正解でそのeixoのキャラが新規所持になるため、
+        // 毎回お祝いダイアログを閉じてから次へ進む。
+        await dismissCharacterGrowthCelebrations(tester);
         await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
         await tester.pumpAndSettle();
       }
