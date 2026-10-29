@@ -54,7 +54,7 @@
   "dataPrivacyCopyJsonButton": "Copiar conteúdo exportado como JSON",
   "dataPrivacyExportCopiedMessage": "Conteúdo exportado copiado para a área de transferência",
   "explanationSectionTitle": "Explicação",
-  "explanationAdd": "A soma é a operação que junta duas ou mais quantidades para formar um total maior. Imagine que você tem 3 bolinhas de gude e um amigo te dá mais 5: quantas você tem agora? Basta contar todas juntas, 3+5 = 8. Dica: não importa a ordem, 3+5 dá o mesmo resultado que 5+3!",
+  "explanationAdd": "A soma é a operação que junta duas ou mais quantidades para formar um total maior. Veja um exemplo: você tem 3 bolinhas de gude e um amigo te dá mais 5. Quantas você tem agora? Basta contar todas juntas: 3+5 = 8. Dica: não importa a ordem, 3+5 dá o mesmo resultado que 5+3!",
   "explanationSubtract": "A subtração mostra quanto resta depois de tirar uma parte de um total. Imagine que você tinha 8 figurinhas e deu 3 para um amigo: quantas sobraram? 8-3 significa \"de 8, tire 3\", e o resultado é 5. Dica: o resultado da subtração nunca pode ser maior que o número de onde você começou.",
   "explanationMultiply": "A multiplicação é um jeito rápido de somar o mesmo número várias vezes. Em vez de somar 3+3+3+3, você pode calcular 3×4, que significa \"4 grupos de 3\", e o resultado é 12. Pense em 4 caixas com 3 bolas cada: no total são 12 bolas!",
   "explanationDivide": "A divisão separa uma quantidade em partes iguais. Imagine 12 biscoitos divididos igualmente entre 4 amigos: quantos cada um recebe? 12÷4 significa \"separar 12 em 4 partes iguais\", e o resultado é 3. Dica: multiplicação e divisão são operações inversas — se 4×3=12, então 12÷4=3.",
@@ -285,6 +285,14 @@
     }
   },
   "homeTitle": "Colecinho!Matemática",
+  "screenTimeUsedNoLimit": "Usado hoje: {used} min · Sem limite",
+  "@screenTimeUsedNoLimit": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      }
+    }
+  },
   "screenTimeUsed": "Usado hoje: {used} min · Restam: {remaining} min",
   "@screenTimeUsed": {
     "placeholders": {
@@ -543,7 +551,7 @@
       }
     }
   },
-  "questionGrowthStatusLine": "Fase: {stage} · Moedas: {coins} · Missões: {missions} · Sequência: {streak} dias",
+  "questionGrowthStatusLine": "Fase: {stage} · Moedas: {coins} · Missões: {missions} · Sequência: {streak, plural, =1{1 dia} other{{streak} dias}}",
   "@questionGrowthStatusLine": {
     "placeholders": {
       "stage": {
