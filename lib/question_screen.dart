@@ -63,6 +63,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
   Question? _question;
   Mastery? _mastery;
   String? _feedback;
+  // 回答後、選んだ選択肢を強調表示するために保持する(正誤判定自体は
+  // コア側のcheckAnswerが行うが、見た目の色分けにはどれを選んだかが要る)。
+  String? _lastChosenId;
   String? _overcomeMisconception;
   String? _misconceptionHint;
   bool _autoHintVisible = false;
@@ -92,6 +95,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
       _question = question;
       _mastery = mastery;
       _feedback = null;
+      _lastChosenId = null;
       _misconceptionHint = null;
       _autoHintVisible = _autoHintPolicy.shouldShowHint(mastery);
     });
@@ -161,6 +165,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
     setState(() {
       _feedback = correct ? 'correct' : 'incorrect';
+      _lastChosenId = chosenId;
       _mastery = mastery;
       _overcomeMisconception = overcome ? topMisconception : null;
       _misconceptionHint = misconceptionHint;
@@ -235,25 +240,45 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       question,
                     );
                     if (prompt == null) return const SizedBox.shrink();
+                    // JP版と同様、問題文は白背景・影付きの丸みカードに大きく
+                    // 中央揃えで表示する(「わかりやすい丁寧な解説」要件に合わせ、
+                    // 問題文自体の視認性を高める)。
                     return Padding(
                       padding: const EdgeInsets.only(top: 16),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Text(
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surface,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.05),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
                               prompt,
                               key: const Key('questionPromptText'),
-                              style: theme.textTheme.headlineSmall,
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                height: 1.4,
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            key: const Key('listenPromptButton'),
-                            tooltip: AppLocalizations.of(context)!.listenButtonLabel,
-                            icon: const Icon(Icons.volume_up_outlined),
-                            onPressed: () => _ttsService.speak(prompt),
-                          ),
-                        ],
+                            const SizedBox(height: 4),
+                            IconButton(
+                              key: const Key('listenPromptButton'),
+                              tooltip: AppLocalizations.of(context)!.listenButtonLabel,
+                              icon: const Icon(Icons.volume_up_outlined),
+                              onPressed: () => _ttsService.speak(prompt),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   }),
@@ -419,49 +444,45 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
+                // JP版と同様、選択肢は横一列ではなく縦に並ぶ大きな丸みカード
+                // にする(タップ面積を確保し、低年齢児でも押しやすくする)。
+                // 正誤が分かった後は選んだ肢と正解の肢を色分けして表示する
+                // (JP版の「選んだ誤答=強調/正解=緑」の見せ方を踏襲)。
+                Column(
                   children: [
                     for (final choice in question.choices)
-                      Draggable<String>(
-                        key: Key('choiceDraggable_$choice'),
-                        data: choice,
-                        feedback: Material(
-                          color: Colors.transparent,
-                          child: SizedBox(
-                            width: 140,
-                            height: 56,
-                            child: ElevatedButton(
-                              onPressed: null,
-                              style: ElevatedButton.styleFrom(
-                                textStyle: theme.textTheme.titleMedium,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Draggable<String>(
+                          key: Key('choiceDraggable_$choice'),
+                          data: choice,
+                          feedback: Material(
+                            color: Colors.transparent,
+                            child: SizedBox(
+                              width: 200,
+                              child: _ChoiceCard(
+                                label: choice,
+                                state: _ChoiceState.unanswered,
+                                onTap: null,
                               ),
-                              child: Text(choice),
                             ),
                           ),
-                        ),
-                        childWhenDragging: SizedBox(
-                          width: 140,
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: null,
-                            style: ElevatedButton.styleFrom(
-                              textStyle: theme.textTheme.titleMedium,
-                            ),
-                            child: Text(choice),
+                          childWhenDragging: _ChoiceCard(
+                            label: choice,
+                            state: _ChoiceState.unanswered,
+                            onTap: null,
                           ),
-                        ),
-                        child: SizedBox(
-                          width: 140,
-                          height: 56,
-                          child: ElevatedButton(
-                            key: Key('choice_$choice'),
-                            onPressed: () => _answer(choice),
-                            style: ElevatedButton.styleFrom(
-                              textStyle: theme.textTheme.titleMedium,
-                            ),
-                            child: Text(choice),
+                          child: _ChoiceCard(
+                            choiceKey: Key('choice_$choice'),
+                            label: choice,
+                            state: _feedback == null
+                                ? _ChoiceState.unanswered
+                                : choice == question.answer
+                                    ? _ChoiceState.correct
+                                    : choice == _lastChosenId
+                                        ? _ChoiceState.incorrectSelected
+                                        : _ChoiceState.disabled,
+                            onTap: _feedback == null ? () => _answer(choice) : null,
                           ),
                         ),
                       ),
@@ -487,13 +508,15 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                   : theme.colorScheme.onErrorContainer,
                             ),
                             const SizedBox(width: 8),
-                            Text(
-                              correct ? l10n.questionFeedbackCorrect : l10n.questionFeedbackIncorrect,
-                              key: const Key('feedbackText'),
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                color: correct
-                                    ? theme.colorScheme.onPrimaryContainer
-                                    : theme.colorScheme.onErrorContainer,
+                            Expanded(
+                              child: Text(
+                                correct ? l10n.questionFeedbackCorrect : l10n.questionFeedbackIncorrect,
+                                key: const Key('feedbackText'),
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  color: correct
+                                      ? theme.colorScheme.onPrimaryContainer
+                                      : theme.colorScheme.onErrorContainer,
+                                ),
                               ),
                             ),
                           ],
@@ -622,6 +645,89 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 ),
               ],
             ),
+      ),
+    );
+  }
+}
+
+enum _ChoiceState { unanswered, correct, incorrectSelected, disabled }
+
+/// JP版と同様の、縦に並ぶ大きな丸みのある選択肢カード。アプリの単一シード色
+/// 方針(primary/secondary/tertiaryのトーンで統一)に沿い、固定の色相を
+/// 追加するのではなくテーマのロールで状態を表す
+/// (正解=primaryContainer、選んだ誤答=errorContainer)。
+class _ChoiceCard extends StatelessWidget {
+  const _ChoiceCard({
+    this.choiceKey,
+    required this.label,
+    required this.state,
+    required this.onTap,
+  });
+
+  final Key? choiceKey;
+  final String label;
+  final _ChoiceState state;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    Color background;
+    Color border;
+    Color text;
+    switch (state) {
+      case _ChoiceState.unanswered:
+        background = theme.colorScheme.surface;
+        border = theme.colorScheme.outlineVariant;
+        text = theme.colorScheme.onSurface;
+      case _ChoiceState.correct:
+        background = theme.colorScheme.primaryContainer;
+        border = theme.colorScheme.primary;
+        text = theme.colorScheme.onPrimaryContainer;
+      case _ChoiceState.incorrectSelected:
+        background = theme.colorScheme.errorContainer;
+        border = theme.colorScheme.error;
+        text = theme.colorScheme.onErrorContainer;
+      case _ChoiceState.disabled:
+        background = theme.colorScheme.surface;
+        border = theme.colorScheme.outlineVariant.withValues(alpha: 0.5);
+        text = theme.colorScheme.onSurfaceVariant;
+    }
+    // Draggableの子として使うため、素のGestureDetectorではなく
+    // ElevatedButtonと同じMaterial+InkWell構成にする(ジェスチャーアリーナで
+    // ドラッグ認識と確実に共存させるため)。
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        key: choiceKey,
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+          decoration: BoxDecoration(
+            color: background,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: border, width: 2),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.03),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: text,
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -25,6 +25,16 @@ void main() {
   testWidgets(
     'shoukore_br_matematica 結合確認: 出題採点・保護者ゲート・レポート',
     (tester) async {
+      // 選択肢カードがJP版同様に縦に並ぶ大きな丸みカードになり、出題画面の
+      // 縦幅が大きく伸びた。既定のテストビューポートのままだと、Sliverの
+      // 遅延レイアウト(CLAUDE.md記載の既知の罠)でスクロール位置によって
+      // 要素が見つからなくなることがあるため、ビューポート自体を縦に
+      // 広げて実質スクロール不要な状態で検証する。
+      tester.view.physicalSize = const Size(400, 3000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
       await tester.pumpWidget(const ShoukoreBrMatematicaApp());
       await tester.pumpAndSettle();
 
@@ -147,7 +157,12 @@ void main() {
       // 文章題の出題文が長くなることがあり、小さいテストビューポートでは
       // 選択肢ボタンが画面外に出てタップが当たらないことがあるため、
       // ensureVisibleで確実にスクロールしてから操作する。
-      final choiceButtons = find.byType(ElevatedButton, skipOffstage: false);
+      final choiceButtons = find.byWidgetPredicate(
+        (widget) =>
+            widget.key is ValueKey<String> &&
+            (widget.key as ValueKey<String>).value.startsWith('choice_'),
+        skipOffstage: false,
+      );
       expect(choiceButtons, findsWidgets);
       await tester.ensureVisible(choiceButtons.first);
       await tester.pumpAndSettle();
@@ -279,7 +294,12 @@ void main() {
         // シナリオ付きの出題文は長くなることがあり、小さいテストビューポートでは
         // 選択肢ボタンが画面外に出てタップが当たらないことがあるため、
         // ensureVisibleで確実にスクロールしてから操作する。
-        final otherChoiceButtons = find.byType(ElevatedButton, skipOffstage: false);
+        final otherChoiceButtons = find.byWidgetPredicate(
+          (widget) =>
+              widget.key is ValueKey<String> &&
+              (widget.key as ValueKey<String>).value.startsWith('choice_'),
+          skipOffstage: false,
+        );
         expect(otherChoiceButtons, findsWidgets);
         await tester.ensureVisible(otherChoiceButtons.first);
         await tester.pumpAndSettle();

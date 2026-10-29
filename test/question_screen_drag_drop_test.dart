@@ -35,6 +35,15 @@ class _FixedQuestionSource implements QuestionSource {
 
 void main() {
   testWidgets('選択肢をドラッグして回答エリアにドロップすると正誤判定される', (tester) async {
+    // 選択肢カードがJP版同様に縦に並ぶ大きな丸みカードになり縦幅が伸びたため、
+    // 既定のテストビューポートでは全項目がスクロールなしで収まらない。
+    // ビューポート自体を縦に広げ、ドラッグ元・ドロップ先とも常に実際に
+    // レイアウトされた状態でgetCenterできるようにする。
+    tester.view.physicalSize = const Size(400, 2400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     final growthRepository = await GrowthRepository.load(
       clock: const SystemClock(),
       profile: const RegionalProfile(

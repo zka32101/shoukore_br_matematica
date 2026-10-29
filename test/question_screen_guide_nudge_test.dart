@@ -36,6 +36,15 @@ class _AlwaysWrongQuestionSource implements QuestionSource {
 
 void main() {
   testWidgets('不正解時は教科書解説への導線が表示され、タップするとMathGuideScreenが開く', (tester) async {
+    // 選択肢カードがJP版同様に縦に並ぶ大きな丸みカードになり縦幅が伸びたため、
+    // 既定のテストビューポートでは全項目がスクロールなしで収まらない。
+    // スクロール操作に頼ると遅延レイアウトの罠(CLAUDE.md記載)を踏みやすいため、
+    // ここではビューポート自体を縦に広げて全項目を一度に描画させる。
+    tester.view.physicalSize = const Size(400, 2400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     final growthRepository = await GrowthRepository.load(
       clock: const SystemClock(),
       profile: const RegionalProfile(
@@ -79,7 +88,15 @@ void main() {
       findsNothing,
     );
 
-    await tester.ensureVisible(find.byKey(const Key('choice_3'), skipOffstage: false));
+    // 選択肢カードがJP版同様に縦に並ぶ大きな丸みカードになったことで
+    // 縦幅が伸び、小さいテストビューポートではensureVisibleだけでは
+    // スクロールしきれないことがあるため、scrollUntilVisibleを使う。
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('choice_3'), skipOffstage: false),
+      200,
+      scrollable: find.byType(Scrollable),
+    );
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('choice_3'), skipOffstage: false));
     await tester.pumpAndSettle();
 
