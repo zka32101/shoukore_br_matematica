@@ -823,5 +823,13 @@
       }
     }
   },
-  "dragDropTargetLabel": "Drag your answer here!"
+  "dragDropTargetLabel": "Drag your answer here!",
+  "shapeTapCounterLabel": "You counted {count} side(s)! Tap each point on the shape.",
+  "@shapeTapCounterLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

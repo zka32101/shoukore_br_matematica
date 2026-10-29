@@ -82,6 +82,7 @@ class GeometryQuestionSource implements QuestionSource {
       params: {
         'shapeNameKey': template.shapeNameKey,
         'questionKind': template.questionKind.name,
+        'sides': template.sides.toString(),
         if (template.scenarioId.isNotEmpty) 'scenarioId': template.scenarioId,
       },
     );

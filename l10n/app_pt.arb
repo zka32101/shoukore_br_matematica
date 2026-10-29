@@ -824,5 +824,13 @@
       }
     }
   },
-  "dragDropTargetLabel": "Arraste sua resposta até aqui!"
+  "dragDropTargetLabel": "Arraste sua resposta até aqui!",
+  "shapeTapCounterLabel": "Você contou {count} lado(s)! Toque em cada ponto da figura.",
+  "@shapeTapCounterLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

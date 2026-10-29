@@ -8,6 +8,7 @@ import 'l10n/app_localizations.dart';
 import 'misconception_hint_resolver.dart';
 import 'question_cache.dart';
 import 'question_prompt_resolver.dart';
+import 'shape_tap_counter.dart';
 import 'tts_service.dart';
 import 'unit_name_resolver.dart';
 import 'weekly_challenge_repository.dart';
@@ -237,6 +238,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     );
                   }),
                 ),
+                // 体験型コンテンツ: 図形問題では、辺を1つずつタップして数える
+                // 補助ウィジェットを表示する(正誤判定は既存の選択肢/ドラッグ&
+                // ドロップが担う。これはあくまで「数える」体験のための見た目)。
+                if (question.params.containsKey('sides'))
+                  KeyedSubtree(
+                    key: ValueKey('shapeTapCounterSlot_${question.id}'),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: ShapeTapCounter(
+                        sides: int.parse(question.params['sides']!),
+                      ),
+                    ),
+                  ),
                 if (_autoHintVisible && question.explanationId.isNotEmpty)
                   KeyedSubtree(
                     key: const ValueKey('autoHintSlot'),
