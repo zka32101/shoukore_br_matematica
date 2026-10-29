@@ -696,7 +696,6 @@
   "shopTitle": "Shop",
   "shopBalanceLabel": "Your coins",
   "shopBuyButton": "Buy",
-  "shopOwnedLabel": "Owned",
   "shopInsufficientCoinsMessage": "Not enough coins for this item",
   "shopPurchaseSuccessMessage": "Item purchased!",
   "shopItemHatCalculator": "Calculator hat",

@@ -697,7 +697,6 @@
   "shopTitle": "Loja",
   "shopBalanceLabel": "Suas moedas",
   "shopBuyButton": "Comprar",
-  "shopOwnedLabel": "Adquirido",
   "shopInsufficientCoinsMessage": "Moedas insuficientes para este item",
   "shopPurchaseSuccessMessage": "Item adquirido!",
   "shopItemHatCalculator": "Chapéu calculadora",

@@ -73,7 +73,8 @@ enum ShopItemCategory { hat, background, frame }
 ShopItemCategory shopItemCategory(String itemId) {
   if (itemId.startsWith('hat_')) return ShopItemCategory.hat;
   if (itemId.startsWith('bg_')) return ShopItemCategory.background;
-  return ShopItemCategory.frame;
+  if (itemId.startsWith('frame_')) return ShopItemCategory.frame;
+  throw ArgumentError.value(itemId, 'itemId', 'unknown shop item category prefix');
 }
 
 /// 背景アイテムをキャラカードに反映する際の色。

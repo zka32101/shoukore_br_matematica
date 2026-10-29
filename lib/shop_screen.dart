@@ -40,6 +40,7 @@ class _ShopScreenState extends State<ShopScreen> {
   late CoinWallet _wallet = widget.growthRepository.wallet;
   late InventorySnapshot _inventory = widget.inventory;
   late EquippedItems _equipped = widget.equippedItems;
+  bool _purchaseInProgress = false;
 
   String? _equippedIdFor(ShopItemCategory category) {
     switch (category) {
@@ -53,39 +54,47 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   Future<void> _purchase(StoreItem item) async {
-    final l10n = AppLocalizations.of(context)!;
-    if (!_inventoryManager.canPurchase(
-      wallet: _wallet,
-      inventory: _inventory,
-      item: item,
-    )) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.shopInsufficientCoinsMessage)),
+    // 連打による二重購入(コインの二重課金)を防ぐため、処理中は後続のタップを
+    // 無視する。
+    if (_purchaseInProgress) return;
+    _purchaseInProgress = true;
+    try {
+      final l10n = AppLocalizations.of(context)!;
+      if (!_inventoryManager.canPurchase(
+        wallet: _wallet,
+        inventory: _inventory,
+        item: item,
+      )) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.shopInsufficientCoinsMessage)),
+        );
+        return;
+      }
+      final result = _inventoryManager.purchase(
+        wallet: _wallet,
+        inventory: _inventory,
+        item: item,
       );
-      return;
+      await widget.inventoryStore.save(result.inventory);
+      await widget.growthRepository.applyWallet(result.wallet);
+      if (!mounted) return;
+      setState(() {
+        _wallet = result.wallet;
+        _inventory = result.inventory;
+      });
+      widget.onInventoryChanged(result.inventory);
+      // 購入直後、そのカテゴリで何も使っていなければそのまま装着し、すぐに
+      // 見た目の変化を実感できるようにする。
+      if (_equippedIdFor(shopItemCategory(item.id)) == null) {
+        await _equip(item);
+      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.shopPurchaseSuccessMessage)),
+      );
+    } finally {
+      _purchaseInProgress = false;
     }
-    final result = _inventoryManager.purchase(
-      wallet: _wallet,
-      inventory: _inventory,
-      item: item,
-    );
-    await widget.inventoryStore.save(result.inventory);
-    await widget.growthRepository.applyWallet(result.wallet);
-    if (!mounted) return;
-    setState(() {
-      _wallet = result.wallet;
-      _inventory = result.inventory;
-    });
-    widget.onInventoryChanged(result.inventory);
-    // 購入直後、そのカテゴリで何も使っていなければそのまま装着し、すぐに
-    // 見た目の変化を実感できるようにする。
-    if (_equippedIdFor(shopItemCategory(item.id)) == null) {
-      await _equip(item);
-    }
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n.shopPurchaseSuccessMessage)),
-    );
   }
 
   Future<void> _equip(StoreItem item) async {
