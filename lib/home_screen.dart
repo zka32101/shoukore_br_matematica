@@ -30,7 +30,13 @@ import 'unit_name_resolver.dart';
 import 'weekly_report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, this.entitlementReader, this.consentStore});
+  const HomeScreen({
+    super.key,
+    this.entitlementReader,
+    this.consentStore,
+    this.displayLocale,
+    this.onDisplayLocaleChanged,
+  });
 
   /// RevenueCat APIキー未設定（開発中・CI）の場合はnullのままにする。
   /// nullの場合、premiumToggleButtonは課金状態を模擬するデバッグ用トグルの
@@ -40,6 +46,12 @@ class HomeScreen extends StatefulWidget {
   /// オンボーディングの年齢確認と同じ同意記録を共有するため、アプリ直下
   /// から渡す。未指定時は自前で生成する（単体テスト等での単独利用向け）。
   final ConsentStore? consentStore;
+
+  /// 現在の表示言語(CLAUDE.md共通要件「第二言語に英語も選択できる」対応)。
+  /// アプリ直下(main.dart)のMaterialApp.localeと同じ値を渡す。
+  /// BNCCカリキュラム自体はpt_BR固定のため、これは画面表示文言のみに影響する。
+  final Locale? displayLocale;
+  final ValueChanged<Locale>? onDisplayLocaleChanged;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -203,6 +215,32 @@ class _HomeScreenState extends State<HomeScreen> {
         isPremium: !_entitlement.isPremium,
       );
     });
+  }
+
+  static const _supportedDisplayLocales = [Locale('pt', 'BR'), Locale('en')];
+
+  // 言語名はその言語自身の表記(自称)で示す（訳さない）のが一般的な作法。
+  String _localeDisplayName(Locale? locale) {
+    if (locale?.languageCode == 'en') return 'English';
+    return 'Português (Brasil)';
+  }
+
+  Future<void> _showLanguagePicker(BuildContext context, AppLocalizations l10n) async {
+    final selected = await showDialog<Locale>(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text(l10n.languageDialogTitle),
+        children: [
+          for (final locale in _supportedDisplayLocales)
+            SimpleDialogOption(
+              key: Key('languageOption_${locale.languageCode}'),
+              onPressed: () => Navigator.of(context).pop(locale),
+              child: Text(_localeDisplayName(locale)),
+            ),
+        ],
+      ),
+    );
+    if (selected != null) widget.onDisplayLocaleChanged?.call(selected);
   }
 
   Future<void> _runAgeGateFlow() async {
@@ -449,6 +487,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 _SectionLabel(label: 'Mais da Colecinho!'),
                 const CrossPromoSection(),
+                if (widget.onDisplayLocaleChanged != null) ...[
+                  _SectionLabel(label: l10n.settingsGeneralSection),
+                  Card(
+                    child: ListTile(
+                      key: const Key('languageTile'),
+                      leading: const Icon(Icons.language_outlined),
+                      title: Text(l10n.languageTile),
+                      subtitle: Text(_localeDisplayName(widget.displayLocale)),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => _showLanguagePicker(context, l10n),
+                    ),
+                  ),
+                ],
                 _SectionLabel(label: l10n.settingsNotificationsSection),
                 Card(
                   child: ListTile(

@@ -1,0 +1,632 @@
+{
+  "@@locale": "en",
+  "guardianGateTitle": "For parents/guardians",
+  "@guardianGateTitle": {
+    "description": "保護者ゲートのタイトル"
+  },
+  "guardianGateInstruction": "Enter the result of: {a} × {b}",
+  "@guardianGateInstruction": {
+    "description": "保護者ゲートの計算問題文",
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "guardianGateWrongAnswer": "Incorrect answer. Try again.",
+  "guardianGateConfirmButton": "Confirm",
+  "consentTitle": "Parental consent is required",
+  "consentBody": "Your child's learning data is stored only on this device. If you agree, select \"Agree\".",
+  "consentAcceptButton": "Agree",
+  "consentDeclineButton": "Don't agree",
+  "weeklyReportTile": "Weekly report (for parents)",
+  "weeklyReportTitle": "Weekly report",
+  "weeklyReportAccuracy": "Accuracy: {percent}% ({correct}/{total} questions)",
+  "weeklyReportUnitLine": "{unitId}: {percent}% ({correct}/{total} questions)",
+  "weeklyReportTopMisconception": "Most common mistake: {tag}",
+  "weeklyReportNoData": "No learning records yet this week.",
+  "entitlementLockedMessage": "This subject is locked. Purchase to unlock.",
+  "misconceptionOvercome": "You overcame the \"{tag}\" mistake!",
+  "screenTimeLimitReached": "You've reached today's usage limit. Talk to your parents/guardians.",
+  "ageGateTitle": "What year were you born?",
+  "ageGateBirthYearHint": "E.g.: 2016",
+  "ageGateConfirmButton": "Next",
+  "ageVerificationTile": "Age verification",
+  "consentStatusGiven": "Parental consent: given",
+  "consentStatusNotGiven": "Parental consent: not confirmed/not required",
+  "dailyReminderTile": "Daily mission reminder notification",
+  "dailyReminderScheduled": "Notification scheduled ({hour}:{minute})",
+  "dailyReminderNotScheduled": "No notification scheduled",
+  "dataPrivacyTile": "Manage learning data (for parents)",
+  "dataPrivacyTitle": "Manage learning data",
+  "dataPrivacyExportSectionTitle": "Content to be exported",
+  "dataPrivacyProgressCount": "Learning records: {count}",
+  "dataPrivacyRevokeConsentButton": "Revoke parental consent",
+  "dataPrivacyEraseAllButton": "Delete all learning data",
+  "dataPrivacyEraseConfirmTitle": "Are you sure you want to delete?",
+  "dataPrivacyEraseConfirmBody": "Consent and learning records will be deleted. This action cannot be undone.",
+  "dataPrivacyEraseConfirmButton": "Delete",
+  "dataPrivacyEraseCancelButton": "Cancel",
+  "dataPrivacyErasedMessage": "Learning data deleted",
+  "dataPrivacyCopyJsonButton": "Copy exported content as JSON",
+  "dataPrivacyExportCopiedMessage": "Exported content copied to clipboard",
+  "explanationSectionTitle": "Explanation",
+  "explanationAdd": "Addition is the operation that joins two or more quantities to form a bigger total. Imagine you have 3 marbles and a friend gives you 5 more: how many do you have now? Just count them all together, 3+5 = 8. Tip: order doesn't matter, 3+5 gives the same result as 5+3!",
+  "explanationSubtract": "Subtraction shows how much is left after taking a part away from a total. Imagine you had 8 stickers and gave 3 to a friend: how many were left? 8-3 means \"take 3 away from 8\", and the result is 5. Tip: the result of a subtraction can never be greater than the number you started with.",
+  "explanationMultiply": "Multiplication is a quick way to add the same number several times. Instead of adding 3+3+3+3, you can calculate 3×4, which means \"4 groups of 3\", and the result is 12. Think of 4 boxes with 3 balls each: that's 12 balls in total!",
+  "explanationDivide": "Division splits a quantity into equal parts. Imagine 12 cookies shared equally among 4 friends: how many does each one get? 12÷4 means \"split 12 into 4 equal parts\", and the result is 3. Tip: multiplication and division are inverse operations — if 4×3=12, then 12÷4=3.",
+  "onboardingWelcomeTitle": "Welcome to Colecinho!Matemática",
+  "onboardingWelcomeBody": "Learn math following the BNCC curriculum, take care of your pet, and earn coins with every correct answer!",
+  "onboardingWelcomeNextButton": "Let's get started!",
+  "onboardingQuizTitle": "Try a question",
+  "onboardingQuizQuestion": "What is 2 + 3?",
+  "onboardingQuizCorrectFeedback": "That's right! You earned 10 coins.",
+  "onboardingQuizIncorrectFeedback": "Almost! Try again.",
+  "onboardingQuizContinueButton": "Continue",
+  "onboardingPaywallTitle": "Keep learning without limits",
+  "onboardingPaywallBody": "Unlock all BNCC math units, with reports for parents and screen time controls.",
+  "onboardingPaywallMonthlyPrice": "R$ 14.90/month",
+  "onboardingPaywallYearlyPrice": "R$ 99.90/year",
+  "onboardingPaywallTrialNote": "14 days free to try everything, no commitment",
+  "onboardingPaywallStartTrialButton": "Start free trial",
+  "onboardingPaywallSkipButton": "Continue without subscribing",
+  "misconceptionHintSubtractionAsAddition": "Looks like you added instead of subtracting. Try calculating the difference between the numbers!",
+  "autoHintLabel": "Hint",
+  "autoHintAvailableMessage": "See the explanation before answering, since this unit is still being practiced.",
+  "consecutiveIncorrectAlertTitle": "Alert for parents/guardians",
+  "consecutiveIncorrectAlertMessage": "Your child got several questions in a row wrong on this unit. It might be a good time to help.",
+  "explanationSequence": "In a number sequence, the numbers follow a pattern that repeats, like the steps of a staircase. First, compare two neighboring numbers and find out how much it increases (or decreases) from one to the next. Then apply that same difference to the last number in the sequence to find the next one.",
+  "explanationShapeTriangle": "A triangle has 3 sides and 3 vertices (corners). The word \"tri\" means three, as in \"tricycle\". You can find triangles in the real world, like in a slice of pizza or the roof of some houses!",
+  "explanationShapeSquare": "A square has 4 equal sides and 4 vertices, all forming right angles (90°). A square window or a game board are good everyday examples!",
+  "explanationShapePentagon": "A pentagon has 5 sides. \"Penta\" means five, as in \"pentathlon\". Many little houses drawn by children have a pentagon shape: a square with a triangular roof on top!",
+  "explanationShapeHexagon": "A hexagon has 6 sides. Think of the cells of a beehive: they have this shape! A soccer ball is also made of hexagons (and pentagons) stitched together.",
+  "explanationShapeHeptagon": "A heptagon has 7 sides. \"Hepta\" means seven. Did you know the Brazilian 25-cent coin has a heptagon shape?",
+  "explanationShapeOctagon": "An octagon has 8 sides. Think of a STOP sign: it has this shape! It's one of the easiest signs to recognize on the street.",
+  "explanationUnitCmToM": "1 meter has 100 centimeters — think of a ruler the size of a meter, divided into 100 small parts. To convert centimeters to meters, divide the number by 100 (because 100 cm fit into 1 m).",
+  "explanationUnitMToKm": "1 kilometer has 1000 meters — roughly the distance a person walks in 10 to 15 minutes! To convert meters to kilometers, divide the number by 1000.",
+  "explanationUnitGToKg": "1 kilogram has 1000 grams — a regular bag of sugar weighs 1 kg, that is, 1000 g. To convert grams to kilograms, divide the number by 1000.",
+  "explanationUnitMlToL": "1 liter has 1000 milliliters — a large soda bottle has 2 liters, that is, 2000 ml. To convert milliliters to liters, divide the number by 1000.",
+  "explanationDatasetMax": "The maximum value is the largest number in the data set. Imagine the heights of several classmates: the maximum value is the height of the tallest person. Compare all the numbers and pick the largest.",
+  "explanationDatasetMin": "The minimum value is the smallest number in the data set — like finding the lowest temperature of the week on a chart. Compare all the numbers and pick the smallest.",
+  "explanationDatasetMode": "The mode is the value that appears most often in the data set, like the most common T-shirt color among classmates. Count how many times each number appears and pick the one that repeats the most.",
+  "explanationUnitMToCm": "1 meter has 100 centimeters. To convert meters to centimeters, multiply the number by 100 — for example, 2 meters of rope is 200 centimeters.",
+  "explanationUnitKmToM": "1 kilometer has 1000 meters. To convert kilometers to meters, multiply the number by 1000 — for example, a 5 km race is 5000 meters.",
+  "explanationUnitKgToG": "1 kilogram has 1000 grams. To convert kilograms to grams, multiply the number by 1000 — for example, a 3 kg watermelon weighs 3000 g.",
+  "explanationUnitLToMl": "1 liter has 1000 milliliters. To convert liters to milliliters, multiply the number by 1000 — for example, half a liter of juice is 500 ml.",
+  "explanationSequenceDescending": "In this sequence, the numbers decrease following a pattern, like a rocket's countdown before liftoff. Find out how much each number decreases from the previous one and apply that same pattern to find the next one.",
+  "explanationDiagonals": "A diagonal is a line that connects two vertices (corners) that are not neighbors — like a cut across the shape. To count the diagonals of a polygon with n sides, use the formula n×(n-3)÷2.",
+  "explanationDatasetSum": "The sum is the result of adding up all the numbers in the data set, one by one — like adding up the points from several games to find the season total.",
+  "explanationDatasetRange": "The range shows how much the data varies: it's the difference between the largest and smallest value in the set. range = maximum value − minimum value. For example, if ages range from 8 to 12 years, the range is 12−8 = 4.",
+  "wordProblemAddFruits": "Ana had {a} apples. She picked {b} more apples in the orchard. How many apples does she have now?",
+  "@wordProblemAddFruits": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemAddCoins": "Pedro had {a} toy coins. He won {b} more coins playing with friends. How many coins does he have now?",
+  "@wordProblemAddCoins": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemSubtractCandies": "Mariana had {a} candies. She gave {b} candies to her friend. How many candies were left?",
+  "@wordProblemSubtractCandies": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemSubtractStickers": "Lucas had {a} stickers. He lost {b} stickers on the way to school. How many stickers were left?",
+  "@wordProblemSubtractStickers": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemMultiplyBoxes": "Each box has {a} toys. If there are {b} boxes, how many toys are there in total?",
+  "@wordProblemMultiplyBoxes": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemMultiplyRows": "On a plantation, each row has {a} trees. There are {b} rows. How many trees are there in total?",
+  "@wordProblemMultiplyRows": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemDivideFriends": "{a} stickers will be divided equally among {b} friends. How many stickers will each friend receive?",
+  "@wordProblemDivideFriends": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemDivideBaskets": "{a} oranges will be placed in {b} baskets, with the same amount in each basket. How many oranges fit in each basket?",
+  "@wordProblemDivideBaskets": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "explanationUnitMmToCm": "1 centimeter has 10 millimeters — look closely at a ruler: between each centimeter mark there are 10 small millimeter marks. To convert millimeters to centimeters, divide the number by 10.",
+  "explanationUnitCmToMm": "1 centimeter has 10 millimeters. To convert centimeters to millimeters, multiply the number by 10 — for example, a 15 cm pencil is 150 mm long.",
+  "explanationSequenceMultiplicative": "In this sequence, each number is obtained by multiplying the previous number by the same fixed value — like the number of likes on a video that doubles every day. Find out what each number is multiplied by and apply that same pattern to the last number to find the next one.",
+  "unitMasteredMessage": "Congratulations! You've mastered the {unitId} unit! 🏆",
+  "@unitMasteredMessage": {
+    "description": "単元マスター時のお祝いメッセージ",
+    "placeholders": {
+      "unitId": {
+        "type": "String"
+      }
+    }
+  },
+  "shapeNameTriangle": "triangle",
+  "shapeNameSquare": "square",
+  "shapeNamePentagon": "pentagon",
+  "shapeNameHexagon": "hexagon",
+  "shapeNameHeptagon": "heptagon",
+  "shapeNameOctagon": "octagon",
+  "shapePromptSides": "How many sides does a {shape} have?",
+  "@shapePromptSides": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "shapePromptDiagonals": "How many diagonals does a {shape} have?",
+  "@shapePromptDiagonals": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "unitNameCm": "centimeters",
+  "unitNameM": "meters",
+  "unitNameKm": "kilometers",
+  "unitNameG": "grams",
+  "unitNameKg": "kilograms",
+  "unitNameMl": "milliliters",
+  "unitNameL": "liters",
+  "unitNameMm": "millimeters",
+  "measurementPrompt": "How many {toUnit} are there in {value} {fromUnit}?",
+  "@measurementPrompt": {
+    "placeholders": {
+      "toUnit": {
+        "type": "String"
+      },
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetPromptMax": "Look at the values: {values}. What is the maximum value?",
+  "@datasetPromptMax": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetPromptMin": "Look at the values: {values}. What is the minimum value?",
+  "@datasetPromptMin": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetPromptMode": "Look at the values: {values}. What is the mode?",
+  "@datasetPromptMode": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetPromptSum": "Look at the values: {values}. What is the sum of all of them?",
+  "@datasetPromptSum": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetPromptRange": "Look at the values: {values}. What is the range (max − min)?",
+  "@datasetPromptRange": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "homeTitle": "Colecinho!Matemática",
+  "screenTimeUsed": "Used today: {used} min · Remaining: {remaining} min",
+  "@screenTimeUsed": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "screenTimeSubtitle": "Today's study time",
+  "unitGradeLabel": "Grade {grade}",
+  "@unitGradeLabel": {
+    "placeholders": {
+      "grade": {
+        "type": "int"
+      }
+    }
+  },
+  "nextQuestionButton": "Next",
+  "unitName_mat_numeros_1": "Numbers: adding up to 10",
+  "unitName_mat_numeros_2": "Numbers: adding and subtracting",
+  "unitName_mat_numeros_3": "Numbers: multiplication",
+  "unitName_mat_numeros_4": "Numbers: multiplying and dividing",
+  "unitName_mat_numeros_5": "Numbers: division",
+  "unitName_mat_algebra_1": "Algebra: sequences up to 5",
+  "unitName_mat_algebra_2": "Algebra: sequences up to 10",
+  "unitName_mat_algebra_3": "Algebra: sequences up to 20",
+  "unitName_mat_algebra_4": "Algebra: sequences up to 30",
+  "unitName_mat_algebra_5": "Algebra: sequences up to 50",
+  "unitName_mat_geometria_1": "Geometry: flat shapes",
+  "unitName_mat_geometria_2": "Geometry: polygons",
+  "unitName_mat_geometria_3": "Geometry: pentagon and hexagon",
+  "unitName_mat_geometria_4": "Geometry: hexagon and heptagon",
+  "unitName_mat_geometria_5": "Geometry: heptagon and octagon",
+  "unitName_mat_grandezas_1": "Measurement: millimeters and centimeters",
+  "unitName_mat_grandezas_2": "Measurement: centimeters and meters",
+  "unitName_mat_grandezas_3": "Measurement: meters and kilometers",
+  "unitName_mat_grandezas_4": "Measurement: grams and kilograms",
+  "unitName_mat_grandezas_5": "Measurement: milliliters and liters",
+  "unitName_mat_probabilidade_1": "Statistics: greatest and smallest",
+  "unitName_mat_probabilidade_2": "Statistics: greatest and smallest (grade 2)",
+  "unitName_mat_probabilidade_3": "Statistics: mode",
+  "unitName_mat_probabilidade_4": "Statistics: mode (grade 4)",
+  "unitName_mat_probabilidade_5": "Statistics: mode and range",
+  "wordProblemAddStore": "You bought a toy for R$ {a} and a candy for R$ {b} at the store. How much did you spend in total?",
+  "@wordProblemAddStore": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemSubtractChange": "You paid R$ {a} and the toy cost R$ {b}. How much change do you get?",
+  "@wordProblemSubtractChange": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemMultiplyStore": "At the store, each apple costs R$ {a}. If you buy {b} apples, how much will you pay in total?",
+  "@wordProblemMultiplyStore": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemDivideStore": "You have R$ {a} to split equally among {b} friends for shopping at the store. How much can each one spend?",
+  "@wordProblemDivideStore": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "sequencePrompt": "What is the next number in this sequence: {terms}, ...?",
+  "@sequencePrompt": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "wordProblemAddPeople": "There are {a} boys and {b} girls in the classroom. How many students are there in total?",
+  "@wordProblemAddPeople": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemSubtractPeople": "There were {a} students on the field trip, but {b} stayed home sick. How many students went on the trip?",
+  "@wordProblemSubtractPeople": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemMultiplyPeople": "The school bus has {a} rows of seats, with {b} students in each row. How many students fit on the bus?",
+  "@wordProblemMultiplyPeople": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemDividePeople": "{a} students will be split into groups of {b} for teamwork. How many groups will be formed?",
+  "@wordProblemDividePeople": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemAddBudget": "The class collected R$ {a} and received R$ {b} more in donations for the party. How much does the class have now?",
+  "@wordProblemAddBudget": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemSubtractBudget": "The class had a budget of R$ {a} for the party and spent R$ {b} on decorations. How much is left?",
+  "@wordProblemSubtractBudget": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemMultiplyBudget": "Each of the {b} students will contribute R$ {a} for the class trip. How much will be raised in total?",
+  "@wordProblemMultiplyBudget": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemDivideBudget": "The R$ {a} budget for the trip will be split equally among {b} students. How much does each one have to pay?",
+  "@wordProblemDivideBudget": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingPaywallBenefitNoAds": "No ads",
+  "onboardingPaywallBenefitFullTrial": "14-day free trial with full access to everything",
+  "onboardingPaywallBenefitReports": "Weekly reports for parents",
+  "onboardingPaywallBenefitScreenTime": "Screen time controls",
+  "shapeScenarioGardenSides": "Mrs. Ana wants to make a flower bed shaped like a {shape} in the school garden. How many sides will that flower bed have?",
+  "@shapeScenarioGardenSides": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "shapeScenarioGardenDiagonals": "The students will draw all the diagonals of a kite shaped like a {shape} to decorate the classroom. How many diagonals will they draw?",
+  "@shapeScenarioGardenDiagonals": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "measurementScenarioClassroom": "The teacher measured the classroom whiteboard: {value} {fromUnit}. How many {toUnit} is that equal to?",
+  "@measurementScenarioClassroom": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      },
+      "toUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "measurementScenarioCanteen": "At the school cafeteria, a bag of rice weighs {value} {fromUnit}. How many {toUnit} is that equal to?",
+  "@measurementScenarioCanteen": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      },
+      "toUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetScenarioPushups": "In PE class, the students counted how many push-ups each one did: {values}. What is the highest number of push-ups?",
+  "@datasetScenarioPushups": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetScenarioRecess": "The students recorded how many minutes they played at recess: {values}. What is the value that repeats the most (mode)?",
+  "@datasetScenarioRecess": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "questionMasteryLabel": "Mastery: {percent}%",
+  "@questionMasteryLabel": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "questionGrowthStatusLine": "Stage: {stage} · Coins: {coins} · Missions: {missions} · Streak: {streak} days",
+  "@questionGrowthStatusLine": {
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      },
+      "coins": {
+        "type": "int"
+      },
+      "missions": {
+        "type": "int"
+      },
+      "streak": {
+        "type": "int"
+      }
+    }
+  },
+  "questionFeedbackCorrect": "That's right!",
+  "questionFeedbackIncorrect": "Almost! Try the next one.",
+  "guardianGatePassedMessage": "Verification completed successfully.",
+  "guardianGateFailedMessage": "Incorrect answer in verification.",
+  "settingsParentsSection": "Tools for parents/guardians",
+  "settingsNotificationsSection": "Notifications",
+  "sequenceScenarioSavings": "Every week, Maria saves an amount of coins that follows this pattern: {terms}, ... How many coins will she save next week?",
+  "@sequenceScenarioSavings": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "sequenceScenarioPlant": "A plant's height (in cm) was measured every week: {terms}, ... What will its height be next week?",
+  "@sequenceScenarioPlant": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "measurementScenarioPencil": "Ana's pencil is {value} {fromUnit} long. How many {toUnit} is that equal to?",
+  "@measurementScenarioPencil": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      },
+      "toUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "measurementScenarioTrip": "The car trip to grandma's house is {value} {fromUnit}. How many {toUnit} is that equal to?",
+  "@measurementScenarioTrip": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      },
+      "toUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "measurementScenarioJuice": "The juice pitcher at the party has {value} {fromUnit}. How many {toUnit} is that equal to?",
+  "@measurementScenarioJuice": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "fromUnit": {
+        "type": "String"
+      },
+      "toUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "ageGateInvalidYearError": "Enter a valid birth year.",
+  "listenButtonLabel": "Listen",
+  "languageTile": "Language",
+  "languageDialogTitle": "Choose a language",
+  "settingsGeneralSection": "General"
+}

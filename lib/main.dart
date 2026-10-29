@@ -7,6 +7,7 @@ import 'package:shoukore_core_global/shoukore_core_global_entitlement_revenuecat
 
 import 'home_screen.dart';
 import 'l10n/app_localizations.dart';
+import 'locale_preference_store.dart';
 import 'onboarding_screen.dart';
 
 /// RevenueCat APIキー。`--dart-define=REVENUECAT_API_KEY=...`で渡す。
@@ -36,7 +37,12 @@ class ShoukoreBrMatematicaApp extends StatefulWidget {
 }
 
 class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
-  static const _locale = Locale('pt', 'BR');
+  // BNCCカリキュラム自体はブラジル向けのみ(curriculum/pt_BR.json)のため、
+  // 表示言語(_displayLocale)を切り替えてもカリキュラムの読み込みには影響
+  // しない(HomeScreen側は常にpt_BRでカリキュラムを読み込む)。ここで切り替える
+  // のはMaterialAppの表示言語(AppLocalizationsが解決する文言)のみ。
+  Locale _displayLocale = const Locale('pt', 'BR');
+  final LocalePreferenceStore _localePreferenceStore = InMemoryLocalePreferenceStore();
 
   final OnboardingCompletionStore _onboardingStore = InMemoryOnboardingCompletionStore();
   bool _loadingOnboardingState = true;
@@ -61,18 +67,26 @@ class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
 
   Future<void> _loadOnboardingState() async {
     final completed = await _onboardingStore.isCompleted();
+    final savedLocale = await _localePreferenceStore.getLocale();
     if (!mounted) return;
     setState(() {
       _onboardingCompleted = completed;
       _loadingOnboardingState = false;
+      if (savedLocale != null) _displayLocale = savedLocale;
     });
+  }
+
+  Future<void> _changeLocale(Locale locale) async {
+    await _localePreferenceStore.setLocale(locale);
+    if (!mounted) return;
+    setState(() => _displayLocale = locale);
   }
 
   @override
   Widget build(BuildContext context) {
     final seed = Colors.indigo;
     return MaterialApp(
-      locale: _locale,
+      locale: _displayLocale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -106,6 +120,8 @@ class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
               ? HomeScreen(
                   entitlementReader: _entitlementReader,
                   consentStore: _consentStore,
+                  displayLocale: _displayLocale,
+                  onDisplayLocaleChanged: _changeLocale,
                 )
               : OnboardingScreen(
                   completionStore: _onboardingStore,

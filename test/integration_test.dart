@@ -205,6 +205,22 @@ void main() {
       await tester.tap(find.byKey(const Key('screenTimeLimitToggleButton')));
       await tester.pumpAndSettle();
 
+      // 第二言語(英語)への切り替え(CLAUDE.md共通要件)。切り替えた直後に
+      // 画面表示が英語に変わることを確認し、以降の検証に影響しないよう
+      // すぐにポルトガル語へ戻す。
+      await tester.ensureVisible(find.byKey(const Key('languageTile')));
+      await tester.tap(find.byKey(const Key('languageTile')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('languageOption_en')));
+      await tester.pumpAndSettle();
+      expect(find.text('Language'), findsOneWidget);
+      expect(find.text('Weekly report (for parents)'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('languageTile')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('languageOption_pt')));
+      await tester.pumpAndSettle();
+      expect(find.text('Idioma'), findsOneWidget);
+
       await tester.ensureVisible(find.byKey(const Key('weeklyReportTile')));
       await tester.tap(find.byKey(const Key('weeklyReportTile')));
       await tester.pumpAndSettle();

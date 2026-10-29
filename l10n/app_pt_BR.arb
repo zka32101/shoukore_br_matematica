@@ -625,5 +625,8 @@
     }
   },
   "ageGateInvalidYearError": "Digite um ano de nascimento válido.",
-  "listenButtonLabel": "Ouvir"
+  "listenButtonLabel": "Ouvir",
+  "languageTile": "Idioma",
+  "languageDialogTitle": "Escolha o idioma",
+  "settingsGeneralSection": "Geral"
 }
