@@ -954,5 +954,13 @@
         "type": "int"
       }
     }
+  },
+  "explanationBonusCoinsMessage": "+{coins} moedas! Você revisou a explicação.",
+  "@explanationBonusCoinsMessage": {
+    "placeholders": {
+      "coins": {
+        "type": "int"
+      }
+    }
   }
 }

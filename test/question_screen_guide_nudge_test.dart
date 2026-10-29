@@ -114,6 +114,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.byKey(const Key('openMathGuideButton'), skipOffstage: false));
     await tester.pumpAndSettle();
+    // 解説を読む行動そのものを後押しするため、タップ時にボーナスコイン
+    // (+2)を獲得し、その旨のSnackBarが表示される。
+    expect(growthRepository.wallet.balance, 0);
     await tester.tap(
       find.byKey(const Key('openMathGuideButton'), skipOffstage: false),
       warnIfMissed: false,
@@ -121,5 +124,26 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(MathGuideScreen), findsOneWidget);
+    expect(growthRepository.wallet.balance, 2);
+    expect(
+      find.byKey(const Key('explanationBonusSnackBar'), skipOffstage: false),
+      findsWidgets,
+    );
+
+    // 同じ問題中に何度も解説画面を開いても、ボーナスは1回のみ。
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('openMathGuideButton'), skipOffstage: false),
+      200,
+      scrollable: find.byType(Scrollable),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('openMathGuideButton'), skipOffstage: false),
+      warnIfMissed: false,
+    );
+    await tester.pumpAndSettle();
+    expect(growthRepository.wallet.balance, 2);
   });
 }

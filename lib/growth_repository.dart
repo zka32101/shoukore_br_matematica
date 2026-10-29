@@ -101,6 +101,23 @@ class GrowthRepository {
     await _store.save(_snapshot);
   }
 
+  /// 「解説を読む」など、正誤判定を伴わない学習行動に対する少額ボーナス
+  /// コインを付与する(デイリーミッション報酬とは別枠。問題を解くこと
+  /// 自体に加えて、解説を読み返す行動そのものも後押しするための仕組み)。
+  Future<void> earnBonusCoins(int amount) async {
+    final nextWallet = wallet.earn(amount);
+    _snapshot = GrowthSnapshot(
+      totalCorrectAnswers: _snapshot.totalCorrectAnswers,
+      coinBalance: nextWallet.balance,
+      missionDay: _snapshot.missionDay,
+      missionCompletedCount: _snapshot.missionCompletedCount,
+      missionRewardClaimed: _snapshot.missionRewardClaimed,
+      currentStreakDays: _snapshot.currentStreakDays,
+      lastStudiedDay: _snapshot.lastStudiedDay,
+    );
+    await _store.save(_snapshot);
+  }
+
   /// ショップでの購入時に呼ぶ。コイン残高を[newWallet]の値に更新する
   /// (実際の価格判定・差し引きはコア側の`InventoryManager.purchase`が行う)。
   Future<void> applyWallet(CoinWallet newWallet) async {

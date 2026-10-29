@@ -78,6 +78,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
   bool _consecutiveIncorrectAlertShown = false;
   int _answerAttemptSequence = 0;
 
+  // 解説を読むとボーナスコインを獲得できる(「解説を読む」行動自体を
+  // 後押しする仕組み)。連打での不正獲得を防ぐため、1問につき1回のみ。
+  static const _explanationBonusCoins = 2;
+  bool _explanationBonusAwarded = false;
+
   // ゲームセッション中(isGameSession)のみ使う、この画面を開いてからの
   // 累計(端末内のみ・永続化しない一時的な「今回の記録」)。
   int _sessionTotal = 0;
@@ -110,7 +115,34 @@ class _QuestionScreenState extends State<QuestionScreen> {
       _feedback = null;
       _lastChosenId = null;
       _misconceptionHint = null;
+      _explanationBonusAwarded = false;
     });
+  }
+
+  /// 「教科書解説を見る」タップ時の処理。解説を読む行動そのものを後押し
+  /// するため、1問につき1回だけ少額のボーナスコインを付与してから
+  /// MathGuideScreenへ遷移する。
+  Future<void> _openMathGuide() async {
+    if (!_explanationBonusAwarded) {
+      _explanationBonusAwarded = true;
+      await widget.growthRepository.earnBonusCoins(_explanationBonusCoins);
+      if (!mounted) return;
+      // 画面上部のgrowthStatusText(コイン残高表示)に即反映させる。
+      setState(() {});
+      unawaited(HapticFeedback.lightImpact());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          key: const Key('explanationBonusSnackBar'),
+          content: Text(
+            AppLocalizations.of(context)!.explanationBonusCoinsMessage(_explanationBonusCoins),
+          ),
+        ),
+      );
+    }
+    if (!mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const MathGuideScreen()),
+    );
   }
 
   Future<void> _answer(String chosenId) async {
@@ -784,11 +816,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                 Expanded(
                                   child: OutlinedButton.icon(
                                     key: const Key('openMathGuideButton'),
-                                    onPressed: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (_) => const MathGuideScreen(),
-                                      ),
-                                    ),
+                                    onPressed: _openMathGuide,
                                     icon: const Icon(Icons.menu_book_outlined),
                                     label: Text(l10n.openMathGuideButton),
                                   ),
