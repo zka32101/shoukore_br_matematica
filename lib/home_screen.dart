@@ -478,6 +478,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.of(context).pop();
                             await _openUnit(context, l10n, unit);
                           },
+                          lockedUnitIds: {
+                            for (final unit in curriculum.units)
+                              if (!_isUnitUnlocked(unit)) unit.id,
+                          },
+                          masteredUnitIds: _masteredUnitIds,
                         ),
                       ),
                     ),
