@@ -878,7 +878,6 @@
     }
   },
   "unitSectionLabel": "Escolha uma unidade",
-  "collectionSectionLabel": "Coleção",
   "moreSectionLabel": "Mais da Colecinho!",
   "collectionTitle": "Minha Coleção",
   "badgeCollectionTitle": "Minhas Medalhas",
@@ -929,5 +928,10 @@
         "type": "String"
       }
     }
-  }
+  },
+  "bottomNavHome": "Início",
+  "bottomNavCollection": "Coleção",
+  "bottomNavShop": "Loja",
+  "bottomNavBadges": "Medalhas",
+  "bottomNavSettings": "Ajustes"
 }

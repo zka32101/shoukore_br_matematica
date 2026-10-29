@@ -122,6 +122,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final EquippedItemsStore _equippedItemsStore = InMemoryEquippedItemsStore();
   EquippedItems _equippedItems = EquippedItems.initial;
 
+  // 下部メニュー(タブバー)の選択中タブ。JP版と同様、ホーム/コレクション/
+  // ショップ/バッジ/設定を常設タブとして行き来できるようにする
+  // (以前はホーム画面内のリスト項目からのプッシュ遷移だった)。
+  int _selectedTabIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -448,8 +453,88 @@ class _HomeScreenState extends State<HomeScreen> {
                 key: ValueKey('homeLoading'),
                 child: CircularProgressIndicator(),
               )
-            : CustomScrollView(
-              key: const ValueKey('homeLoaded'),
+            : IndexedStack(
+                key: const ValueKey('homeLoaded'),
+                index: _selectedTabIndex,
+                children: [
+                  _buildHomeTab(context, l10n, theme, curriculum, totalUnitsWithContent, nextUnit),
+                  CollectionScreen(
+                    snapshot: _characterSnapshot,
+                    equippedItems: _equippedItems,
+                  ),
+                  ShopScreen(
+                    growthRepository: _growthRepository!,
+                    inventoryStore: _inventoryStore,
+                    inventory: _inventorySnapshot,
+                    onInventoryChanged: (snapshot) =>
+                        setState(() => _inventorySnapshot = snapshot),
+                    equippedItemsStore: _equippedItemsStore,
+                    equippedItems: _equippedItems,
+                    onEquippedItemsChanged: (items) =>
+                        setState(() => _equippedItems = items),
+                  ),
+                  BadgeCollectionScreen(
+                    units: curriculum.units,
+                    masteredUnitIds: _masteredUnitIds,
+                  ),
+                  _buildSettingsTab(context, l10n),
+                ],
+              ),
+      ),
+      bottomNavigationBar: curriculum == null
+          ? null
+          : NavigationBar(
+              key: const Key('bottomNavBar'),
+              selectedIndex: _selectedTabIndex,
+              onDestinationSelected: (index) => setState(() => _selectedTabIndex = index),
+              destinations: [
+                NavigationDestination(
+                  key: const Key('bottomNavHome'),
+                  icon: const Icon(Icons.home_outlined),
+                  selectedIcon: const Icon(Icons.home),
+                  label: l10n.bottomNavHome,
+                ),
+                NavigationDestination(
+                  key: const Key('bottomNavCollection'),
+                  icon: const Icon(Icons.auto_awesome_outlined),
+                  selectedIcon: const Icon(Icons.auto_awesome),
+                  label: l10n.bottomNavCollection,
+                ),
+                NavigationDestination(
+                  key: const Key('bottomNavShop'),
+                  icon: const Icon(Icons.storefront_outlined),
+                  selectedIcon: const Icon(Icons.storefront),
+                  label: l10n.bottomNavShop,
+                ),
+                NavigationDestination(
+                  key: const Key('bottomNavBadges'),
+                  icon: const Icon(Icons.emoji_events_outlined),
+                  selectedIcon: const Icon(Icons.emoji_events),
+                  label: l10n.bottomNavBadges,
+                ),
+                NavigationDestination(
+                  key: const Key('bottomNavSettings'),
+                  icon: const Icon(Icons.settings_outlined),
+                  selectedIcon: const Icon(Icons.settings),
+                  label: l10n.bottomNavSettings,
+                ),
+              ],
+            ),
+    );
+  }
+
+  /// ホームタブの内容。「ゲームで学ぶ」バナー・成長状況・ウィークリー
+  /// チャレンジ・単元一覧など、毎日の学習導線を集約する。コレクション/
+  /// ショップ/バッジ/設定は下部メニューの別タブに分離した。
+  Widget _buildHomeTab(
+    BuildContext context,
+    AppLocalizations l10n,
+    ThemeData theme,
+    CurriculumData curriculum,
+    int totalUnitsWithContent,
+    Unit? nextUnit,
+  ) {
+    return CustomScrollView(
               slivers: [
                 SliverAppBar(
                   pinned: true,
@@ -668,95 +753,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 ),
-                _SectionLabel(label: l10n.collectionSectionLabel),
-                Card(
-                  child: ListTile(
-                    key: const Key('collectionTile'),
-                    leading: CircleAvatar(
-                      backgroundColor: theme.colorScheme.primaryContainer,
-                      foregroundColor: theme.colorScheme.onPrimaryContainer,
-                      child: const Icon(Icons.auto_awesome),
-                    ),
-                    title: Text(l10n.collectionTitle),
-                    subtitle: Text(
-                      '${_characterSnapshot.ownedCount} / ${characterDefinitions.length} personagens',
-                      key: const Key('collectionTileProgressText'),
-                    ),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => CollectionScreen(
-                          snapshot: _characterSnapshot,
-                          equippedItems: _equippedItems,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    key: const Key('shopTile'),
-                    leading: CircleAvatar(
-                      backgroundColor: theme.colorScheme.secondaryContainer,
-                      foregroundColor: theme.colorScheme.onSecondaryContainer,
-                      child: const Icon(Icons.storefront),
-                    ),
-                    title: Text(l10n.shopTile),
-                    subtitle: Text(l10n.shopTileSubtitle),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => ShopScreen(
-                          growthRepository: _growthRepository!,
-                          inventoryStore: _inventoryStore,
-                          inventory: _inventorySnapshot,
-                          onInventoryChanged: (snapshot) =>
-                              setState(() => _inventorySnapshot = snapshot),
-                          equippedItemsStore: _equippedItemsStore,
-                          equippedItems: _equippedItems,
-                          onEquippedItemsChanged: (items) =>
-                              setState(() => _equippedItems = items),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    key: const Key('badgeCollectionTile'),
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.amber.withValues(alpha: 0.2),
-                      foregroundColor: Colors.amber[800],
-                      child: const Icon(Icons.emoji_events),
-                    ),
-                    title: Text(l10n.badgeCollectionTitle),
-                    subtitle: Text(
-                      '${_masteredUnitIds.length} / '
-                      '${curriculum.units.where((u) => u.templateIds.isNotEmpty).length} '
-                      'unidades dominadas',
-                      key: const Key('badgeCollectionTileProgressText'),
-                    ),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => BadgeCollectionScreen(
-                          units: curriculum.units,
-                          masteredUnitIds: _masteredUnitIds,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                if (_masteredUnitIds.isNotEmpty)
-                  _RecentBadgesPreview(
-                    key: const Key('recentBadgesPreview'),
-                    units: curriculum.units
-                        .where((u) => _masteredUnitIds.contains(u.id))
-                        .take(4)
-                        .toList(),
-                    labelFor: (unit) => resolveUnitName(l10n, unit.id),
-                    visualFor: (unit) => _visualForUnit(unit, theme.colorScheme.primary),
-                  ),
                 Card(
                   child: ListTile(
                     key: const Key('mathGuideTile'),
@@ -773,160 +769,119 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                _SectionLabel(label: l10n.moreSectionLabel),
-                const CrossPromoSection(),
-                if (widget.onDisplayLocaleChanged != null) ...[
-                  _SectionLabel(label: l10n.settingsGeneralSection),
-                  Card(
-                    child: ListTile(
-                      key: const Key('languageTile'),
-                      leading: const Icon(Icons.language_outlined),
-                      title: Text(l10n.languageTile),
-                      subtitle: Text(_localeDisplayName(widget.displayLocale)),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => _showLanguagePicker(context, l10n),
-                    ),
-                  ),
-                ],
-                _SectionLabel(label: l10n.settingsNotificationsSection),
-                Card(
-                  child: ListTile(
-                    key: const Key('dailyReminderTile'),
-                    leading: const Icon(Icons.notifications_outlined),
-                    title: Text(l10n.dailyReminderTile),
-                    subtitle: Text(
-                      _dailyReminderScheduledAt != null
-                          ? l10n.dailyReminderScheduled(
-                              _dailyReminderScheduledAt!.hour,
-                              _dailyReminderScheduledAt!.minute,
-                            )
-                          : l10n.dailyReminderNotScheduled,
-                      key: const Key('dailyReminderStatusText'),
-                    ),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: _toggleDailyReminder,
-                  ),
-                ),
-                _SectionLabel(label: l10n.settingsParentsSection),
-                Card(
-                  child: ListTile(
-                    key: const Key('weeklyReportTile'),
-                    leading: const Icon(Icons.bar_chart_outlined),
-                    title: Text(l10n.weeklyReportTile),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => WeeklyReportScreen(
-                          unitIds: curriculum.units.map((u) => u.id).toList(),
-                          progressStore: _progressStore,
-                          clock: _clock,
-                          questionCache: _questionCache,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    key: const Key('ageVerificationTile'),
-                    leading: const Icon(Icons.verified_user_outlined),
-                    title: Text(l10n.ageVerificationTile),
-                    subtitle: Text(
-                      (_consent?.parentalConsentGiven ?? false)
-                          ? l10n.consentStatusGiven
-                          : l10n.consentStatusNotGiven,
-                      key: const Key('consentStatusText'),
-                    ),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: _runAgeGateFlow,
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    key: const Key('dataPrivacyTile'),
-                    leading: const Icon(Icons.privacy_tip_outlined),
-                    title: Text(l10n.dataPrivacyTile),
-                    trailing: const Icon(Icons.chevron_right),
-                    // 同意撤回・全データ削除という不可逆な操作に進めるため、
-                    // 児童が誤って（または意図的に）開けないよう保護者ゲート
-                    // で一度確認する。
-                    onTap: () async {
-                      final passed = await showGuardianGateDialog(context);
-                      if (!passed || !context.mounted) return;
-                      await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => DataPrivacyScreen(
-                            consentStore: _consentStore,
-                            progressStore: _progressStore,
-                            onDataErased: () {
-                              if (mounted) setState(() => _consent = null);
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
                     ],
                   ),
-                  ),
+                ),
                 ),
               ],
-            ),
-      ),
-    );
+            );
   }
-}
 
-/// れんぞく・コイン・クリア数を横並びでコンパクトに見せる統計カード行。
-/// JP版の「最近獲得したバッジ」プレビューに相当する、マスター済み単元の
-/// 小さいプレビュー行(最大4枚)。全件はbadgeCollectionTileから見られる。
-class _RecentBadgesPreview extends StatelessWidget {
-  const _RecentBadgesPreview({
-    super.key,
-    required this.units,
-    required this.labelFor,
-    required this.visualFor,
-  });
-
-  final List<Unit> units;
-  final String Function(Unit) labelFor;
-  final (IconData, Color) Function(Unit) visualFor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Row(
+  /// 設定タブの内容。言語・通知・保護者向けツール・クロスプロモなど、
+  /// 日々の学習導線ではない項目をここにまとめる（以前はホーム画面の下部に
+  /// 並んでいた）。
+  Widget _buildSettingsTab(BuildContext context, AppLocalizations l10n) {
+    final curriculum = _curriculum!;
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.bottomNavSettings)),
+      body: ListView(
+        key: const Key('settingsScrollable'),
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
         children: [
-          for (final unit in units)
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: Container(
-                  key: Key('recentBadge_${unit.id}'),
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: visualFor(unit).$2.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: Colors.amber, width: 1.5),
-                  ),
-                  child: Column(
-                    children: [
-                      Icon(Icons.emoji_events, size: 20, color: Colors.amber[800]),
-                      const SizedBox(height: 4),
-                      Text(
-                        labelFor(unit),
-                        style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+          _SectionLabel(label: l10n.moreSectionLabel),
+          const CrossPromoSection(),
+          if (widget.onDisplayLocaleChanged != null) ...[
+            _SectionLabel(label: l10n.settingsGeneralSection),
+            Card(
+              child: ListTile(
+                key: const Key('languageTile'),
+                leading: const Icon(Icons.language_outlined),
+                title: Text(l10n.languageTile),
+                subtitle: Text(_localeDisplayName(widget.displayLocale)),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => _showLanguagePicker(context, l10n),
+              ),
+            ),
+          ],
+          _SectionLabel(label: l10n.settingsNotificationsSection),
+          Card(
+            child: ListTile(
+              key: const Key('dailyReminderTile'),
+              leading: const Icon(Icons.notifications_outlined),
+              title: Text(l10n.dailyReminderTile),
+              subtitle: Text(
+                _dailyReminderScheduledAt != null
+                    ? l10n.dailyReminderScheduled(
+                        _dailyReminderScheduledAt!.hour,
+                        _dailyReminderScheduledAt!.minute,
+                      )
+                    : l10n.dailyReminderNotScheduled,
+                key: const Key('dailyReminderStatusText'),
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: _toggleDailyReminder,
+            ),
+          ),
+          _SectionLabel(label: l10n.settingsParentsSection),
+          Card(
+            child: ListTile(
+              key: const Key('weeklyReportTile'),
+              leading: const Icon(Icons.bar_chart_outlined),
+              title: Text(l10n.weeklyReportTile),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => WeeklyReportScreen(
+                    unitIds: curriculum.units.map((u) => u.id).toList(),
+                    progressStore: _progressStore,
+                    clock: _clock,
+                    questionCache: _questionCache,
                   ),
                 ),
               ),
             ),
+          ),
+          Card(
+            child: ListTile(
+              key: const Key('ageVerificationTile'),
+              leading: const Icon(Icons.verified_user_outlined),
+              title: Text(l10n.ageVerificationTile),
+              subtitle: Text(
+                (_consent?.parentalConsentGiven ?? false)
+                    ? l10n.consentStatusGiven
+                    : l10n.consentStatusNotGiven,
+                key: const Key('consentStatusText'),
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: _runAgeGateFlow,
+            ),
+          ),
+          Card(
+            child: ListTile(
+              key: const Key('dataPrivacyTile'),
+              leading: const Icon(Icons.privacy_tip_outlined),
+              title: Text(l10n.dataPrivacyTile),
+              trailing: const Icon(Icons.chevron_right),
+              // 同意撤回・全データ削除という不可逆な操作に進めるため、
+              // 児童が誤って（または意図的に）開けないよう保護者ゲート
+              // で一度確認する。
+              onTap: () async {
+                final passed = await showGuardianGateDialog(context);
+                if (!passed || !context.mounted) return;
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => DataPrivacyScreen(
+                      consentStore: _consentStore,
+                      progressStore: _progressStore,
+                      onDataErased: () {
+                        if (mounted) setState(() => _consent = null);
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
