@@ -115,12 +115,17 @@ void main() {
       // (実際のタップ動作はtest/tts_service_test.dartで確認する)。
       expect(find.byKey(const Key('listenPromptButton')), findsOneWidget);
 
+      // 文章題の出題文が長くなることがあり、小さいテストビューポートでは
+      // 選択肢ボタンが画面外に出てタップが当たらないことがあるため、
+      // ensureVisibleで確実にスクロールしてから操作する。
       final choiceButtons = find.byType(ElevatedButton);
       expect(choiceButtons, findsWidgets);
+      await tester.ensureVisible(choiceButtons.first);
+      await tester.pumpAndSettle();
       await tester.tap(choiceButtons.first);
       await tester.pumpAndSettle();
 
-      expect(find.byKey(const Key('feedbackText')), findsOneWidget);
+      expect(find.byKey(const Key('feedbackText'), skipOffstage: false), findsOneWidget);
 
       // 問題文(prompt)の表示や解説文の充実化で出題画面の縦幅が伸び、ListViewの
       // Sliverが遅延レイアウトする範囲外（offstage）になりがちなため、

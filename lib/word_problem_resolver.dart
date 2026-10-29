@@ -66,6 +66,16 @@ String? _resolveWordProblem(AppLocalizations l10n, String wordProblemId, int a, 
       return l10n.wordProblemMultiplyBudget(a, b);
     case 'word_problem_divide_budget':
       return l10n.wordProblemDivideBudget(a, b);
+    case 'word_problem_add_birthday':
+      return l10n.wordProblemAddBirthday(a, b);
+    case 'word_problem_add_bbq':
+      return l10n.wordProblemAddBbq(a, b);
+    case 'word_problem_subtract_allowance':
+      return l10n.wordProblemSubtractAllowance(a, b);
+    case 'word_problem_multiply_market':
+      return l10n.wordProblemMultiplyMarket(a, b);
+    case 'word_problem_divide_recycling':
+      return l10n.wordProblemDivideRecycling(a, b);
     default:
       return null;
   }

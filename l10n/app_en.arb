@@ -767,5 +767,60 @@
         "type": "String"
       }
     }
+  },
+  "wordProblemAddBirthday": "At the birthday party, {a} friends arrived in the morning and {b} more arrived in the afternoon. How many friends came to the party in total?",
+  "@wordProblemAddBirthday": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemAddBbq": "At the family barbecue, grandpa spent R$ {a} on meat and grandma spent R$ {b} on garlic bread. How much did the family spend in total?",
+  "@wordProblemAddBbq": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemSubtractAllowance": "You saved R$ {a} from your allowance and spent R$ {b} on a toy. How much is left?",
+  "@wordProblemSubtractAllowance": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemMultiplyMarket": "At the open-air market, each bag of fruit costs R$ {a}. If your family buys {b} bags, how much will they pay in total?",
+  "@wordProblemMultiplyMarket": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemDivideRecycling": "Your class collected {a} cans to recycle and will split them equally into {b} boxes. How many cans go in each box?",
+  "@wordProblemDivideRecycling": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   }
 }

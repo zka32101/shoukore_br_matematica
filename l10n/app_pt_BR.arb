@@ -768,5 +768,60 @@
         "type": "String"
       }
     }
+  },
+  "wordProblemAddBirthday": "Na festa de aniversário, {a} amigos chegaram de manhã e mais {b} chegaram à tarde. Quantos amigos vieram à festa no total?",
+  "@wordProblemAddBirthday": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemAddBbq": "No churrasco em família, o vovô preparou R$ {a} em carne e a vovó comprou R$ {b} em pão de alho. Quanto a família gastou no total?",
+  "@wordProblemAddBbq": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemSubtractAllowance": "Você guardou R$ {a} da sua mesada e gastou R$ {b} em um brinquedo. Quanto ainda sobrou?",
+  "@wordProblemSubtractAllowance": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemMultiplyMarket": "Na feira livre, cada saco de frutas custa R$ {a}. Se sua família comprar {b} sacos, quanto vai pagar no total?",
+  "@wordProblemMultiplyMarket": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
+  },
+  "wordProblemDivideRecycling": "Sua turma coletou {a} latinhas para reciclar e vai separá-las igualmente em {b} caixas. Quantas latinhas vão em cada caixa?",
+  "@wordProblemDivideRecycling": {
+    "placeholders": {
+      "a": {
+        "type": "int"
+      },
+      "b": {
+        "type": "int"
+      }
+    }
   }
 }

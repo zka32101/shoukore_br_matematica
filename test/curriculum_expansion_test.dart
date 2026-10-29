@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shoukore_br_matematica/explanation_resolver.dart';
 import 'package:shoukore_br_matematica/l10n/app_localizations.dart';
 import 'package:shoukore_br_matematica/question_prompt_resolver.dart';
+import 'package:shoukore_br_matematica/word_problem_resolver.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 
 /// コンテンツレビューで指摘された「algebra/geometria/probabilidadeの
@@ -92,6 +93,14 @@ void main() {
       params: {'values': '1,2,3', 'operation': 'range', 'scenarioId': 'scenario_relay'},
     );
     expect(resolveQuestionPrompt(l10n, relayQuestion), contains('revezamento'));
+  });
+
+  test('ストア訴求向けの新規文章題(誕生日会・churrasco・お小遣い・feira・リサイクル)が解決される', () {
+    expect(resolveArithmeticPrompt(l10n, operator: 'add', a: 3, b: 4, wordProblemId: 'word_problem_add_birthday'), contains('aniversário'));
+    expect(resolveArithmeticPrompt(l10n, operator: 'add', a: 3, b: 4, wordProblemId: 'word_problem_add_bbq'), contains('churrasco'));
+    expect(resolveArithmeticPrompt(l10n, operator: 'subtract', a: 10, b: 4, wordProblemId: 'word_problem_subtract_allowance'), contains('mesada'));
+    expect(resolveArithmeticPrompt(l10n, operator: 'multiply', a: 3, b: 4, wordProblemId: 'word_problem_multiply_market'), contains('feira'));
+    expect(resolveArithmeticPrompt(l10n, operator: 'divide', a: 10, b: 2, wordProblemId: 'word_problem_divide_recycling'), contains('reciclar'));
   });
 
   test('拡充した単元が使う解説IDは全てl10nに存在する', () {

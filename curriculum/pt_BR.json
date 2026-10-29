@@ -741,6 +741,51 @@
       "maxValue": 20,
       "explanationId": "explanation_dataset_range",
       "scenarioId": "scenario_relay"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_add_word_birthday",
+      "operator": "add",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_add",
+      "wordProblemId": "word_problem_add_birthday"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_add_word_bbq",
+      "operator": "add",
+      "minOperand": 1,
+      "maxOperand": 50,
+      "explanationId": "explanation_add",
+      "wordProblemId": "word_problem_add_bbq"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_sub_word_allowance",
+      "operator": "subtract",
+      "minOperand": 1,
+      "maxOperand": 50,
+      "explanationId": "explanation_subtract",
+      "wordProblemId": "word_problem_subtract_allowance"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_mul_word_market",
+      "operator": "multiply",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_multiply",
+      "wordProblemId": "word_problem_multiply_market"
+    },
+    {
+      "kind": "arithmetic",
+      "id": "tpl_div_word_recycling",
+      "operator": "divide",
+      "minOperand": 1,
+      "maxOperand": 10,
+      "explanationId": "explanation_divide",
+      "wordProblemId": "word_problem_divide_recycling"
     }
   ],
   "units": [
@@ -754,7 +799,8 @@
         "tpl_add_1_10",
         "tpl_add_word_fruits",
         "tpl_add_word_store",
-        "tpl_add_word_budget"
+        "tpl_add_word_budget",
+        "tpl_add_word_birthday"
       ],
       "habilidadeCodes": [
         "EF01MA01",
@@ -778,7 +824,9 @@
         "tpl_sub_word_change",
         "tpl_add_word_people",
         "tpl_sub_word_people",
-        "tpl_sub_word_budget"
+        "tpl_sub_word_budget",
+        "tpl_add_word_bbq",
+        "tpl_sub_word_allowance"
       ],
       "habilidadeCodes": [
         "EF02MA01",
@@ -797,7 +845,8 @@
         "tpl_mul_1_10",
         "tpl_mul_word_boxes",
         "tpl_mul_word_store",
-        "tpl_mul_word_people"
+        "tpl_mul_word_people",
+        "tpl_mul_word_market"
       ],
       "habilidadeCodes": [
         "EF03MA01",
@@ -818,7 +867,8 @@
         "tpl_mul_word_rows",
         "tpl_div_word_friends",
         "tpl_mul_word_budget",
-        "tpl_div_word_people"
+        "tpl_div_word_people",
+        "tpl_div_word_recycling"
       ],
       "habilidadeCodes": [
         "EF04MA01",
