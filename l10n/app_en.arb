@@ -946,5 +946,34 @@
   "explanationBonusCoinsCapReachedMessage": "You've reached today's bonus coin limit. Come back tomorrow!",
   "characterCelebrationNewlyOwnedTitle": "New friend!",
   "characterCelebrationLeveledUpTitle": "Leveled up!",
-  "characterCelebrationContinueButton": "Continue"
+  "characterCelebrationContinueButton": "Continue",
+  "unitTestTitle": "Unit Test",
+  "unitTestNextButton": "Next",
+  "unitTestSeeResultButton": "See result",
+  "unitTestFinishButton": "Finish",
+  "unitTestResultPassed": "Passed! You're ready for the next challenge. 🎉",
+  "unitTestResultFailed": "Almost there! Practice a bit more and try again. 💪",
+  "unitTestQuestionLabel": "Question {current} of {total}",
+  "@unitTestQuestionLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "unitTestResultScore": "You got {score} out of {total} right",
+  "@unitTestResultScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "unitTestTile": "Take unit test"
 }

@@ -947,5 +947,34 @@
   "explanationBonusCoinsCapReachedMessage": "Você já atingiu o limite diário de moedas bônus. Volte amanhã!",
   "characterCelebrationNewlyOwnedTitle": "Novo amigo!",
   "characterCelebrationLeveledUpTitle": "Evoluiu!",
-  "characterCelebrationContinueButton": "Continuar"
+  "characterCelebrationContinueButton": "Continuar",
+  "unitTestTitle": "Teste da Unidade",
+  "unitTestNextButton": "Próxima",
+  "unitTestSeeResultButton": "Ver resultado",
+  "unitTestFinishButton": "Concluir",
+  "unitTestResultPassed": "Aprovado! Você está pronto para o próximo desafio. 🎉",
+  "unitTestResultFailed": "Quase lá! Pratique mais um pouco e tente de novo. 💪",
+  "unitTestQuestionLabel": "Pergunta {current} de {total}",
+  "@unitTestQuestionLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "unitTestResultScore": "Você acertou {score} de {total}",
+  "@unitTestResultScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "unitTestTile": "Testar unidade"
 }

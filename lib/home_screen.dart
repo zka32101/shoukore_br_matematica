@@ -37,6 +37,7 @@ import 'src/question/measurement_question_source.dart';
 import 'src/question/sequence_question_source.dart';
 import 'src/question/statistics_question_source.dart';
 import 'unit_name_resolver.dart';
+import 'unit_test_screen.dart';
 import 'weekly_challenge_repository.dart';
 import 'weekly_report_screen.dart';
 
@@ -119,6 +120,11 @@ class _HomeScreenState extends State<HomeScreen> {
   // 直近10問・正答率90%以上をマスター済みと判定する(コア側の判定ロジックを利用)。
   static const _masteryEligibility = UnitMasteryBadgeEligibility();
   Set<String> _masteredUnitIds = {};
+
+  // 単元まとめテスト(到達点モード、無限出題の練習とは別に固定問題数の
+  // 1回勝負で合否を見る)。直近のテスト結果のみを見るため、受け直せば
+  // 入れ替わる(コア側の判定ロジックを利用)。
+  Set<String> _unitTestPassedIds = {};
 
   final WeeklyChallengeStore _weeklyChallengeStore =
       InMemoryWeeklyChallengeStore();
@@ -205,6 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _equippedItems = equippedItems;
     });
     await _refreshMasteredUnits(curriculum.units);
+    await _refreshUnitTestPassed(curriculum.units);
   }
 
   /// 単元ごとのマスター判定を更新する。新たにマスターした単元があれば
@@ -233,6 +240,49 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     }
+  }
+
+  /// 単元まとめテストの合否判定を更新する。
+  Future<void> _refreshUnitTestPassed(List<Unit> units) async {
+    final passedIds = <String>{};
+    for (final unit in units) {
+      final testAttempts = (await _progressStore.getAttempts(
+        unit.id,
+      )).where((a) => a.mode == 'test').toList();
+      if (UnitTestScreen.eligibility.isPassed(testAttempts)) {
+        passedIds.add(unit.id);
+      }
+    }
+    if (!mounted) return;
+    setState(() => _unitTestPassedIds = passedIds);
+  }
+
+  /// 単元まとめテスト(到達点モード)を開く。
+  Future<void> _openUnitTest(
+    BuildContext context,
+    AppLocalizations l10n,
+    Unit unit,
+  ) async {
+    if (!_isUnitUnlocked(unit)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.entitlementLockedMessage)),
+      );
+      return;
+    }
+    final curriculum = _curriculum!;
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => UnitTestScreen(
+          unit: unit,
+          source: _source!,
+          progressStore: _progressStore,
+          growthRepository: _growthRepository!,
+          clock: _clock,
+          questionCache: _questionCache,
+        ),
+      ),
+    );
+    await _refreshUnitTestPassed(curriculum.units);
   }
 
   /// 新規所持・レベルアップしたキャラがいれば、専用ダイアログで1体ずつ
@@ -817,6 +867,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               locked: !_isUnitUnlocked(unit),
                               mastered: _masteredUnitIds.contains(unit.id),
                               onTap: () => _openUnit(context, l10n, unit),
+                              testPassed: _unitTestPassedIds.contains(unit.id),
+                              testButtonKey: Key('unitTestButton_${unit.id}'),
+                              onTestTap: () => _openUnitTest(context, l10n, unit),
                             ),
                           ),
                       ],
@@ -1244,6 +1297,9 @@ class _UnitCard extends StatelessWidget {
     required this.locked,
     required this.mastered,
     required this.onTap,
+    this.testPassed = false,
+    this.onTestTap,
+    this.testButtonKey,
   });
 
   final Key unitKey;
@@ -1254,6 +1310,13 @@ class _UnitCard extends StatelessWidget {
   final bool locked;
   final bool mastered;
   final VoidCallback onTap;
+
+  /// 単元まとめテスト(到達点モード)に合格済みかどうか。
+  final bool testPassed;
+
+  /// まとめテストへの導線。未指定(ロック中等)ならボタン自体を出さない。
+  final VoidCallback? onTestTap;
+  final Key? testButtonKey;
 
   @override
   Widget build(BuildContext context) {
@@ -1319,6 +1382,30 @@ class _UnitCard extends StatelessWidget {
                     key: const Key('masteredIcon'),
                     size: 18,
                     color: Colors.amber[800],
+                  ),
+                ),
+              if (testPassed)
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: Icon(
+                    Icons.verified,
+                    key: const Key('unitTestPassedIcon'),
+                    size: 18,
+                    color: Colors.amber[800],
+                  ),
+                ),
+              if (onTestTap != null)
+                Positioned(
+                  bottom: -4,
+                  right: -4,
+                  child: IconButton(
+                    key: testButtonKey,
+                    tooltip: AppLocalizations.of(context)!.unitTestTile,
+                    iconSize: 18,
+                    visualDensity: VisualDensity.compact,
+                    icon: const Icon(Icons.quiz_outlined),
+                    onPressed: onTestTap,
                   ),
                 ),
             ],
