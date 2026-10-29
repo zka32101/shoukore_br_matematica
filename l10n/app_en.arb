@@ -711,5 +711,61 @@
   "shopItemFrameRainbow": "Rainbow frame",
   "shopItemFrameRainbowDescription": "Vibrant colors for your collection",
   "shopUseButton": "Use",
-  "shopInUseLabel": "In use"
+  "shopInUseLabel": "In use",
+  "sequenceScenarioJumprope": "In PE class, Pedro jumped rope following this pattern of jumps per round: {terms}, ... How many jumps will he do next round?",
+  "@sequenceScenarioJumprope": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "sequenceScenarioFamilyTable": "At family dinner time, the number of plates on the table kept decreasing like this: {terms}, ... How many plates will there be next time?",
+  "@sequenceScenarioFamilyTable": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "sequenceScenarioSoccerTraining": "At soccer practice, the number of laps around the field doubles each round: {terms}, ... How many laps will there be next round?",
+  "@sequenceScenarioSoccerTraining": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "shapeScenarioKiteSides": "This weekend, the family is flying a kite shaped like a {shape}. How many sides does this kite have?",
+  "@shapeScenarioKiteSides": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "shapeScenarioPlaygroundDiagonals": "The new playground equipment is shaped like a {shape}. How many diagonals does this shape have?",
+  "@shapeScenarioPlaygroundDiagonals": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetScenarioFamilyTrip": "On a family trip, the car traveled these distances (in km) each day: {values}. What was the total distance traveled?",
+  "@datasetScenarioFamilyTrip": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetScenarioRelay": "In the relay race, each teammate ran this time (in seconds): {values}. What is the range (highest − lowest) among the times?",
+  "@datasetScenarioRelay": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  }
 }

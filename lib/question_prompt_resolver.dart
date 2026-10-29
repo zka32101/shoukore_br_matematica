@@ -39,6 +39,12 @@ String _resolveSequencePrompt(AppLocalizations l10n, Map<String, String> params)
       return l10n.sequenceScenarioSavings(terms);
     case 'scenario_plant':
       return l10n.sequenceScenarioPlant(terms);
+    case 'scenario_jumprope':
+      return l10n.sequenceScenarioJumprope(terms);
+    case 'scenario_family_table':
+      return l10n.sequenceScenarioFamilyTable(terms);
+    case 'scenario_soccer_training':
+      return l10n.sequenceScenarioSoccerTraining(terms);
     default:
       return l10n.sequencePrompt(terms);
   }
@@ -71,6 +77,10 @@ String _resolveShapePrompt(AppLocalizations l10n, Map<String, String> params) {
       return isDiagonals
           ? l10n.shapeScenarioGardenDiagonals(shapeName)
           : l10n.shapeScenarioGardenSides(shapeName);
+    case 'scenario_kite':
+      return l10n.shapeScenarioKiteSides(shapeName);
+    case 'scenario_playground':
+      return l10n.shapeScenarioPlaygroundDiagonals(shapeName);
     default:
       return isDiagonals
           ? l10n.shapePromptDiagonals(shapeName)
@@ -128,6 +138,10 @@ String _resolveDatasetPrompt(AppLocalizations l10n, Map<String, String> params) 
       return l10n.datasetScenarioPushups(values);
     case 'scenario_recess':
       return l10n.datasetScenarioRecess(values);
+    case 'scenario_family_trip':
+      return l10n.datasetScenarioFamilyTrip(values);
+    case 'scenario_relay':
+      return l10n.datasetScenarioRelay(values);
   }
   switch (params['operation']) {
     case 'max':

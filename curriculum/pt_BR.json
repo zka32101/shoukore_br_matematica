@@ -669,6 +669,78 @@
       "maxValue": 9,
       "explanationId": "explanation_unit_ml_to_l",
       "scenarioId": "scenario_juice"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_jumprope",
+      "startMin": 1,
+      "startMax": 5,
+      "stepMin": 2,
+      "stepMax": 3,
+      "length": 3,
+      "explanationId": "explanation_sequence",
+      "scenarioId": "scenario_jumprope"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_family_table",
+      "startMin": 6,
+      "startMax": 12,
+      "stepMin": 1,
+      "stepMax": 2,
+      "length": 4,
+      "descending": true,
+      "explanationId": "explanation_sequence_descending",
+      "scenarioId": "scenario_family_table"
+    },
+    {
+      "kind": "sequence",
+      "id": "tpl_sequence_soccer_training",
+      "startMin": 1,
+      "startMax": 3,
+      "stepMin": 1,
+      "stepMax": 1,
+      "length": 3,
+      "multiplier": 4,
+      "explanationId": "explanation_sequence_multiplicative",
+      "scenarioId": "scenario_soccer_training"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_shape_square_kite",
+      "shapeNameKey": "shape_square",
+      "sides": 4,
+      "explanationId": "explanation_shape_square",
+      "scenarioId": "scenario_kite"
+    },
+    {
+      "kind": "shape",
+      "id": "tpl_diagonals_octagon_playground",
+      "shapeNameKey": "shape_octagon",
+      "sides": 8,
+      "questionKind": "diagonals",
+      "explanationId": "explanation_diagonals",
+      "scenarioId": "scenario_playground"
+    },
+    {
+      "kind": "dataset",
+      "id": "tpl_dataset_sum_family_trip",
+      "operation": "sum",
+      "valueCount": 3,
+      "minValue": 1,
+      "maxValue": 10,
+      "explanationId": "explanation_dataset_sum",
+      "scenarioId": "scenario_family_trip"
+    },
+    {
+      "kind": "dataset",
+      "id": "tpl_dataset_range_relay",
+      "operation": "range",
+      "valueCount": 5,
+      "minValue": 1,
+      "maxValue": 20,
+      "explanationId": "explanation_dataset_range",
+      "scenarioId": "scenario_relay"
     }
   ],
   "units": [
@@ -783,7 +855,8 @@
       "order": 2,
       "templateIds": [
         "tpl_sequence_1_5",
-        "tpl_sequence_mult_x2"
+        "tpl_sequence_mult_x2",
+        "tpl_sequence_jumprope"
       ],
       "habilidadeCodes": [
         "EF01MA09",
@@ -817,7 +890,8 @@
       "order": 2,
       "templateIds": [
         "tpl_sequence_1_20",
-        "tpl_sequence_desc_1_20"
+        "tpl_sequence_desc_1_20",
+        "tpl_sequence_family_table"
       ],
       "habilidadeCodes": [
         "EF03MA10",
@@ -852,7 +926,8 @@
       "order": 2,
       "templateIds": [
         "tpl_sequence_1_50",
-        "tpl_sequence_mult_x3"
+        "tpl_sequence_mult_x3",
+        "tpl_sequence_soccer_training"
       ],
       "habilidadeCodes": [
         "EF05MA10",
@@ -869,7 +944,8 @@
       "order": 3,
       "templateIds": [
         "tpl_shape_triangle",
-        "tpl_shape_square"
+        "tpl_shape_square",
+        "tpl_shape_square_kite"
       ],
       "habilidadeCodes": [
         "EF01MA14"
@@ -940,7 +1016,8 @@
       "order": 3,
       "templateIds": [
         "tpl_shape_heptagon",
-        "tpl_shape_octagon"
+        "tpl_shape_octagon",
+        "tpl_diagonals_octagon_playground"
       ],
       "habilidadeCodes": [
         "EF05MA16",
@@ -1064,7 +1141,8 @@
       "order": 5,
       "templateIds": [
         "tpl_dataset_max",
-        "tpl_dataset_min"
+        "tpl_dataset_min",
+        "tpl_dataset_sum_family_trip"
       ],
       "habilidadeCodes": [
         "EF02MA21",
@@ -1120,7 +1198,8 @@
       "order": 5,
       "templateIds": [
         "tpl_dataset_mode",
-        "tpl_dataset_range"
+        "tpl_dataset_range",
+        "tpl_dataset_range_relay"
       ],
       "habilidadeCodes": [
         "EF05MA22",

@@ -230,11 +230,16 @@ void main() {
           findsOneWidget,
         );
 
+        // シナリオ付きの出題文は長くなることがあり、小さいテストビューポートでは
+        // 選択肢ボタンが画面外に出てタップが当たらないことがあるため、
+        // ensureVisibleで確実にスクロールしてから操作する。
         final otherChoiceButtons = find.byType(ElevatedButton);
         expect(otherChoiceButtons, findsWidgets);
+        await tester.ensureVisible(otherChoiceButtons.first);
+        await tester.pumpAndSettle();
         await tester.tap(otherChoiceButtons.first);
         await tester.pumpAndSettle();
-        expect(find.byKey(const Key('feedbackText')), findsOneWidget);
+        expect(find.byKey(const Key('feedbackText'), skipOffstage: false), findsOneWidget);
 
         await tester.tap(find.byType(BackButton));
         await tester.pumpAndSettle();

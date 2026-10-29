@@ -712,5 +712,61 @@
   "shopItemFrameRainbow": "Moldura arco-íris",
   "shopItemFrameRainbowDescription": "Cores vibrantes para sua coleção",
   "shopUseButton": "Usar",
-  "shopInUseLabel": "Em uso"
+  "shopInUseLabel": "Em uso",
+  "sequenceScenarioJumprope": "Na aula de educação física, Pedro pulou corda seguindo este padrão de pulos por rodada: {terms}, ... Quantos pulos ele vai dar na próxima rodada?",
+  "@sequenceScenarioJumprope": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "sequenceScenarioFamilyTable": "Na hora do jantar em família, o número de pratos na mesa foi diminuindo assim: {terms}, ... Quantos pratos terão na próxima vez?",
+  "@sequenceScenarioFamilyTable": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "sequenceScenarioSoccerTraining": "No treino de futebol, o número de voltas na quadra dobra a cada rodada: {terms}, ... Quantas voltas serão na próxima rodada?",
+  "@sequenceScenarioSoccerTraining": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "shapeScenarioKiteSides": "No fim de semana, a família vai soltar uma pipa em forma de {shape}. Quantos lados essa pipa tem?",
+  "@shapeScenarioKiteSides": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "shapeScenarioPlaygroundDiagonals": "O novo brinquedo do parquinho tem o formato de um {shape}. Quantas diagonais esse formato tem?",
+  "@shapeScenarioPlaygroundDiagonals": {
+    "placeholders": {
+      "shape": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetScenarioFamilyTrip": "Em uma viagem em família, o carro percorreu estas distâncias (em km) em cada dia: {values}. Qual foi a distância total percorrida?",
+  "@datasetScenarioFamilyTrip": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  },
+  "datasetScenarioRelay": "Na corrida de revezamento, cada colega da equipe fez este tempo (em segundos): {values}. Qual é a amplitude (maior − menor) entre os tempos?",
+  "@datasetScenarioRelay": {
+    "placeholders": {
+      "values": {
+        "type": "String"
+      }
+    }
+  }
 }
