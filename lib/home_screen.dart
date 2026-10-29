@@ -635,7 +635,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () => _openFamilyChallenge(context, l10n),
                   ),
                 ),
-                _SectionLabel(label: 'Escolha uma unidade'),
+                _SectionLabel(label: l10n.unitSectionLabel),
                 LayoutBuilder(
                   builder: (context, constraints) {
                     const spacing = 12.0;
@@ -664,7 +664,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 ),
-                _SectionLabel(label: 'Coleção'),
+                _SectionLabel(label: l10n.collectionSectionLabel),
                 Card(
                   child: ListTile(
                     key: const Key('collectionTile'),
@@ -673,7 +673,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       foregroundColor: theme.colorScheme.onPrimaryContainer,
                       child: const Icon(Icons.auto_awesome),
                     ),
-                    title: const Text('Minha Coleção'),
+                    title: Text(l10n.collectionTitle),
                     subtitle: Text(
                       '${_characterSnapshot.ownedCount} / ${characterDefinitions.length} personagens',
                       key: const Key('collectionTileProgressText'),
@@ -725,7 +725,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       foregroundColor: Colors.amber[800],
                       child: const Icon(Icons.emoji_events),
                     ),
-                    title: const Text('Minhas Medalhas'),
+                    title: Text(l10n.badgeCollectionTitle),
                     subtitle: Text(
                       '${_masteredUnitIds.length} / '
                       '${curriculum.units.where((u) => u.templateIds.isNotEmpty).length} '
@@ -769,7 +769,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                _SectionLabel(label: 'Mais da Colecinho!'),
+                _SectionLabel(label: l10n.moreSectionLabel),
                 const CrossPromoSection(),
                 if (widget.onDisplayLocaleChanged != null) ...[
                   _SectionLabel(label: l10n.settingsGeneralSection),
@@ -857,28 +857,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             onDataErased: () {
                               if (mounted) setState(() => _consent = null);
                             },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    key: const Key('guardianGateTile'),
-                    leading: const Icon(Icons.shield_outlined),
-                    title: Text(l10n.guardianGateTitle),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () async {
-                      final passed = await showGuardianGateDialog(context);
-                      if (!context.mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          key: const Key('guardianGateResultSnackBar'),
-                          content: Text(
-                            passed
-                                ? l10n.guardianGatePassedMessage
-                                : l10n.guardianGateFailedMessage,
                           ),
                         ),
                       );

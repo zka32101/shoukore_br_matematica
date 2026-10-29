@@ -570,8 +570,6 @@
   },
   "questionFeedbackCorrect": "Isso mesmo!",
   "questionFeedbackIncorrect": "Quase! Tente a próxima.",
-  "guardianGatePassedMessage": "Verificação concluída com sucesso.",
-  "guardianGateFailedMessage": "Resposta incorreta na verificação.",
   "settingsParentsSection": "Ferramentas para os responsáveis",
   "settingsNotificationsSection": "Notificações",
   "sequenceScenarioSavings": "Toda semana, Maria guarda uma quantidade de moedas que segue este padrão: {terms}, ... Quantas moedas ela vai guardar na próxima semana?",
@@ -878,5 +876,10 @@
         "type": "int"
       }
     }
-  }
+  },
+  "unitSectionLabel": "Escolha uma unidade",
+  "collectionSectionLabel": "Coleção",
+  "moreSectionLabel": "Mais da Colecinho!",
+  "collectionTitle": "Minha Coleção",
+  "badgeCollectionTitle": "Minhas Medalhas"
 }

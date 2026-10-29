@@ -570,8 +570,6 @@
   },
   "questionFeedbackCorrect": "That's right!",
   "questionFeedbackIncorrect": "Almost! Try the next one.",
-  "guardianGatePassedMessage": "Verification completed successfully.",
-  "guardianGateFailedMessage": "Incorrect answer in verification.",
   "settingsParentsSection": "Tools for parents/guardians",
   "settingsNotificationsSection": "Notifications",
   "sequenceScenarioSavings": "Every week, Maria saves an amount of coins that follows this pattern: {terms}, ... How many coins will she save next week?",
@@ -877,5 +875,10 @@
         "type": "int"
       }
     }
-  }
+  },
+  "unitSectionLabel": "Choose a unit",
+  "collectionSectionLabel": "Collection",
+  "moreSectionLabel": "More from Colecinho!",
+  "collectionTitle": "My Collection",
+  "badgeCollectionTitle": "My Medals"
 }

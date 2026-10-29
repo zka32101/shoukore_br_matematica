@@ -108,10 +108,11 @@ void main() {
       await tester.ensureVisible(find.byKey(const Key('gameModeTile')));
       await tester.pumpAndSettle();
 
-      // 単元数が増え一覧が画面に収まらないため、保護者ゲートのタイルはスクロールして確認する。
-      await tester.ensureVisible(find.byKey(const Key('guardianGateTile')));
+      // 単元数が増え一覧が画面に収まらないため、保護者向けセクションのタイルは
+      // スクロールして確認する。
+      await tester.ensureVisible(find.byKey(const Key('dataPrivacyTile')));
       await tester.pumpAndSettle();
-      expect(find.text('Para os responsáveis'), findsOneWidget);
+      expect(find.text('Ferramentas para os responsáveis'), findsOneWidget);
       await tester.ensureVisible(find.byKey(const Key('unit_mat_numeros_1')));
       await tester.pumpAndSettle();
 
