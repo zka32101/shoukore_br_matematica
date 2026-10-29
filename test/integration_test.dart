@@ -63,9 +63,24 @@ void main() {
       // 既定ロケール(pt_BR)でpt_BRのカリキュラム単元一覧が表示される。
       expect(find.byKey(const Key('unit_mat_numeros_1')), findsOneWidget);
 
-      // 既定ではpremiumが無効なので単元はロックされており、タップしても出題画面に遷移しない。
+      // 既定ではpremiumが無効。1º ano(1年生)の単元は無料で開放、2º ano以降はロックされ、
+      // タップしても出題画面に遷移しない。
       expect(find.byKey(const Key('lockIcon')), findsWidgets);
-      await tester.tap(find.byKey(const Key('unit_mat_numeros_1')));
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('unit_mat_numeros_1')),
+          matching: find.byKey(const Key('lockIcon')),
+        ),
+        findsNothing,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('unit_mat_numeros_2')),
+          matching: find.byKey(const Key('lockIcon')),
+        ),
+        findsOneWidget,
+      );
+      await tester.tap(find.byKey(const Key('unit_mat_numeros_2')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('entitlementLockedSnackBar')), findsOneWidget);
       expect(find.byKey(const Key('masteryText')), findsNothing);
