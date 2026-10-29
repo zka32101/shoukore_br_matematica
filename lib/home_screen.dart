@@ -363,6 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
           questionCache: _questionCache,
           growthRepository: _growthRepository!,
           weeklyChallengeRepository: _weeklyChallengeRepository,
+          notificationScheduler: _notificationScheduler,
         ),
       ),
     );

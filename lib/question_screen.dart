@@ -22,6 +22,7 @@ class QuestionScreen extends StatefulWidget {
     required this.questionCache,
     required this.growthRepository,
     this.weeklyChallengeRepository,
+    this.notificationScheduler,
   });
 
   final Unit unit;
@@ -33,6 +34,10 @@ class QuestionScreen extends StatefulWidget {
 
   /// 未指定時(単体テスト等)はウィークリーチャレンジの更新を行わない。
   final WeeklyChallengeRepository? weeklyChallengeRepository;
+
+  /// 3連続不正解時に保護者向けアラートを通知スケジュールにも連携する。
+  /// 未指定時(単体テスト等)はSnackBar表示のみに留める。
+  final NotificationScheduler? notificationScheduler;
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -132,6 +137,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
           content: Text('${l10n.consecutiveIncorrectAlertTitle}: '
               '${l10n.consecutiveIncorrectAlertMessage}'),
         ),
+      );
+      // 保護者がアプリを開いていなくても気付けるよう、通知スケジュールにも
+      // 連携する(実機プッシュ連携は別途、このスケジューラの後継アダプタで対応)。
+      await widget.notificationScheduler?.schedule(
+        id: 'guardian_alert_${widget.unit.id}',
+        at: widget.clock.now(),
+        titleKey: 'consecutiveIncorrectAlertTitle',
+        bodyKey: 'consecutiveIncorrectAlertMessage',
       );
     }
 
