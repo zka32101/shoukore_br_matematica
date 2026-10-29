@@ -146,10 +146,6 @@ void main() {
       expect(find.byKey(const Key('masteryText')), findsOneWidget);
       expect(find.text('Domínio: 0%'), findsOneWidget);
 
-      // 未学習(mastery 0%)はAutoHintPolicyの閾値未満のため、自動ヒントが
-      // 回答前から表示される。
-      expect(find.byKey(const Key('autoHintText')), findsOneWidget);
-
       // 読み上げ機能: 問題文を読み上げるボタンが表示される
       // (実際のタップ動作はtest/tts_service_test.dartで確認する)。
       expect(find.byKey(const Key('listenPromptButton')), findsOneWidget);

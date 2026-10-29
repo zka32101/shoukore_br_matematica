@@ -55,7 +55,6 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionScreenState extends State<QuestionScreen> {
   static const _weakNotesAnalyzer = WeakNotesAnalyzer();
-  static const _autoHintPolicy = AutoHintPolicy();
   static const _consecutiveIncorrectAlert = ConsecutiveIncorrectAnswerAlert();
 
   final TtsService _ttsService = TtsService();
@@ -68,7 +67,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
   String? _lastChosenId;
   String? _overcomeMisconception;
   String? _misconceptionHint;
-  bool _autoHintVisible = false;
   bool _consecutiveIncorrectAlertShown = false;
   int _answerAttemptSequence = 0;
 
@@ -97,7 +95,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
       _feedback = null;
       _lastChosenId = null;
       _misconceptionHint = null;
-      _autoHintVisible = _autoHintPolicy.shouldShowHint(mastery);
     });
   }
 
@@ -358,43 +355,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         onBarTap: _answer,
                       ),
                     ),
-                  ),
-                if (_autoHintVisible && question.explanationId.isNotEmpty)
-                  KeyedSubtree(
-                    key: const ValueKey('autoHintSlot'),
-                    child: Builder(builder: (context) {
-                    final hint = resolveExplanation(
-                      AppLocalizations.of(context)!,
-                      question.explanationId,
-                    );
-                    if (hint == null) return const SizedBox.shrink();
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Card(
-                        color: theme.colorScheme.secondaryContainer,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(Icons.lightbulb_outline,
-                                  color: theme.colorScheme.onSecondaryContainer),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  hint,
-                                  key: const Key('autoHintText'),
-                                  style: theme.textTheme.bodyMedium?.copyWith(
-                                    color: theme.colorScheme.onSecondaryContainer,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
                   ),
                 const SizedBox(height: 20),
                 // 体験型コンテンツ: 選択肢をタップするだけでなく、指でドラッグして
