@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 
+import 'l10n/app_localizations.dart';
+import 'unit_name_resolver.dart';
+
 /// 単元ごとの「マスター済み」バッジを一覧表示する独立画面。無限に出題される
 /// 設計のため、キャラコレクションと同様に「集める楽しみ」「やった感」を
 /// 恒久的に確認できる場所をここに用意する。
@@ -17,13 +20,14 @@ class BadgeCollectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final eligibleUnits = units.where((u) => u.templateIds.isNotEmpty).toList();
     final masteredCount = eligibleUnits.where((u) => masteredUnitIds.contains(u.id)).length;
     final totalCount = eligibleUnits.length;
     final progress = totalCount == 0 ? 0.0 : masteredCount / totalCount;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Minhas Medalhas')),
+      appBar: AppBar(title: Text(l10n.badgeCollectionTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -36,7 +40,7 @@ class BadgeCollectionScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '$masteredCount / $totalCount unidades dominadas',
+                      l10n.badgeProgressText(masteredCount, totalCount),
                       key: const Key('badgeProgressText'),
                       style: theme.textTheme.titleMedium,
                     ),
@@ -59,7 +63,7 @@ class BadgeCollectionScreen extends StatelessWidget {
                     for (final unit in eligibleUnits)
                       _BadgeCard(
                         key: Key('badgeCard_${unit.id}'),
-                        label: unit.id,
+                        label: resolveUnitName(l10n, unit.id),
                         mastered: masteredUnitIds.contains(unit.id),
                       ),
                   ],

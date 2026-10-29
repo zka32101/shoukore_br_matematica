@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'cross_promo.dart';
+import 'l10n/app_localizations.dart';
 
 /// シリーズの他アプリへの案内枠。`crossPromoApps`が空の間は「近日公開」の
 /// ティーザーのみ表示し、空のリンク一覧を出さない。他アプリが追加されたら
@@ -19,6 +20,7 @@ class CrossPromoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     if (crossPromoApps.isEmpty) {
       return Card(
         key: const Key('crossPromoComingSoonCard'),
@@ -28,8 +30,8 @@ class CrossPromoSection extends StatelessWidget {
             children: [
               Icon(Icons.auto_awesome_outlined, color: theme.colorScheme.primary),
               const SizedBox(width: 12),
-              const Expanded(
-                child: Text('Em breve: mais matérias da Colecinho!'),
+              Expanded(
+                child: Text(l10n.crossPromoComingSoonText),
               ),
             ],
           ),

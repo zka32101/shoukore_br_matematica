@@ -881,5 +881,29 @@
   "collectionSectionLabel": "Coleção",
   "moreSectionLabel": "Mais da Colecinho!",
   "collectionTitle": "Minha Coleção",
-  "badgeCollectionTitle": "Minhas Medalhas"
+  "badgeCollectionTitle": "Minhas Medalhas",
+  "collectionProgressText": "{owned} / {total} personagens coletados",
+  "@collectionProgressText": {
+    "placeholders": {
+      "owned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "collectionMilestoneText": "Você está quase lá!",
+  "badgeProgressText": "{mastered} / {total} unidades dominadas",
+  "@badgeProgressText": {
+    "placeholders": {
+      "mastered": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "crossPromoComingSoonText": "Em breve: mais matérias da Colecinho!"
 }

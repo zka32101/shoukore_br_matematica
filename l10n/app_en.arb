@@ -880,5 +880,29 @@
   "collectionSectionLabel": "Collection",
   "moreSectionLabel": "More from Colecinho!",
   "collectionTitle": "My Collection",
-  "badgeCollectionTitle": "My Medals"
+  "badgeCollectionTitle": "My Medals",
+  "collectionProgressText": "{owned} / {total} characters collected",
+  "@collectionProgressText": {
+    "placeholders": {
+      "owned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "collectionMilestoneText": "You're almost there!",
+  "badgeProgressText": "{mastered} / {total} units mastered",
+  "@badgeProgressText": {
+    "placeholders": {
+      "mastered": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "crossPromoComingSoonText": "Coming soon: more subjects from Colecinho!"
 }

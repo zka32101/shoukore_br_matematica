@@ -4,6 +4,7 @@ import 'package:shoukore_core_global/shoukore_core_global.dart';
 import 'character_card.dart';
 import 'character_definition.dart';
 import 'equipped_items.dart';
+import 'l10n/app_localizations.dart';
 
 /// 12体のコレクションキャラを一覧表示する独立画面。所持数/全体数の進捗と、
 /// 節目到達（`CollectionCompletionDetector`、coreのgrowthモジュール）の
@@ -20,13 +21,14 @@ class CollectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final ownedCount = snapshot.ownedCount;
     final totalCount = characterDefinitions.length;
     final progress = totalCount == 0 ? 0.0 : ownedCount / totalCount;
     final milestoneReached = _completionDetector.isMilestoneReached(ownedCount, totalCount);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Minha Coleção')),
+      appBar: AppBar(title: Text(l10n.collectionTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -39,7 +41,7 @@ class CollectionScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '$ownedCount / $totalCount personagens coletados',
+                      l10n.collectionProgressText(ownedCount, totalCount),
                       key: const Key('collectionProgressText'),
                       style: theme.textTheme.titleMedium,
                     ),
@@ -55,7 +57,7 @@ class CollectionScreen extends StatelessWidget {
                           Icon(Icons.celebration, size: 18, color: theme.colorScheme.primary),
                           const SizedBox(width: 4),
                           Text(
-                            'Você está quase lá!',
+                            l10n.collectionMilestoneText,
                             key: const Key('collectionMilestoneText'),
                             style: theme.textTheme.bodySmall
                                 ?.copyWith(color: theme.colorScheme.primary),
