@@ -64,3 +64,36 @@ IconData shopItemIcon(String itemId) {
   }
   return Icons.star;
 }
+
+/// アイテムの装着先カテゴリ。キャラ画像への反映時にどの表現(帽子/背景/枠)を
+/// 使うかを決める。カテゴリはidの接頭辞で判定する(帽子=hat_、背景=bg_、
+/// 枠=frame_)。
+enum ShopItemCategory { hat, background, frame }
+
+ShopItemCategory shopItemCategory(String itemId) {
+  if (itemId.startsWith('hat_')) return ShopItemCategory.hat;
+  if (itemId.startsWith('bg_')) return ShopItemCategory.background;
+  return ShopItemCategory.frame;
+}
+
+/// 背景アイテムをキャラカードに反映する際の色。
+Color shopBackgroundColor(String itemId) {
+  switch (itemId) {
+    case 'bg_blackboard':
+      return const Color(0xFF263238);
+    case 'bg_stars':
+      return const Color(0xFF1A237E);
+  }
+  return Colors.transparent;
+}
+
+/// 枠アイテムをキャラカードに反映する際の色(グラデーション枠は単色で代替)。
+Color shopFrameColor(String itemId) {
+  switch (itemId) {
+    case 'frame_gold':
+      return const Color(0xFFFFD700);
+    case 'frame_rainbow':
+      return const Color(0xFFE040FB);
+  }
+  return Colors.transparent;
+}

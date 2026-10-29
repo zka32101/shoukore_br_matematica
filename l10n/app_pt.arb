@@ -711,5 +711,7 @@
   "shopItemFrameGold": "Moldura dourada",
   "shopItemFrameGoldDescription": "Para os campeões da matemática",
   "shopItemFrameRainbow": "Moldura arco-íris",
-  "shopItemFrameRainbowDescription": "Cores vibrantes para sua coleção"
+  "shopItemFrameRainbowDescription": "Cores vibrantes para sua coleção",
+  "shopUseButton": "Usar",
+  "shopInUseLabel": "Em uso"
 }

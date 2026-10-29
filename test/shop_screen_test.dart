@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shoukore_br_matematica/equipped_items.dart';
 import 'package:shoukore_br_matematica/growth_repository.dart';
 import 'package:shoukore_br_matematica/l10n/app_localizations.dart';
 import 'package:shoukore_br_matematica/shop_screen.dart';
@@ -24,6 +25,7 @@ void main() {
       store: growthStore,
     );
     final inventoryStore = InMemoryInventoryStore();
+    final equippedItemsStore = InMemoryEquippedItemsStore();
 
     await tester.pumpWidget(
       MaterialApp(
@@ -35,6 +37,9 @@ void main() {
           inventoryStore: inventoryStore,
           inventory: InventorySnapshot.initial,
           onInventoryChanged: (_) {},
+          equippedItemsStore: equippedItemsStore,
+          equippedItems: EquippedItems.initial,
+          onEquippedItemsChanged: (_) {},
         ),
       ),
     );
@@ -42,13 +47,14 @@ void main() {
 
     expect(find.text('40'), findsOneWidget);
     expect(find.byKey(const Key('shopBuyButton_hat_calculator')), findsOneWidget);
-    expect(find.byKey(const Key('shopOwnedLabel_hat_calculator')), findsNothing);
+    expect(find.byKey(const Key('shopInUseLabel_hat_calculator')), findsNothing);
 
     await tester.tap(find.byKey(const Key('shopBuyButton_hat_calculator')));
     await tester.pumpAndSettle();
 
+    // 購入したアイテムは、同カテゴリで他に何も使っていなければ自動的に装着される。
     expect(find.text('10'), findsOneWidget);
-    expect(find.byKey(const Key('shopOwnedLabel_hat_calculator')), findsOneWidget);
+    expect(find.byKey(const Key('shopInUseLabel_hat_calculator')), findsOneWidget);
     expect(find.byKey(const Key('shopBuyButton_hat_calculator')), findsNothing);
 
     // hat_ruler(30コイン)は残高10では購入できないため、ボタンが無効になる。
@@ -60,5 +66,8 @@ void main() {
     final savedInventory = await inventoryStore.load();
     expect(savedInventory.owns('hat_calculator'), isTrue);
     expect(growthRepository.wallet.balance, 10);
+
+    final savedEquipped = await equippedItemsStore.load();
+    expect(savedEquipped.hatItemId, 'hat_calculator');
   });
 }

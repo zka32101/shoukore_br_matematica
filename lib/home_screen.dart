@@ -12,6 +12,7 @@ import 'collection_screen.dart';
 import 'cross_promo_section.dart';
 import 'curriculum_repository.dart';
 import 'data_privacy_screen.dart';
+import 'equipped_items.dart';
 import 'family_challenge_unit_picker_screen.dart';
 import 'growth_repository.dart';
 import 'guardian_dialog.dart';
@@ -114,6 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final InventoryStore _inventoryStore = InMemoryInventoryStore();
   InventorySnapshot _inventorySnapshot = InventorySnapshot.initial;
+  final EquippedItemsStore _equippedItemsStore = InMemoryEquippedItemsStore();
+  EquippedItems _equippedItems = EquippedItems.initial;
 
   @override
   void initState() {
@@ -168,6 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
       store: _weeklyChallengeStore,
     );
     final inventorySnapshot = await _inventoryStore.load();
+    final equippedItems = await _equippedItemsStore.load();
     if (!mounted) return;
     setState(() {
       _curriculum = curriculum;
@@ -180,6 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _consent = consent;
       _weeklyChallengeRepository = weeklyChallengeRepository;
       _inventorySnapshot = inventorySnapshot;
+      _equippedItems = equippedItems;
     });
     await _refreshMasteredUnits(curriculum.units);
   }
@@ -572,7 +577,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => CollectionScreen(snapshot: _characterSnapshot),
+                        builder: (_) => CollectionScreen(
+                          snapshot: _characterSnapshot,
+                          equippedItems: _equippedItems,
+                        ),
                       ),
                     ),
                   ),
@@ -596,6 +604,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           inventory: _inventorySnapshot,
                           onInventoryChanged: (snapshot) =>
                               setState(() => _inventorySnapshot = snapshot),
+                          equippedItemsStore: _equippedItemsStore,
+                          equippedItems: _equippedItems,
+                          onEquippedItemsChanged: (items) =>
+                              setState(() => _equippedItems = items),
                         ),
                       ),
                     ),

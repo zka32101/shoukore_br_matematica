@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 
+import 'equipped_items.dart';
 import 'growth_repository.dart';
 import 'l10n/app_localizations.dart';
 import 'shop_catalog.dart';
 
 /// コインでアバター用アイテムを購入できるショップ画面。価格判定・購入処理は
 /// コア側の`InventoryManager`に委ね、本画面は表示とユーザー操作のみを担う。
+/// 購入済みアイテムは「使う(装着)」ボタンでキャラの見た目に反映できる
+/// (`EquippedItems`、どれを今使うかはアプリ側の表示専用の状態)。
 class ShopScreen extends StatefulWidget {
   const ShopScreen({
     super.key,
@@ -14,12 +17,18 @@ class ShopScreen extends StatefulWidget {
     required this.inventoryStore,
     required this.inventory,
     required this.onInventoryChanged,
+    required this.equippedItemsStore,
+    required this.equippedItems,
+    required this.onEquippedItemsChanged,
   });
 
   final GrowthRepository growthRepository;
   final InventoryStore inventoryStore;
   final InventorySnapshot inventory;
   final ValueChanged<InventorySnapshot> onInventoryChanged;
+  final EquippedItemsStore equippedItemsStore;
+  final EquippedItems equippedItems;
+  final ValueChanged<EquippedItems> onEquippedItemsChanged;
 
   @override
   State<ShopScreen> createState() => _ShopScreenState();
@@ -30,6 +39,18 @@ class _ShopScreenState extends State<ShopScreen> {
 
   late CoinWallet _wallet = widget.growthRepository.wallet;
   late InventorySnapshot _inventory = widget.inventory;
+  late EquippedItems _equipped = widget.equippedItems;
+
+  String? _equippedIdFor(ShopItemCategory category) {
+    switch (category) {
+      case ShopItemCategory.hat:
+        return _equipped.hatItemId;
+      case ShopItemCategory.background:
+        return _equipped.backgroundItemId;
+      case ShopItemCategory.frame:
+        return _equipped.frameItemId;
+    }
+  }
 
   Future<void> _purchase(StoreItem item) async {
     final l10n = AppLocalizations.of(context)!;
@@ -56,9 +77,28 @@ class _ShopScreenState extends State<ShopScreen> {
       _inventory = result.inventory;
     });
     widget.onInventoryChanged(result.inventory);
+    // 購入直後、そのカテゴリで何も使っていなければそのまま装着し、すぐに
+    // 見た目の変化を実感できるようにする。
+    if (_equippedIdFor(shopItemCategory(item.id)) == null) {
+      await _equip(item);
+    }
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(l10n.shopPurchaseSuccessMessage)),
     );
+  }
+
+  Future<void> _equip(StoreItem item) async {
+    final category = shopItemCategory(item.id);
+    final next = switch (category) {
+      ShopItemCategory.hat => _equipped.copyWith(hatItemId: () => item.id),
+      ShopItemCategory.background => _equipped.copyWith(backgroundItemId: () => item.id),
+      ShopItemCategory.frame => _equipped.copyWith(frameItemId: () => item.id),
+    };
+    await widget.equippedItemsStore.save(next);
+    if (!mounted) return;
+    setState(() => _equipped = next);
+    widget.onEquippedItemsChanged(next);
   }
 
   @override
@@ -103,8 +143,10 @@ class _ShopScreenState extends State<ShopScreen> {
                     key: Key('shopItem_${item.id}'),
                     item: item,
                     owned: _inventory.owns(item.id),
+                    inUse: _equippedIdFor(shopItemCategory(item.id)) == item.id,
                     canAfford: _wallet.balance >= item.priceCoins,
                     onBuy: () => _purchase(item),
+                    onUse: () => _equip(item),
                   ),
               ],
             ),
@@ -120,14 +162,18 @@ class _ShopItemCard extends StatelessWidget {
     super.key,
     required this.item,
     required this.owned,
+    required this.inUse,
     required this.canAfford,
     required this.onBuy,
+    required this.onUse,
   });
 
   final StoreItem item;
   final bool owned;
+  final bool inUse;
   final bool canAfford;
   final VoidCallback onBuy;
+  final VoidCallback onUse;
 
   @override
   Widget build(BuildContext context) {
@@ -143,16 +189,22 @@ class _ShopItemCard extends StatelessWidget {
         ),
         title: Text(shopItemName(l10n, item.id)),
         subtitle: Text(shopItemDescription(l10n, item.id)),
-        trailing: owned
-            ? Chip(
-                key: Key('shopOwnedLabel_${item.id}'),
-                label: Text(l10n.shopOwnedLabel),
-              )
-            : FilledButton(
+        trailing: !owned
+            ? FilledButton(
                 key: Key('shopBuyButton_${item.id}'),
                 onPressed: canAfford ? onBuy : null,
                 child: Text('${l10n.shopBuyButton} (${item.priceCoins})'),
-              ),
+              )
+            : inUse
+                ? Chip(
+                    key: Key('shopInUseLabel_${item.id}'),
+                    label: Text(l10n.shopInUseLabel),
+                  )
+                : OutlinedButton(
+                    key: Key('shopUseButton_${item.id}'),
+                    onPressed: onUse,
+                    child: Text(l10n.shopUseButton),
+                  ),
       ),
     );
   }

@@ -3,14 +3,17 @@ import 'package:shoukore_core_global/shoukore_core_global.dart';
 
 import 'character_card.dart';
 import 'character_definition.dart';
+import 'equipped_items.dart';
 
 /// 12体のコレクションキャラを一覧表示する独立画面。所持数/全体数の進捗と、
 /// 節目到達（`CollectionCompletionDetector`、coreのgrowthモジュール）の
-/// お祝い表示を含む。
+/// お祝い表示を含む。ショップで「使う」に設定したアイテム([equippedItems])が
+/// あれば、各キャラの見た目に反映される。
 class CollectionScreen extends StatelessWidget {
-  const CollectionScreen({super.key, required this.snapshot});
+  const CollectionScreen({super.key, required this.snapshot, this.equippedItems});
 
   final CharacterCollectionSnapshot snapshot;
+  final EquippedItems? equippedItems;
 
   static const _completionDetector = CollectionCompletionDetector();
 
@@ -76,6 +79,7 @@ class CollectionScreen extends StatelessWidget {
                         key: Key('characterCard_${def.id}'),
                         definition: def,
                         level: snapshot.levelOf(def.id),
+                        equippedItems: equippedItems,
                       ),
                   ],
                 ),

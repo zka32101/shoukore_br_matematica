@@ -710,5 +710,7 @@
   "shopItemFrameGold": "Gold frame",
   "shopItemFrameGoldDescription": "For math champions",
   "shopItemFrameRainbow": "Rainbow frame",
-  "shopItemFrameRainbowDescription": "Vibrant colors for your collection"
+  "shopItemFrameRainbowDescription": "Vibrant colors for your collection",
+  "shopUseButton": "Use",
+  "shopInUseLabel": "In use"
 }
