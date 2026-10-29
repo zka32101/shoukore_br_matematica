@@ -47,9 +47,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   static const _clock = SystemClock();
   static const _locale = Locale('pt', 'BR');
 
+  static const _pageCount = 4;
+
   final PageController _pageController = PageController();
   bool _quizCorrect = false;
   bool _quizAnswered = false;
+  int _currentPage = 0;
 
   @override
   void dispose() {
@@ -58,6 +61,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _goToPage(int page) {
+    setState(() => _currentPage = page);
     _pageController.animateToPage(
       page,
       duration: const Duration(milliseconds: 300),
@@ -73,9 +77,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
-        child: PageView(
+        child: Column(
+          children: [
+            // オンボーディングの体験向上: 今どのステップにいるか・あと何ステップ
+            // あるかを可視化し、先の見えない不安を減らす。
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Row(
+                key: const Key('onboardingProgressDots'),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (var i = 0; i < _pageCount; i++)
+                    AnimatedContainer(
+                      key: Key('onboardingProgressDot_$i'),
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      width: i == _currentPage ? 20 : 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: i <= _currentPage
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: [
@@ -106,6 +139,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               entitlementReader: widget.entitlementReader,
               onPurchased: (_) => _finish(),
               onSkip: _finish,
+            ),
+          ],
+              ),
             ),
           ],
         ),

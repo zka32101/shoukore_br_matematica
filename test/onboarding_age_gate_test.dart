@@ -18,6 +18,18 @@ void main() {
       await tester.pumpWidget(const ShoukoreBrMatematicaApp());
       await tester.pumpAndSettle();
 
+      // オンボーディングの体験向上: 進捗ドットが表示され、最初は1つ目が
+      // アクティブ(幅広)になっている。
+      expect(find.byKey(const Key('onboardingProgressDots')), findsOneWidget);
+      final firstDot = tester.widget<AnimatedContainer>(
+        find.byKey(const Key('onboardingProgressDot_0')),
+      );
+      final secondDot = tester.widget<AnimatedContainer>(
+        find.byKey(const Key('onboardingProgressDot_1')),
+      );
+      expect(firstDot.constraints?.maxWidth, 20);
+      expect(secondDot.constraints?.maxWidth, 8);
+
       await tester.tap(find.byKey(const Key('onboardingWelcomeNextButton')));
       await tester.pumpAndSettle();
 
