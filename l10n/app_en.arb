@@ -831,5 +831,20 @@
         "type": "int"
       }
     }
-  }
+  },
+  "tallyCounterLabel": "You counted {count}!",
+  "@tallyCounterLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "datasetBarChartHint": "Tap the bar for your answer!",
+  "gameModeTile": "Play to learn",
+  "gameModeTileSubtitle": "Tap, drag and count your way through the challenges!",
+  "gameModeTitle": "Play to learn",
+  "gameModePickUnitBody": "Choose a unit to play! Each challenge has a different way to answer: tapping, dragging, or counting.",
+  "openMathGuideButton": "See in the math guide",
+  "incorrectAnswerGuideNudge": "How about taking a look at the explanation before trying again?"
 }

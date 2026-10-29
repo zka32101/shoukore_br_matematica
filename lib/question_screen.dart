@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 
+import 'dataset_bar_chart.dart';
 import 'explanation_resolver.dart';
 import 'growth_repository.dart';
 import 'growth_stage_label_resolver.dart';
 import 'l10n/app_localizations.dart';
+import 'math_guide_screen.dart';
 import 'misconception_hint_resolver.dart';
 import 'question_cache.dart';
 import 'question_prompt_resolver.dart';
+import 'sequence_term_strip.dart';
 import 'shape_tap_counter.dart';
 import 'tts_service.dart';
 import 'unit_name_resolver.dart';
+import 'unit_tally_counter.dart';
 import 'weekly_challenge_repository.dart';
 
 class QuestionScreen extends StatefulWidget {
@@ -248,6 +252,48 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       padding: const EdgeInsets.only(top: 16),
                       child: ShapeTapCounter(
                         sides: int.parse(question.params['sides']!),
+                      ),
+                    ),
+                  ),
+                // 体験型コンテンツ: 測定(単位変換)問題では、タイルを1つずつ
+                // タップして数の大きさを実感できる補助ウィジェットを表示する。
+                if (question.params.containsKey('fromUnitKey') &&
+                    question.params.containsKey('value'))
+                  KeyedSubtree(
+                    key: ValueKey('unitTallyCounterSlot_${question.id}'),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: UnitTallyCounter(
+                        count: int.parse(question.params['value']!).clamp(1, 20),
+                      ),
+                    ),
+                  ),
+                // 体験型コンテンツ: 数列問題では、既出の項を並べて見せ、
+                // パターンの続きを考える体験を視覚化する。
+                if (question.params.containsKey('terms'))
+                  KeyedSubtree(
+                    key: ValueKey('sequenceTermStripSlot_${question.id}'),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: SequenceTermStrip(
+                        terms: question.params['terms']!.split(','),
+                      ),
+                    ),
+                  ),
+                // 体験型コンテンツ: データ分析問題では、棒グラフとして値を
+                // 可視化し、バーをタップしても回答できるようにする。
+                if (question.params.containsKey('values') &&
+                    question.params.containsKey('operation'))
+                  KeyedSubtree(
+                    key: ValueKey('datasetBarChartSlot_${question.id}'),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: DatasetBarChart(
+                        values: question.params['values']!
+                            .split(',')
+                            .map(int.parse)
+                            .toList(),
+                        onBarTap: _answer,
                       ),
                     ),
                   ),
@@ -494,12 +540,44 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       ),
                     ),
                   ),
-                const SizedBox(height: 24),
-                ElevatedButton.icon(
-                  key: const Key('nextQuestionButton'),
-                  onPressed: _loadQuestion,
-                  icon: const Icon(Icons.arrow_forward),
-                  label: Text(AppLocalizations.of(context)!.nextQuestionButton),
+                // 体験型コンテンツ(ゲーム)が終わったら、自然に次の行動へ誘導する。
+                // 不正解の時は教科書解説(MathGuideScreen)への導線を添えて、
+                // 「もう一度挑戦する前に解説を見る」流れを作る。正解の時は
+                // そのまま次の問題で遊び続けられるようにする。
+                if (_feedback == 'incorrect')
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12, bottom: 4),
+                    child: Text(
+                      l10n.incorrectAnswerGuideNudge,
+                      key: const Key('incorrectAnswerGuideNudgeText'),
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        key: const Key('nextQuestionButton'),
+                        onPressed: _loadQuestion,
+                        icon: const Icon(Icons.arrow_forward),
+                        label: Text(l10n.nextQuestionButton),
+                      ),
+                    ),
+                    if (_feedback == 'incorrect') ...[
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          key: const Key('openMathGuideButton'),
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const MathGuideScreen()),
+                          ),
+                          icon: const Icon(Icons.menu_book_outlined),
+                          label: Text(l10n.openMathGuideButton),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ],
             ),

@@ -93,6 +93,21 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('lockIcon')), findsNothing);
 
+      // 「ゲームで学ぶ」バナー: タップすると単元選択画面に遷移し、単元を選ぶと
+      // 体験型インタラクション付きの出題画面が開く。
+      await tester.ensureVisible(find.byKey(const Key('gameModeTile')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('gameModeTile')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('gameModeUnitOption_mat_numeros_1')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('gameModeUnitOption_mat_numeros_1')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('questionPromptText'), skipOffstage: false), findsOneWidget);
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.byKey(const Key('gameModeTile')));
+      await tester.pumpAndSettle();
+
       // 単元数が増え一覧が画面に収まらないため、保護者ゲートのタイルはスクロールして確認する。
       await tester.ensureVisible(find.byKey(const Key('guardianGateTile')));
       await tester.pumpAndSettle();

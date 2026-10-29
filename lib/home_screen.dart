@@ -14,6 +14,7 @@ import 'curriculum_repository.dart';
 import 'data_privacy_screen.dart';
 import 'equipped_items.dart';
 import 'family_challenge_unit_picker_screen.dart';
+import 'game_mode_unit_picker_screen.dart';
 import 'growth_repository.dart';
 import 'guardian_dialog.dart';
 import 'in_memory_progress_store.dart';
@@ -461,6 +462,79 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                // 「ゲームで学ぶ」はストア訴求の目玉機能のため、ホーム画面最上部に
+                // 目立つバナーとして配置する。
+                Material(
+                  key: const Key('gameModeTile'),
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => GameModeUnitPickerScreen(
+                          units: curriculum.units,
+                          onUnitTap: (context, unit) async {
+                            Navigator.of(context).pop();
+                            await _openUnit(context, l10n, unit);
+                          },
+                        ),
+                      ),
+                    ),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            theme.colorScheme.primary,
+                            theme.colorScheme.tertiary,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.sports_esports,
+                              size: 40,
+                              color: theme.colorScheme.onPrimary,
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    l10n.gameModeTile,
+                                    style: theme.textTheme.titleLarge?.copyWith(
+                                      color: theme.colorScheme.onPrimary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    l10n.gameModeTileSubtitle,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.onPrimary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right,
+                              color: theme.colorScheme.onPrimary,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
                 _StatsRow(
                   key: const Key('growthStatusTile'),
                   streakDays: _growthRepository!.streak.currentStreakDays,

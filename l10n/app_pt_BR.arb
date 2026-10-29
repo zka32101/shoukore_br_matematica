@@ -832,5 +832,20 @@
         "type": "int"
       }
     }
-  }
+  },
+  "tallyCounterLabel": "Você contou {count}!",
+  "@tallyCounterLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "datasetBarChartHint": "Toque na barra da sua resposta!",
+  "gameModeTile": "Jogar para aprender",
+  "gameModeTileSubtitle": "Toque, arraste e conte para resolver os desafios!",
+  "gameModeTitle": "Jogar para aprender",
+  "gameModePickUnitBody": "Escolha uma unidade para jogar! Cada desafio tem uma forma diferente de responder: tocando, arrastando ou contando.",
+  "openMathGuideButton": "Ver no guia de matemática",
+  "incorrectAnswerGuideNudge": "Que tal dar uma olhada na explicação antes de tentar de novo?"
 }
