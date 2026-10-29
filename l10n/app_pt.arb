@@ -858,5 +858,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "dailyChallengeLabel": "Desafio do dia",
+  "dailyChallengeSubtitle": "Jogue hoje e não perca o seu desafio especial!"
 }

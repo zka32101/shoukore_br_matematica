@@ -54,4 +54,41 @@ void main() {
     );
     expect((unlockedTile.leading as Icon).icon, Icons.sports_esports_outlined);
   });
+
+  testWidgets('ロックされていない単元があれば「今日の挑戦」カードが表示される', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt', 'BR'),
+        home: GameModeUnitPickerScreen(
+          units: units,
+          onUnitTap: (_, __) async {},
+          now: DateTime(2026, 3, 15),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('dailyChallengeCard')), findsOneWidget);
+  });
+
+  testWidgets('全てロック中なら「今日の挑戦」カードは表示されない', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt', 'BR'),
+        home: GameModeUnitPickerScreen(
+          units: units,
+          onUnitTap: (_, __) async {},
+          lockedUnitIds: const {'mat_numeros_1', 'mat_numeros_2'},
+          now: DateTime(2026, 3, 15),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('dailyChallengeCard')), findsNothing);
+  });
 }
