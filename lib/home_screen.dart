@@ -391,6 +391,30 @@ class _HomeScreenState extends State<HomeScreen> {
     await _refreshMasteredUnits(curriculum.units);
   }
 
+  /// ファミリーチャレンジ遷移の共通処理(親も交わって遊べる機能へのタップ時に
+  /// 使う。ホーム画面のタイルと「ゲームで学ぶ」からの導線の両方で使う)。
+  void _openFamilyChallenge(BuildContext context, AppLocalizations l10n) {
+    final curriculum = _curriculum!;
+    if (!_entitlement.isUnlocked(curriculum.units.first.subjectId)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.entitlementLockedMessage)),
+      );
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => FamilyChallengeUnitPickerScreen(
+          units: curriculum.units,
+          source: _source!,
+          progressStore: _progressStore,
+          growthRepository: _growthRepository!,
+          clock: _clock,
+          questionCache: _questionCache,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -483,6 +507,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               if (!_isUnitUnlocked(unit)) unit.id,
                           },
                           masteredUnitIds: _masteredUnitIds,
+                          onFamilyChallengeTap: (context) {
+                            Navigator.of(context).pop();
+                            _openFamilyChallenge(context, l10n);
+                          },
                         ),
                       ),
                     ),
@@ -592,22 +620,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Icons.chevron_right,
                       color: theme.colorScheme.onTertiaryContainer,
                     ),
-                    onTap: !_entitlement.isUnlocked(curriculum.units.first.subjectId)
-                        ? () => ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.entitlementLockedMessage)),
-                            )
-                        : () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => FamilyChallengeUnitPickerScreen(
-                                  units: curriculum.units,
-                                  source: _source!,
-                                  progressStore: _progressStore,
-                                  growthRepository: _growthRepository!,
-                                  clock: _clock,
-                                  questionCache: _questionCache,
-                                ),
-                              ),
-                            ),
+                    onTap: () => _openFamilyChallenge(context, l10n),
                   ),
                 ),
                 _SectionLabel(label: 'Escolha uma unidade'),

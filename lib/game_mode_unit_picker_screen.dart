@@ -20,6 +20,7 @@ class GameModeUnitPickerScreen extends StatelessWidget {
     required this.onUnitTap,
     this.lockedUnitIds = const {},
     this.masteredUnitIds = const {},
+    this.onFamilyChallengeTap,
     DateTime? now,
   }) : now = now ?? DateTime.now();
 
@@ -28,6 +29,11 @@ class GameModeUnitPickerScreen extends StatelessWidget {
   final Set<String> lockedUnitIds;
   final Set<String> masteredUnitIds;
   final DateTime now;
+
+  /// 指定時、「家族で挑戦しよう」カードを表示し、タップで親も交わって
+  /// 遊べるファミリーチャレンジへ誘導する(親も交わって遊びながら学べる
+  /// 機能との連携)。未指定ならカード自体を表示しない。
+  final void Function(BuildContext context)? onFamilyChallengeTap;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +81,27 @@ class GameModeUnitPickerScreen extends StatelessWidget {
                 isThreeLine: true,
                 trailing: Icon(Icons.chevron_right, color: theme.colorScheme.onSecondaryContainer),
                 onTap: () => onUnitTap(context, featuredUnit),
+              ),
+            ),
+          if (onFamilyChallengeTap case final onTap?)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Card(
+                key: const Key('gameModeFamilyChallengeCard'),
+                color: theme.colorScheme.tertiaryContainer,
+                child: ListTile(
+                  leading: Icon(Icons.diversity_3, color: theme.colorScheme.onTertiaryContainer),
+                  title: Text(
+                    l10n.familyChallengeTile,
+                    style: TextStyle(color: theme.colorScheme.onTertiaryContainer),
+                  ),
+                  subtitle: Text(
+                    l10n.familyChallengeTileSubtitle,
+                    style: TextStyle(color: theme.colorScheme.onTertiaryContainer),
+                  ),
+                  trailing: Icon(Icons.chevron_right, color: theme.colorScheme.onTertiaryContainer),
+                  onTap: () => onTap(context),
+                ),
               ),
             ),
           const SizedBox(height: 16),

@@ -91,4 +91,40 @@ void main() {
 
     expect(find.byKey(const Key('dailyChallengeCard')), findsNothing);
   });
+
+  testWidgets('onFamilyChallengeTapを渡すと家族チャレンジへの導線が表示されタップで呼ばれる', (tester) async {
+    var tapped = false;
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt', 'BR'),
+        home: GameModeUnitPickerScreen(
+          units: units,
+          onUnitTap: (_, __) async {},
+          onFamilyChallengeTap: (_) => tapped = true,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('gameModeFamilyChallengeCard')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('gameModeFamilyChallengeCard')));
+    await tester.pumpAndSettle();
+    expect(tapped, isTrue);
+  });
+
+  testWidgets('onFamilyChallengeTapを渡さなければ家族チャレンジへの導線は表示されない', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt', 'BR'),
+        home: GameModeUnitPickerScreen(units: units, onUnitTap: (_, __) async {}),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('gameModeFamilyChallengeCard')), findsNothing);
+  });
 }
