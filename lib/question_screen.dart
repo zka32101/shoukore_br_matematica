@@ -275,21 +275,97 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   }),
                   ),
                 const SizedBox(height: 20),
+                // 体験型コンテンツ: 選択肢をタップするだけでなく、指でドラッグして
+                // 答えの入れ物まで運ぶことでも回答できる(実際に手を動かす感覚)。
+                // タップでの回答も引き続き有効(低年齢児や端末操作の個人差に配慮)。
+                DragTarget<String>(
+                  onAcceptWithDetails: (details) => _answer(details.data),
+                  builder: (context, candidateData, rejectedData) {
+                    final highlighted = candidateData.isNotEmpty;
+                    return Container(
+                      key: const Key('answerDropTarget'),
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: highlighted
+                            ? theme.colorScheme.primaryContainer
+                            : theme.colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: highlighted
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.outlineVariant,
+                          width: 2,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.move_down,
+                            color: highlighted
+                                ? theme.colorScheme.onPrimaryContainer
+                                : theme.colorScheme.outline,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            l10n.dragDropTargetLabel,
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: highlighted
+                                  ? theme.colorScheme.onPrimaryContainer
+                                  : theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
                 Wrap(
                   spacing: 12,
                   runSpacing: 12,
                   children: [
                     for (final choice in question.choices)
-                      SizedBox(
-                        width: 140,
-                        height: 56,
-                        child: ElevatedButton(
-                          key: Key('choice_$choice'),
-                          onPressed: () => _answer(choice),
-                          style: ElevatedButton.styleFrom(
-                            textStyle: theme.textTheme.titleMedium,
+                      Draggable<String>(
+                        key: Key('choiceDraggable_$choice'),
+                        data: choice,
+                        feedback: Material(
+                          color: Colors.transparent,
+                          child: SizedBox(
+                            width: 140,
+                            height: 56,
+                            child: ElevatedButton(
+                              onPressed: null,
+                              style: ElevatedButton.styleFrom(
+                                textStyle: theme.textTheme.titleMedium,
+                              ),
+                              child: Text(choice),
+                            ),
                           ),
-                          child: Text(choice),
+                        ),
+                        childWhenDragging: SizedBox(
+                          width: 140,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: null,
+                            style: ElevatedButton.styleFrom(
+                              textStyle: theme.textTheme.titleMedium,
+                            ),
+                            child: Text(choice),
+                          ),
+                        ),
+                        child: SizedBox(
+                          width: 140,
+                          height: 56,
+                          child: ElevatedButton(
+                            key: Key('choice_$choice'),
+                            onPressed: () => _answer(choice),
+                            style: ElevatedButton.styleFrom(
+                              textStyle: theme.textTheme.titleMedium,
+                            ),
+                            child: Text(choice),
+                          ),
                         ),
                       ),
                   ],

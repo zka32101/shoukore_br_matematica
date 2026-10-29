@@ -823,5 +823,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "dragDropTargetLabel": "Arraste sua resposta até aqui!"
 }

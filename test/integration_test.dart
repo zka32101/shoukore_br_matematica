@@ -118,7 +118,7 @@ void main() {
       // 文章題の出題文が長くなることがあり、小さいテストビューポートでは
       // 選択肢ボタンが画面外に出てタップが当たらないことがあるため、
       // ensureVisibleで確実にスクロールしてから操作する。
-      final choiceButtons = find.byType(ElevatedButton);
+      final choiceButtons = find.byType(ElevatedButton, skipOffstage: false);
       expect(choiceButtons, findsWidgets);
       await tester.ensureVisible(choiceButtons.first);
       await tester.pumpAndSettle();
@@ -146,11 +146,16 @@ void main() {
 
       // 出題画面にgrowth状態（stage/coins/mission進捗）が表示される。
       // 閾値(10問)に満たないため、正誤に関わらずstageはeggのまま。
-      expect(find.byKey(const Key('growthStatusText')), findsOneWidget);
-      expect(find.textContaining('Fase: Ovo'), findsOneWidget);
+      // ドラッグ&ドロップの回答エリア追加で縦幅が伸び、offstageになり得るため
+      // skipOffstage:falseで検証する。
+      expect(
+        find.byKey(const Key('growthStatusText'), skipOffstage: false),
+        findsOneWidget,
+      );
+      expect(find.textContaining('Fase: Ovo', skipOffstage: false), findsOneWidget);
 
       // 学習ストリーク: 1問回答した時点で1日目のストリークになる。
-      expect(find.textContaining('Sequência: 1 dia'), findsOneWidget);
+      expect(find.textContaining('Sequência: 1 dia', skipOffstage: false), findsOneWidget);
 
       // ホームに戻って週次レポートを開くと、直前の回答が集計に反映されている。
       await tester.tap(find.byType(BackButton));
@@ -238,7 +243,7 @@ void main() {
         // シナリオ付きの出題文は長くなることがあり、小さいテストビューポートでは
         // 選択肢ボタンが画面外に出てタップが当たらないことがあるため、
         // ensureVisibleで確実にスクロールしてから操作する。
-        final otherChoiceButtons = find.byType(ElevatedButton);
+        final otherChoiceButtons = find.byType(ElevatedButton, skipOffstage: false);
         expect(otherChoiceButtons, findsWidgets);
         await tester.ensureVisible(otherChoiceButtons.first);
         await tester.pumpAndSettle();
