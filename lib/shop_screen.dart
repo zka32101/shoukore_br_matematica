@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 
 import 'equipped_items.dart';
@@ -89,6 +92,7 @@ class _ShopScreenState extends State<ShopScreen> {
         await _equip(item);
       }
       if (!mounted) return;
+      unawaited(HapticFeedback.mediumImpact());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.shopPurchaseSuccessMessage)),
       );

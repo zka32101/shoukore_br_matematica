@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 
 import 'answer_feedback_animation.dart';
@@ -163,6 +166,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
       _misconceptionHint = misconceptionHint;
       _answerAttemptSequence++;
     });
+    // 触覚フィードバック: 画面を見ていなくても回答の手応えを感じられる
+    // ようにする(正解は弾む強め、不正解は控えめな振動)。
+    unawaited(correct ? HapticFeedback.mediumImpact() : HapticFeedback.lightImpact());
   }
 
   @override

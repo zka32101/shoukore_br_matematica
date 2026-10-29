@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 // example独自の軽量InMemoryProgressStoreを使うため、コアが同名で公開している
 // 実装（テスト・プロトタイピング用途向け）を隠す。
 import 'package:shoukore_core_global/shoukore_core_global.dart' hide InMemoryProgressStore;
@@ -204,6 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!mounted) return;
     setState(() => _masteredUnitIds = masteredIds);
     if (newlyMastered.isNotEmpty) {
+      unawaited(HapticFeedback.heavyImpact());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           key: const Key('unitMasteredSnackBar'),
