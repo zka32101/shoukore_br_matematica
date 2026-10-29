@@ -437,9 +437,15 @@ class _HomeScreenState extends State<HomeScreen> {
             );
     return Scaffold(
       backgroundColor: theme.colorScheme.surfaceContainerLowest,
-      body: curriculum == null
-          ? const Center(child: CircularProgressIndicator())
-          : CustomScrollView(
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: curriculum == null
+            ? const Center(
+                key: ValueKey('homeLoading'),
+                child: CircularProgressIndicator(),
+              )
+            : CustomScrollView(
+              key: const ValueKey('homeLoaded'),
               slivers: [
                 SliverAppBar(
                   pinned: true,
@@ -885,6 +891,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
+      ),
     );
   }
 }

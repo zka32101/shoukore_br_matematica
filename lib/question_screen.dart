@@ -179,9 +179,15 @@ class _QuestionScreenState extends State<QuestionScreen> {
     final correct = _feedback == 'correct';
     return Scaffold(
       appBar: AppBar(title: Text(resolveUnitName(l10n, widget.unit.id))),
-      body: question == null
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: question == null
+            ? const Center(
+                key: ValueKey('questionLoading'),
+                child: CircularProgressIndicator(),
+              )
+            : ListView(
+              key: const ValueKey('questionLoaded'),
               padding: const EdgeInsets.all(16),
               children: [
                 Card(
@@ -616,6 +622,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 ),
               ],
             ),
+      ),
     );
   }
 }
