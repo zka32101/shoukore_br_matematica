@@ -932,5 +932,26 @@
   "bottomNavCollection": "Collection",
   "bottomNavShop": "Shop",
   "bottomNavBadges": "Badges",
-  "bottomNavSettings": "Settings"
+  "bottomNavSettings": "Settings",
+  "gameSessionStatsQuestionsLabel": "Questions",
+  "gameSessionStatsCorrectLabel": "Correct",
+  "gameSessionStatsAccuracyLabel": "Accuracy",
+  "gameSessionStatsStreakLabel": "Streak",
+  "gameSessionQuitDialogTitle": "End the game?",
+  "gameSessionQuitContinueButton": "Keep playing",
+  "gameSessionQuitEndButton": "End",
+  "gameSessionQuitDialogMessage": "You answered {total} and got {correct} right!\nBest streak: {maxStreak} in a row 🔥",
+  "@gameSessionQuitDialogMessage": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "correct": {
+        "type": "int"
+      },
+      "maxStreak": {
+        "type": "int"
+      }
+    }
+  }
 }

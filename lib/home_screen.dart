@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // example独自の軽量InMemoryProgressStoreを使うため、コアが同名で公開している
 // 実装（テスト・プロトタイピング用途向け）を隠す。
-import 'package:shoukore_core_global/shoukore_core_global.dart' hide InMemoryProgressStore;
+import 'package:shoukore_core_global/shoukore_core_global.dart'
+    hide InMemoryProgressStore;
 
 import 'age_gate_dialog.dart';
 import 'badge_collection_screen.dart';
@@ -84,17 +85,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final ProgressStore _progressStore = InMemoryProgressStore();
   final GrowthStore _growthStore = InMemoryGrowthStore();
-  final CharacterCollectionStore _characterCollectionStore = InMemoryCharacterCollectionStore();
-  CharacterCollectionSnapshot _characterSnapshot = CharacterCollectionSnapshot.initial;
+  final CharacterCollectionStore _characterCollectionStore =
+      InMemoryCharacterCollectionStore();
+  CharacterCollectionSnapshot _characterSnapshot =
+      CharacterCollectionSnapshot.initial;
   late final _characterCollectionRepository = CharacterCollectionRepository(
     progressStore: _progressStore,
     collectionStore: _characterCollectionStore,
   );
   final QuestionCache _questionCache = QuestionCache();
-  late final ConsentStore _consentStore = widget.consentStore ?? InMemoryConsentStore();
+  late final ConsentStore _consentStore =
+      widget.consentStore ?? InMemoryConsentStore();
   ConsentRecord? _consent;
 
-  final NotificationScheduler _notificationScheduler = InMemoryNotificationScheduler();
+  final NotificationScheduler _notificationScheduler =
+      InMemoryNotificationScheduler();
   static const _dailyReminderId = 'daily_reminder';
   DateTime? _dailyReminderScheduledAt;
 
@@ -114,7 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
   static const _masteryEligibility = UnitMasteryBadgeEligibility();
   Set<String> _masteredUnitIds = {};
 
-  final WeeklyChallengeStore _weeklyChallengeStore = InMemoryWeeklyChallengeStore();
+  final WeeklyChallengeStore _weeklyChallengeStore =
+      InMemoryWeeklyChallengeStore();
   WeeklyChallengeRepository? _weeklyChallengeRepository;
 
   final InventoryStore _inventoryStore = InMemoryInventoryStore();
@@ -173,7 +179,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final entitlement = widget.entitlementReader != null
         ? await widget.entitlementReader!.current()
         : _entitlement;
-    final characterResult = await _characterCollectionRepository.refresh(curriculum.units);
+    final characterResult = await _characterCollectionRepository.refresh(
+      curriculum.units,
+    );
     final consent = await _consentStore.getConsent();
     final weeklyChallengeRepository = await WeeklyChallengeRepository.load(
       clock: _clock,
@@ -216,14 +224,20 @@ class _HomeScreenState extends State<HomeScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           key: const Key('unitMasteredSnackBar'),
-          content: Text(AppLocalizations.of(context)!.unitMasteredMessage(newlyMastered.first)),
+          content: Text(
+            AppLocalizations.of(
+              context,
+            )!.unitMasteredMessage(newlyMastered.first),
+          ),
         ),
       );
     }
   }
 
   /// 新規所持・レベルアップしたキャラがいれば、お祝いのSnackBarを表示する。
-  void _showCharacterCollectionChanges(CharacterCollectionRefreshResult result) {
+  void _showCharacterCollectionChanges(
+    CharacterCollectionRefreshResult result,
+  ) {
     if (!result.hasChanges || !mounted) return;
     final l10n = AppLocalizations.of(context)!;
     final messages = <String>[
@@ -238,7 +252,10 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
     for (final message in messages) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(key: const Key('characterCollectionChangeSnackBar'), content: Text(message)),
+        SnackBar(
+          key: const Key('characterCollectionChangeSnackBar'),
+          content: Text(message),
+        ),
       );
     }
   }
@@ -268,7 +285,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return 'Português (Brasil)';
   }
 
-  Future<void> _showLanguagePicker(BuildContext context, AppLocalizations l10n) async {
+  Future<void> _showLanguagePicker(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
     final selected = await showDialog<Locale>(
       context: context,
       builder: (context) => SimpleDialog(
@@ -342,7 +362,13 @@ class _HomeScreenState extends State<HomeScreen> {
     'grandezas': Icons.straighten,
     'probabilidade': Icons.bar_chart,
   };
-  static const _eixoOrder = ['numeros', 'algebra', 'geometria', 'grandezas', 'probabilidade'];
+  static const _eixoOrder = [
+    'numeros',
+    'algebra',
+    'geometria',
+    'grandezas',
+    'probabilidade',
+  ];
 
   (IconData, Color) _visualForUnit(Unit unit, Color subjectColor) {
     final hsl = HSLColor.fromColor(subjectColor);
@@ -350,14 +376,25 @@ class _HomeScreenState extends State<HomeScreen> {
       final key = _eixoOrder[i];
       if (unit.id.contains(key)) {
         final lightness = 0.32 + (i * 0.11);
-        return (_eixoIcons[key]!, hsl.withLightness(lightness.clamp(0.0, 1.0)).toColor());
+        return (
+          _eixoIcons[key]!,
+          hsl.withLightness(lightness.clamp(0.0, 1.0)).toColor(),
+        );
       }
     }
     return (Icons.menu_book_outlined, subjectColor);
   }
 
   /// 単元タップ時の共通処理（単元カード・クイックスタートカードの両方で使う）。
-  Future<void> _openUnit(BuildContext context, AppLocalizations l10n, Unit unit) async {
+  /// [isGameSession]は「ゲームで学ぶ」からの遷移時にtrueを渡し、出題画面に
+  /// セッション中の正解数・連続正解(コンボ)のステータスバーを表示させる
+  /// (ゲーム性充実のため。通常の単元学習では表示しない)。
+  Future<void> _openUnit(
+    BuildContext context,
+    AppLocalizations l10n,
+    Unit unit, {
+    bool isGameSession = false,
+  }) async {
     if (!_isUnitUnlocked(unit)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -389,11 +426,14 @@ class _HomeScreenState extends State<HomeScreen> {
           growthRepository: _growthRepository!,
           weeklyChallengeRepository: _weeklyChallengeRepository,
           notificationScheduler: _notificationScheduler,
+          isGameSession: isGameSession,
         ),
       ),
     );
     await _screenTimeRepository!.addUsage(_clock.now().difference(openedAt));
-    final characterResult = await _characterCollectionRepository.refresh(curriculum.units);
+    final characterResult = await _characterCollectionRepository.refresh(
+      curriculum.units,
+    );
     // 出題画面でgrowth状態（stage/coins）・キャラコレクション・ウィークリー
     // チャレンジ進捗が更新されている可能性があるため、ホームに戻った際に
     // 再描画する。
@@ -409,9 +449,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void _openFamilyChallenge(BuildContext context, AppLocalizations l10n) {
     final curriculum = _curriculum!;
     if (!_entitlement.isUnlocked(curriculum.units.first.subjectId)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.entitlementLockedMessage)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.entitlementLockedMessage)));
       return;
     }
     Navigator.of(context).push(
@@ -438,12 +478,14 @@ class _HomeScreenState extends State<HomeScreen> {
         : curriculum.units.where((u) => u.templateIds.isNotEmpty).length;
     final nextUnit = curriculum == null
         ? null
-        : curriculum.units.where((u) => u.templateIds.isNotEmpty).firstWhere(
-              (u) =>
-                  _isUnitUnlocked(u) &&
-                  !_masteredUnitIds.contains(u.id),
-              orElse: () => curriculum.units.firstWhere((u) => u.templateIds.isNotEmpty),
-            );
+        : curriculum.units
+              .where((u) => u.templateIds.isNotEmpty)
+              .firstWhere(
+                (u) => _isUnitUnlocked(u) && !_masteredUnitIds.contains(u.id),
+                orElse: () => curriculum.units.firstWhere(
+                  (u) => u.templateIds.isNotEmpty,
+                ),
+              );
     return Scaffold(
       backgroundColor: theme.colorScheme.surfaceContainerLowest,
       body: AnimatedSwitcher(
@@ -457,7 +499,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 key: const ValueKey('homeLoaded'),
                 index: _selectedTabIndex,
                 children: [
-                  _buildHomeTab(context, l10n, theme, curriculum, totalUnitsWithContent, nextUnit),
+                  _buildHomeTab(
+                    context,
+                    l10n,
+                    theme,
+                    curriculum,
+                    totalUnitsWithContent,
+                    nextUnit,
+                  ),
                   CollectionScreen(
                     snapshot: _characterSnapshot,
                     equippedItems: _equippedItems,
@@ -486,7 +535,8 @@ class _HomeScreenState extends State<HomeScreen> {
           : NavigationBar(
               key: const Key('bottomNavBar'),
               selectedIndex: _selectedTabIndex,
-              onDestinationSelected: (index) => setState(() => _selectedTabIndex = index),
+              onDestinationSelected: (index) =>
+                  setState(() => _selectedTabIndex = index),
               destinations: [
                 NavigationDestination(
                   key: const Key('bottomNavHome'),
@@ -535,58 +585,62 @@ class _HomeScreenState extends State<HomeScreen> {
     Unit? nextUnit,
   ) {
     return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  pinned: true,
-                  expandedHeight: 96,
-                  backgroundColor: theme.colorScheme.primary,
-                  foregroundColor: theme.colorScheme.onPrimary,
-                  flexibleSpace: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          theme.colorScheme.primary,
-                          theme.colorScheme.primaryContainer,
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                  ),
-                  title: Text(l10n.homeTitle),
-                  actions: [
-                    IconButton(
-                      key: const Key('premiumToggleButton'),
-                      tooltip: _entitlement.isPremium
-                          ? l10n.premiumToggleOnTooltip
-                          : l10n.premiumToggleOffTooltip,
-                      icon: Icon(
-                        _entitlement.isPremium
-                            ? Icons.workspace_premium
-                            : Icons.workspace_premium_outlined,
-                      ),
-                      onPressed: _togglePremiumOrRefreshEntitlement,
-                    ),
-                    // 開発用(制限1分の模擬)。ストアに出るリリースビルドでは隠す。
-                    if (!kReleaseMode)
-                      IconButton(
-                        key: const Key('screenTimeLimitToggleButton'),
-                        tooltip: _screenTimeLimitDemoEnabled ? 'limit: 1min' : 'limit: OFF',
-                        icon: Icon(
-                          _screenTimeLimitDemoEnabled ? Icons.timer : Icons.timer_off_outlined,
-                        ),
-                        onPressed: () => setState(() {
-                          _screenTimeLimitDemoEnabled = !_screenTimeLimitDemoEnabled;
-                        }),
-                      ),
-                  ],
+      slivers: [
+        SliverAppBar(
+          pinned: true,
+          expandedHeight: 96,
+          backgroundColor: theme.colorScheme.primary,
+          foregroundColor: theme.colorScheme.onPrimary,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  theme.colorScheme.primary,
+                  theme.colorScheme.primaryContainer,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+          title: Text(l10n.homeTitle),
+          actions: [
+            IconButton(
+              key: const Key('premiumToggleButton'),
+              tooltip: _entitlement.isPremium
+                  ? l10n.premiumToggleOnTooltip
+                  : l10n.premiumToggleOffTooltip,
+              icon: Icon(
+                _entitlement.isPremium
+                    ? Icons.workspace_premium
+                    : Icons.workspace_premium_outlined,
+              ),
+              onPressed: _togglePremiumOrRefreshEntitlement,
+            ),
+            // 開発用(制限1分の模擬)。ストアに出るリリースビルドでは隠す。
+            if (!kReleaseMode)
+              IconButton(
+                key: const Key('screenTimeLimitToggleButton'),
+                tooltip: _screenTimeLimitDemoEnabled
+                    ? 'limit: 1min'
+                    : 'limit: OFF',
+                icon: Icon(
+                  _screenTimeLimitDemoEnabled
+                      ? Icons.timer
+                      : Icons.timer_off_outlined,
                 ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+                onPressed: () => setState(() {
+                  _screenTimeLimitDemoEnabled = !_screenTimeLimitDemoEnabled;
+                }),
+              ),
+          ],
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
                 // 「ゲームで学ぶ」はストア訴求の目玉機能のため、ホーム画面最上部に
                 // 目立つバナーとして配置する。
                 Material(
@@ -601,7 +655,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           units: curriculum.units,
                           onUnitTap: (context, unit) async {
                             Navigator.of(context).pop();
-                            await _openUnit(context, l10n, unit);
+                            await _openUnit(
+                              context,
+                              l10n,
+                              unit,
+                              isGameSession: true,
+                            );
                           },
                           lockedUnitIds: {
                             for (final unit in curriculum.units)
@@ -696,8 +755,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   usedMinutes: _screenTimeRepository!.usedToday.inMinutes,
                   remainingMinutes: _screenTimeGuard.isLimited
                       ? _screenTimeGuard
-                          .remaining(_screenTimeRepository!.usedToday)
-                          .inMinutes
+                            .remaining(_screenTimeRepository!.usedToday)
+                            .inMinutes
                       : null,
                 ),
                 const SizedBox(height: 12),
@@ -711,11 +770,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     title: Text(
                       l10n.familyChallengeTile,
-                      style: TextStyle(color: theme.colorScheme.onTertiaryContainer),
+                      style: TextStyle(
+                        color: theme.colorScheme.onTertiaryContainer,
+                      ),
                     ),
                     subtitle: Text(
                       l10n.familyChallengeTileSubtitle,
-                      style: TextStyle(color: theme.colorScheme.onTertiaryContainer),
+                      style: TextStyle(
+                        color: theme.colorScheme.onTertiaryContainer,
+                      ),
                     ),
                     trailing: Icon(
                       Icons.chevron_right,
@@ -733,20 +796,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       spacing: spacing,
                       runSpacing: spacing,
                       children: [
-                        for (final unit
-                            in curriculum.units.where((u) => u.templateIds.isNotEmpty))
+                        for (final unit in curriculum.units.where(
+                          (u) => u.templateIds.isNotEmpty,
+                        ))
                           SizedBox(
                             width: cardWidth,
                             height: 144,
                             child: _UnitCard(
-                        unitKey: Key('unit_${unit.id}'),
-                        label: resolveUnitName(l10n, unit.id),
-                        grade: unit.grade,
-                        icon: _visualForUnit(unit, theme.colorScheme.primary).$1,
-                        color: _visualForUnit(unit, theme.colorScheme.primary).$2,
-                        locked: !_isUnitUnlocked(unit),
-                        mastered: _masteredUnitIds.contains(unit.id),
-                        onTap: () => _openUnit(context, l10n, unit),
+                              unitKey: Key('unit_${unit.id}'),
+                              label: resolveUnitName(l10n, unit.id),
+                              grade: unit.grade,
+                              icon: _visualForUnit(
+                                unit,
+                                theme.colorScheme.primary,
+                              ).$1,
+                              color: _visualForUnit(
+                                unit,
+                                theme.colorScheme.primary,
+                              ).$2,
+                              locked: !_isUnitUnlocked(unit),
+                              mastered: _masteredUnitIds.contains(unit.id),
+                              onTap: () => _openUnit(context, l10n, unit),
                             ),
                           ),
                       ],
@@ -765,16 +835,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     subtitle: Text(l10n.mathGuideTileSubtitle),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const MathGuideScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const MathGuideScreen(),
+                      ),
                     ),
                   ),
                 ),
-                    ],
-                  ),
-                ),
-                ),
               ],
-            );
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   /// 設定タブの内容。言語・通知・保護者向けツール・クロスプロモなど、
@@ -959,14 +1031,25 @@ class _StatCard extends StatelessWidget {
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
-            BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 6, offset: const Offset(0, 2)),
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
           ],
         ),
         child: Column(
           children: [
             Icon(icon, size: 22, color: color),
             const SizedBox(height: 4),
-            Text(value, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: color)),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
             Text(label, style: theme.textTheme.bodySmall),
           ],
         ),
@@ -1000,7 +1083,11 @@ class _WeeklyChallengeCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.emoji_events, size: 32, color: theme.colorScheme.onTertiaryContainer),
+          Icon(
+            Icons.emoji_events,
+            size: 32,
+            color: theme.colorScheme.onTertiaryContainer,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -1016,7 +1103,10 @@ class _WeeklyChallengeCard extends StatelessWidget {
                 Text(
                   isComplete
                       ? l10n.weeklyChallengeCompleteMessage
-                      : l10n.weeklyChallengeProgress(completedCount, totalTarget),
+                      : l10n.weeklyChallengeProgress(
+                          completedCount,
+                          totalTarget,
+                        ),
                   key: const Key('weeklyChallengeProgressText'),
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: theme.colorScheme.onTertiaryContainer,
@@ -1029,8 +1119,11 @@ class _WeeklyChallengeCard extends StatelessWidget {
                   child: LinearProgressIndicator(
                     value: (completedCount / totalTarget).clamp(0.0, 1.0),
                     minHeight: 6,
-                    backgroundColor: theme.colorScheme.onTertiaryContainer.withValues(alpha: 0.2),
-                    valueColor: AlwaysStoppedAnimation(theme.colorScheme.onTertiaryContainer),
+                    backgroundColor: theme.colorScheme.onTertiaryContainer
+                        .withValues(alpha: 0.2),
+                    valueColor: AlwaysStoppedAnimation(
+                      theme.colorScheme.onTertiaryContainer,
+                    ),
                   ),
                 ),
               ],
@@ -1063,7 +1156,11 @@ class _QuickStartCard extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           child: Row(
             children: [
-              Icon(Icons.play_circle_fill, size: 36, color: theme.colorScheme.onPrimary),
+              Icon(
+                Icons.play_circle_fill,
+                size: 36,
+                color: theme.colorScheme.onPrimary,
+              ),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
@@ -1080,13 +1177,19 @@ class _QuickStartCard extends StatelessWidget {
                     Text(
                       label,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
+                        color: theme.colorScheme.onPrimary.withValues(
+                          alpha: 0.85,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, size: 18, color: theme.colorScheme.onPrimary),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 18,
+                color: theme.colorScheme.onPrimary,
+              ),
             ],
           ),
         ),
@@ -1103,6 +1206,7 @@ class _ScreenTimeCard extends StatelessWidget {
   });
 
   final int usedMinutes;
+
   /// 制限なしのときは null。
   final int? remainingMinutes;
 
@@ -1119,7 +1223,9 @@ class _ScreenTimeCard extends StatelessWidget {
         title: Text(
           remainingMinutes == null
               ? AppLocalizations.of(context)!.screenTimeUsedNoLimit(usedMinutes)
-              : AppLocalizations.of(context)!.screenTimeUsed(usedMinutes, remainingMinutes!),
+              : AppLocalizations.of(
+                  context,
+                )!.screenTimeUsed(usedMinutes, remainingMinutes!),
           style: theme.textTheme.bodyMedium,
         ),
         subtitle: Text(AppLocalizations.of(context)!.screenTimeSubtitle),
@@ -1187,7 +1293,10 @@ class _UnitCard extends StatelessWidget {
                     style: theme.textTheme.labelLarge,
                   ),
                   const SizedBox(height: 2),
-                  Text(AppLocalizations.of(context)!.unitGradeLabel(grade), style: theme.textTheme.bodySmall),
+                  Text(
+                    AppLocalizations.of(context)!.unitGradeLabel(grade),
+                    style: theme.textTheme.bodySmall,
+                  ),
                 ],
               ),
               if (locked)

@@ -933,5 +933,26 @@
   "bottomNavCollection": "Coleção",
   "bottomNavShop": "Loja",
   "bottomNavBadges": "Medalhas",
-  "bottomNavSettings": "Ajustes"
+  "bottomNavSettings": "Ajustes",
+  "gameSessionStatsQuestionsLabel": "Perguntas",
+  "gameSessionStatsCorrectLabel": "Acertos",
+  "gameSessionStatsAccuracyLabel": "Acerto",
+  "gameSessionStatsStreakLabel": "Sequência",
+  "gameSessionQuitDialogTitle": "Encerrar o jogo?",
+  "gameSessionQuitContinueButton": "Continuar",
+  "gameSessionQuitEndButton": "Encerrar",
+  "gameSessionQuitDialogMessage": "Você respondeu {total} e acertou {correct}!\nMelhor sequência: {maxStreak} acertos seguidos 🔥",
+  "@gameSessionQuitDialogMessage": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "correct": {
+        "type": "int"
+      },
+      "maxStreak": {
+        "type": "int"
+      }
+    }
+  }
 }
