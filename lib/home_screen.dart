@@ -94,6 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
   // 現時点ではpremiumトグルで模擬する。
   Entitlement _entitlement = const Entitlement(unlockedSubjectIds: {});
 
+  /// 購読前でも試せるように、1º ano(1年生)の単元は無料で開放する。
+  /// 2º ano 以降は購読(またはお試し期間)で開放される。
+  static const _freeGrade = 1;
+
+  bool _isUnitUnlocked(Unit unit) =>
+      unit.grade <= _freeGrade || _entitlement.isUnlocked(unit.subjectId);
+
   // 無限に出題される中でも「マスターした」ことが分かるよう、単元ごとに
   // 直近10問・正答率90%以上をマスター済みと判定する(コア側の判定ロジックを利用)。
   static const _masteryEligibility = UnitMasteryBadgeEligibility();
@@ -425,10 +432,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         grade: unit.grade,
                         icon: _visualForUnit(unit).$1,
                         color: _visualForUnit(unit).$2,
-                        locked: !_entitlement.isUnlocked(unit.subjectId),
+                        locked: !_isUnitUnlocked(unit),
                         mastered: _masteredUnitIds.contains(unit.id),
                         onTap: () async {
-                          if (!_entitlement.isUnlocked(unit.subjectId)) {
+                          if (!_isUnitUnlocked(unit)) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 key: const Key('entitlementLockedSnackBar'),
