@@ -156,6 +156,12 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('growthStatusTile')), findsOneWidget);
 
+      // ウィークリーチャレンジ(今週あと何問正解すれば達成できるか)が
+      // ホームに表示される。正誤に関わらずタイル自体は常に表示される。
+      await tester.ensureVisible(find.byKey(const Key('weeklyChallengeTile')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('weeklyChallengeProgressText')), findsOneWidget);
+
       // ホームのコレクションタイルから、12体一覧の独立画面に遷移できる。
       await tester.ensureVisible(find.byKey(const Key('collectionTile')));
       await tester.pumpAndSettle();

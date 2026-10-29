@@ -677,5 +677,18 @@
   "mathGuideSectionAlgebra": "Algebra",
   "mathGuideSectionGeometria": "Geometry",
   "mathGuideSectionGrandezas": "Quantities and Measurements",
-  "mathGuideSectionProbabilidade": "Probability and Statistics"
+  "mathGuideSectionProbabilidade": "Probability and Statistics",
+  "weeklyChallengeTitle": "Weekly challenge",
+  "weeklyChallengeProgress": "{completed} of {total} problems this week",
+  "@weeklyChallengeProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyChallengeCompleteMessage": "Weekly challenge complete! 🎉"
 }

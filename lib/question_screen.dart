@@ -10,6 +10,7 @@ import 'question_cache.dart';
 import 'question_prompt_resolver.dart';
 import 'tts_service.dart';
 import 'unit_name_resolver.dart';
+import 'weekly_challenge_repository.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({
@@ -20,6 +21,7 @@ class QuestionScreen extends StatefulWidget {
     required this.clock,
     required this.questionCache,
     required this.growthRepository,
+    this.weeklyChallengeRepository,
   });
 
   final Unit unit;
@@ -28,6 +30,9 @@ class QuestionScreen extends StatefulWidget {
   final Clock clock;
   final QuestionCache questionCache;
   final GrowthRepository growthRepository;
+
+  /// 未指定時(単体テスト等)はウィークリーチャレンジの更新を行わない。
+  final WeeklyChallengeRepository? weeklyChallengeRepository;
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -89,6 +94,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     await widget.growthRepository.recordStudyActivity();
     if (correct) {
       await widget.growthRepository.recordCorrectAnswer();
+      await widget.weeklyChallengeRepository?.recordCorrectAnswer();
     }
     final mastery = await widget.progressStore.getMastery(widget.unit.id);
 

@@ -677,5 +677,19 @@
   "mathGuideSectionAlgebra": "Álgebra",
   "mathGuideSectionGeometria": "Geometria",
   "mathGuideSectionGrandezas": "Grandezas e Medidas",
-  "mathGuideSectionProbabilidade": "Probabilidade e Estatística"
+  "mathGuideSectionProbabilidade": "Probabilidade e Estatística",
+  "weeklyChallengeTitle": "Desafio da semana",
+  "@weeklyChallengeTitle": {},
+  "weeklyChallengeProgress": "{completed} de {total} problemas esta semana",
+  "@weeklyChallengeProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyChallengeCompleteMessage": "Desafio da semana completo! 🎉"
 }

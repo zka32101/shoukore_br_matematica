@@ -29,6 +29,7 @@ import 'src/question/measurement_question_source.dart';
 import 'src/question/sequence_question_source.dart';
 import 'src/question/statistics_question_source.dart';
 import 'unit_name_resolver.dart';
+import 'weekly_challenge_repository.dart';
 import 'weekly_report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -107,6 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
   static const _masteryEligibility = UnitMasteryBadgeEligibility();
   Set<String> _masteredUnitIds = {};
 
+  final WeeklyChallengeStore _weeklyChallengeStore = InMemoryWeeklyChallengeStore();
+  WeeklyChallengeRepository? _weeklyChallengeRepository;
+
   @override
   void initState() {
     super.initState();
@@ -155,6 +159,10 @@ class _HomeScreenState extends State<HomeScreen> {
         : _entitlement;
     final characterResult = await _characterCollectionRepository.refresh(curriculum.units);
     final consent = await _consentStore.getConsent();
+    final weeklyChallengeRepository = await WeeklyChallengeRepository.load(
+      clock: _clock,
+      store: _weeklyChallengeStore,
+    );
     if (!mounted) return;
     setState(() {
       _curriculum = curriculum;
@@ -165,6 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _entitlement = entitlement;
       _characterSnapshot = characterResult.snapshot;
       _consent = consent;
+      _weeklyChallengeRepository = weeklyChallengeRepository;
     });
     await _refreshMasteredUnits(curriculum.units);
   }
@@ -353,13 +362,15 @@ class _HomeScreenState extends State<HomeScreen> {
           clock: _clock,
           questionCache: _questionCache,
           growthRepository: _growthRepository!,
+          weeklyChallengeRepository: _weeklyChallengeRepository,
         ),
       ),
     );
     await _screenTimeRepository!.addUsage(_clock.now().difference(openedAt));
     final characterResult = await _characterCollectionRepository.refresh(curriculum.units);
-    // 出題画面でgrowth状態（stage/coins）・キャラコレクションが
-    // 更新されている可能性があるため、ホームに戻った際に再描画する。
+    // 出題画面でgrowth状態（stage/coins）・キャラコレクション・ウィークリー
+    // チャレンジ進捗が更新されている可能性があるため、ホームに戻った際に
+    // 再描画する。
     if (mounted) {
       setState(() => _characterSnapshot = characterResult.snapshot);
       _showCharacterCollectionChanges(characterResult);
@@ -445,6 +456,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   clearedUnits: _masteredUnitIds.length,
                   totalUnits: totalUnitsWithContent,
                 ),
+                const SizedBox(height: 12),
+                if (_weeklyChallengeRepository != null)
+                  _WeeklyChallengeCard(
+                    key: const Key('weeklyChallengeTile'),
+                    completedCount: _weeklyChallengeRepository!.completedCount,
+                    totalTarget: WeeklyChallengeRepository.totalTarget,
+                  ),
                 const SizedBox(height: 12),
                 if (nextUnit != null)
                   _QuickStartCard(
@@ -867,6 +885,73 @@ class _StatCard extends StatelessWidget {
             Text(label, style: theme.textTheme.bodySmall),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// JP版の「ウィークリーチャレンジ」に相当する、今週あと何問正解すれば
+/// 達成できるかを示す短期目標カード。
+class _WeeklyChallengeCard extends StatelessWidget {
+  const _WeeklyChallengeCard({
+    super.key,
+    required this.completedCount,
+    required this.totalTarget,
+  });
+
+  final int completedCount;
+  final int totalTarget;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final isComplete = completedCount >= totalTarget;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.tertiaryContainer,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.emoji_events, size: 32, color: theme.colorScheme.onTertiaryContainer),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.weeklyChallengeTitle,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onTertiaryContainer,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  isComplete
+                      ? l10n.weeklyChallengeCompleteMessage
+                      : l10n.weeklyChallengeProgress(completedCount, totalTarget),
+                  key: const Key('weeklyChallengeProgressText'),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onTertiaryContainer,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: (completedCount / totalTarget).clamp(0.0, 1.0),
+                    minHeight: 6,
+                    backgroundColor: theme.colorScheme.onTertiaryContainer.withValues(alpha: 0.2),
+                    valueColor: AlwaysStoppedAnimation(theme.colorScheme.onTertiaryContainer),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
