@@ -292,6 +292,10 @@
       }
     }
   },
+  "homeStatStreakLabel": "Sequência",
+  "homeStatCoinsLabel": "Moedas",
+  "homeStatMasteredLabel": "Dominadas",
+  "homePracticeTitle": "Vamos praticar matemática hoje!",
   "homeTitle": "Colecinho! Matemática",
   "screenTimeUsedNoLimit": "Usado hoje: {used} min · Sem limite",
   "@screenTimeUsedNoLimit": {
@@ -939,7 +943,7 @@
   "gameSessionQuitDialogTitle": "Encerrar o jogo?",
   "gameSessionQuitContinueButton": "Continuar",
   "gameSessionQuitEndButton": "Encerrar",
-  "gameSessionQuitDialogMessage": "Você respondeu {total} e acertou {correct}!\nMelhor sequência: {maxStreak} acertos seguidos 🔥",
+  "gameSessionQuitDialogMessage": "Você respondeu {total} e acertou {correct}!\nMelhor sequência: {maxStreak, plural, =1{1 acerto seguido} other{{maxStreak} acertos seguidos}} 🔥",
   "@gameSessionQuitDialogMessage": {
     "placeholders": {
       "total": {

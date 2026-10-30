@@ -1078,21 +1078,21 @@ class _StatsRow extends StatelessWidget {
         _StatCard(
           icon: Icons.local_fire_department,
           value: l10n.homeStatStreakValue(streakDays),
-          label: 'Sequência',
+          label: l10n.homeStatStreakLabel,
           color: colorScheme.primary,
         ),
         const SizedBox(width: 10),
         _StatCard(
           icon: Icons.monetization_on,
           value: '$coins',
-          label: 'Moedas',
+          label: l10n.homeStatCoinsLabel,
           color: colorScheme.secondary,
         ),
         const SizedBox(width: 10),
         _StatCard(
           icon: Icons.emoji_events,
           value: '$clearedUnits/$totalUnits',
-          label: 'Dominadas',
+          label: l10n.homeStatMasteredLabel,
           color: colorScheme.tertiary,
         ),
       ],
@@ -1259,7 +1259,7 @@ class _QuickStartCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Vamos praticar matemática hoje!',
+                      AppLocalizations.of(context)!.homePracticeTitle,
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: theme.colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,

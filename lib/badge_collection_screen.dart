@@ -218,7 +218,7 @@ class _UnitBadgeCard extends StatelessWidget {
           Text(
             label,
             textAlign: TextAlign.center,
-            maxLines: 2,
+            maxLines: 4,
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.labelSmall,
           ),

@@ -74,6 +74,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   bool _answering = false;
   // 回答後、結果の表示(正解/不正解と解説)を、画面内にスクロールして見せる。
   final GlobalKey _feedbackKey = GlobalKey();
+  final ScrollController _scrollController = ScrollController();
   // 回答後、選んだ選択肢を強調表示するために保持する(正誤判定自体は
   // コア側のcheckAnswerが行うが、見た目の色分けにはどれを選んだかが要る)。
   String? _lastChosenId;
@@ -101,6 +102,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _ttsService.stop();
     super.dispose();
   }
@@ -253,21 +255,48 @@ class _QuestionScreenState extends State<QuestionScreen> {
     });
     // 結果(正解/不正解と解説)は、選択肢の下にあり、小さい画面では見えないため、
     // 描画のあとで、画面内に入るようにスクロールする。
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final feedbackContext = _feedbackKey.currentContext;
-      if (!mounted || feedbackContext == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) => _revealFeedback());
+    // 触覚フィードバック: 画面を見ていなくても回答の手応えを感じられる
+    // ようにする(正解は弾む強め、不正解は控えめな振動)。
+    unawaited(
+      correct ? HapticFeedback.mediumImpact() : HapticFeedback.lightImpact(),
+    );
+  }
+
+  /// 結果の表示を、画面内に入れる。リストは、画面の外にあるものを作らないため、結果が
+  /// まだ作られていない(ゲームモードのように、上の欄が大きく、結果が遠い)ときは、
+  /// 先に一番下までスクロールして、作られたあとで、位置を合わせる。
+  void _revealFeedback() {
+    if (!mounted) return;
+    final feedbackContext = _feedbackKey.currentContext;
+    if (feedbackContext != null) {
       Scrollable.ensureVisible(
         feedbackContext,
         alignment: 0.2,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
+      return;
+    }
+    if (!_scrollController.hasClients) return;
+    _scrollController
+        .animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOut,
+        )
+        .then((_) {
+      if (!mounted) return;
+      final built = _feedbackKey.currentContext;
+      if (built != null) {
+        Scrollable.ensureVisible(
+          built,
+          alignment: 0.2,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOut,
+        );
+      }
     });
-    // 触覚フィードバック: 画面を見ていなくても回答の手応えを感じられる
-    // ようにする(正解は弾む強め、不正解は控えめな振動)。
-    unawaited(
-      correct ? HapticFeedback.mediumImpact() : HapticFeedback.lightImpact(),
-    );
   }
 
   /// ゲームセッション中に画面を離れようとした時、今回の記録を振り返る
@@ -337,6 +366,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         child: CircularProgressIndicator(),
                       )
                     : ListView(
+                        controller: _scrollController,
                         key: const ValueKey('questionLoaded'),
                         padding: const EdgeInsets.all(16),
                         children: [

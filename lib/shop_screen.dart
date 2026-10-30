@@ -194,30 +194,62 @@ class _ShopItemCard extends StatelessWidget {
     final theme = Theme.of(context);
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: theme.colorScheme.secondaryContainer,
-          foregroundColor: theme.colorScheme.onSecondaryContainer,
-          child: Icon(shopItemIcon(item.id)),
-        ),
-        title: Text(shopItemName(l10n, item.id)),
-        subtitle: Text(shopItemDescription(l10n, item.id)),
-        trailing: !owned
-            ? FilledButton(
-                key: Key('shopBuyButton_${item.id}'),
-                onPressed: canAfford ? onBuy : null,
-                child: Text('${l10n.shopBuyButton} (${item.priceCoins})'),
-              )
-            : inUse
-                ? Chip(
-                    key: Key('shopInUseLabel_${item.id}'),
-                    label: Text(l10n.shopInUseLabel),
-                  )
-                : OutlinedButton(
-                    key: Key('shopUseButton_${item.id}'),
-                    onPressed: onUse,
-                    child: Text(l10n.shopUseButton),
+      // ListTile だと、右の購入ボタンの幅の分だけ名前の欄が細くなり、単語の途中で
+      // 折り返すため、名前・説明を全幅で出し、ボタンは右下に置く。
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  backgroundColor: theme.colorScheme.secondaryContainer,
+                  foregroundColor: theme.colorScheme.onSecondaryContainer,
+                  child: Icon(shopItemIcon(item.id)),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        shopItemName(l10n, item.id),
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        shopItemDescription(l10n, item.id),
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                    ],
                   ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Align(
+              alignment: Alignment.centerRight,
+              child: !owned
+                  ? FilledButton(
+                      key: Key('shopBuyButton_${item.id}'),
+                      onPressed: canAfford ? onBuy : null,
+                      child: Text('${l10n.shopBuyButton} (${item.priceCoins})'),
+                    )
+                  : inUse
+                      ? Chip(
+                          key: Key('shopInUseLabel_${item.id}'),
+                          label: Text(l10n.shopInUseLabel),
+                        )
+                      : OutlinedButton(
+                          key: Key('shopUseButton_${item.id}'),
+                          onPressed: onUse,
+                          child: Text(l10n.shopUseButton),
+                        ),
+            ),
+          ],
+        ),
       ),
     );
   }

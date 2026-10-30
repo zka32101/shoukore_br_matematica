@@ -292,6 +292,10 @@
       }
     }
   },
+  "homeStatStreakLabel": "Streak",
+  "homeStatCoinsLabel": "Coins",
+  "homeStatMasteredLabel": "Mastered",
+  "homePracticeTitle": "Let's practice math today!",
   "homeTitle": "Colecinho! Matemática",
   "screenTimeUsedNoLimit": "Used today: {used} min · No limit",
   "@screenTimeUsedNoLimit": {
