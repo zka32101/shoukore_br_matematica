@@ -98,4 +98,61 @@ void main() {
     expect(attempts.single.chosenId, '5');
     expect(attempts.single.correct, isTrue);
   });
+
+  testWidgets('小さい画面でも、回答後に、結果(正解/不正解)が画面内に入るまでスクロールする', (tester) async {
+    const height = 700.0;
+    tester.view.physicalSize = const Size(400, height);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final growthRepository = await GrowthRepository.load(
+      clock: const SystemClock(),
+      profile: const RegionalProfile(
+        locale: 'pt_BR',
+        ageOfConsent: 13,
+        guardianConsentRequired: true,
+        dailyResetHour: 5,
+        timeZone: 'America/Sao_Paulo',
+        screenTimeLimitMinutes: 0,
+        profilingAdsAllowed: false,
+      ),
+      store: InMemoryGrowthStore(),
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt', 'BR'),
+        home: QuestionScreen(
+          unit: const Unit(
+            id: 'mat_numeros_1',
+            subjectId: 'matematica',
+            grade: 1,
+            titleKey: 'unit_mat_numeros_1',
+            templateIds: ['tpl_add_1_10'],
+          ),
+          source: const _FixedQuestionSource(),
+          progressStore: InMemoryProgressStore(),
+          clock: const SystemClock(),
+          questionCache: QuestionCache(),
+          growthRepository: growthRepository,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // 結果は、最初は画面の外(下)にある。
+    final choice = find.byKey(const Key('choice_5'));
+    await tester.ensureVisible(choice);
+    await tester.pumpAndSettle();
+    await tester.tap(choice);
+    await tester.pumpAndSettle();
+
+    final feedback = find.byKey(const Key('feedbackText'));
+    expect(feedback, findsOneWidget);
+    final rect = tester.getRect(feedback);
+    expect(rect.top, greaterThanOrEqualTo(0));
+    expect(rect.bottom, lessThanOrEqualTo(height));
+  });
 }
