@@ -65,4 +65,28 @@ void main() {
     expect(find.byKey(const Key('achievementCard_correctAnswers100')), findsOneWidget);
     expect(find.byKey(const Key('achievementCard_collection50')), findsOneWidget);
   });
+
+  testWidgets('未獲得の達成バッジには次の節目までの目安が表示される', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt', 'BR'),
+        home: const BadgeCollectionScreen(
+          units: units,
+          masteredUnitIds: {},
+          currentStreakDays: 1,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('achievementCard_streakDays3')),
+        matching: find.textContaining('2'),
+      ),
+      findsOneWidget,
+    );
+  });
 }

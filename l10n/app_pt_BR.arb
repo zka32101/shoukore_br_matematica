@@ -925,6 +925,31 @@
   "achievementCollection50Title": "50% da coleção",
   "achievementCollection80Title": "80% da coleção",
   "achievementCollection100Title": "Coleção completa!",
+  "achievementProgressDaysRemaining": "Faltam {days} dias",
+  "@achievementProgressDaysRemaining": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementProgressCorrectRemaining": "Faltam {count} acertos",
+  "@achievementProgressCorrectRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementProgressCollectionRemaining": "Faltam {count} personagens",
+  "@achievementProgressCollectionRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementUnlockedLabel": "Conquistado!",
   "crossPromoComingSoonText": "Em breve: mais matérias da Colecinho!",
   "growthStageEgg": "Ovo",
   "growthStageBaby": "Filhote",

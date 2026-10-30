@@ -924,6 +924,31 @@
   "achievementCollection50Title": "50% of collection",
   "achievementCollection80Title": "80% of collection",
   "achievementCollection100Title": "Collection complete!",
+  "achievementProgressDaysRemaining": "{days} days to go",
+  "@achievementProgressDaysRemaining": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementProgressCorrectRemaining": "{count} correct answers to go",
+  "@achievementProgressCorrectRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementProgressCollectionRemaining": "{count} characters to go",
+  "@achievementProgressCollectionRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementUnlockedLabel": "Unlocked!",
   "crossPromoComingSoonText": "Coming soon: more subjects from Colecinho!",
   "growthStageEgg": "Egg",
   "growthStageBaby": "Hatchling",
