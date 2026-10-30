@@ -975,5 +975,8 @@
       }
     }
   },
-  "unitTestTile": "Take unit test"
+  "unitTestTile": "Take unit test",
+  "studyHistoryCalendarTile": "Study calendar",
+  "studyHistoryCalendarTitle": "Study calendar",
+  "studyHistoryCalendarLegend": "Highlighted days are days your child studied."
 }

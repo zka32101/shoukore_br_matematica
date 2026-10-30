@@ -11,12 +11,17 @@ class WeeklyReportScreen extends StatefulWidget {
     required this.progressStore,
     required this.clock,
     required this.questionCache,
+    this.unitTestPassedIds = const {},
   });
 
   final List<String> unitIds;
   final ProgressStore progressStore;
   final Clock clock;
   final QuestionCache questionCache;
+
+  /// 単元まとめテスト(到達点モード)に合格済みの単元ID。保護者が一目で
+  /// 到達点を把握できるよう、各単元の行に合格バッジを添える。
+  final Set<String> unitTestPassedIds;
 
   @override
   State<WeeklyReportScreen> createState() => _WeeklyReportScreenState();
@@ -98,6 +103,13 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                               ? Text(
                                   l10n.weeklyReportTopMisconception(unit.topMisconception!),
                                   style: theme.textTheme.bodySmall,
+                                )
+                              : null,
+                          trailing: widget.unitTestPassedIds.contains(unit.unitId)
+                              ? Icon(
+                                  Icons.verified,
+                                  key: const Key('weeklyReportUnitTestPassedIcon'),
+                                  color: Colors.amber[800],
                                 )
                               : null,
                         ),

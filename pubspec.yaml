@@ -13,6 +13,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_tts: ^4.2.5
+  intl: ^0.20.2
   purchases_flutter: ^10.19.0
   shoukore_core_global:
     git:

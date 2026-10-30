@@ -36,6 +36,7 @@ import 'src/question/geometry_question_source.dart';
 import 'src/question/measurement_question_source.dart';
 import 'src/question/sequence_question_source.dart';
 import 'src/question/statistics_question_source.dart';
+import 'study_history_calendar_screen.dart';
 import 'unit_name_resolver.dart';
 import 'unit_test_screen.dart';
 import 'weekly_challenge_repository.dart';
@@ -961,6 +962,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     progressStore: _progressStore,
                     clock: _clock,
                     questionCache: _questionCache,
+                    unitTestPassedIds: _unitTestPassedIds,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              key: const Key('studyHistoryCalendarTile'),
+              leading: const Icon(Icons.calendar_month_outlined),
+              title: Text(l10n.studyHistoryCalendarTile),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => StudyHistoryCalendarScreen(
+                    unitIds: curriculum.units.map((u) => u.id).toList(),
+                    progressStore: _progressStore,
+                    clock: _clock,
                   ),
                 ),
               ),
