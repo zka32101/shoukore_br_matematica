@@ -38,14 +38,25 @@ class _StudyHistoryCalendarScreenState extends State<StudyHistoryCalendarScreen>
   }
 
   Future<void> _load() async {
-    final days = <DateTime>{};
+    final allAttempts = <Attempt>[];
     for (final unitId in widget.unitIds) {
-      final attempts = await widget.progressStore.getAttempts(unitId);
-      for (final attempt in attempts) {
-        final local = attempt.answeredAt.toLocal();
-        days.add(DateTime(local.year, local.month, local.day));
-      }
+      allAttempts.addAll(await widget.progressStore.getAttempts(unitId));
     }
+    // コア側の集計関数はローカル時刻変換済みのAttemptを渡す想定のため、
+    // ここでtoLocal()したうえで渡す(タイムゾーン変換はアプリ側の責務)。
+    final localAttempts = [
+      for (final attempt in allAttempts)
+        Attempt(
+          questionId: attempt.questionId,
+          unitId: attempt.unitId,
+          correct: attempt.correct,
+          chosenId: attempt.chosenId,
+          answeredAt: attempt.answeredAt.toLocal(),
+          elapsedMs: attempt.elapsedMs,
+          mode: attempt.mode,
+        ),
+    ];
+    final days = studiedDaysFromAttempts(localAttempts);
     if (!mounted) return;
     setState(() => _studiedDays = days);
   }

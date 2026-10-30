@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 
-import 'daily_featured_unit.dart';
 import 'l10n/app_localizations.dart';
 import 'unit_name_resolver.dart';
 
