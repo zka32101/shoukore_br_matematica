@@ -9,6 +9,7 @@ import 'package:shoukore_core_global/shoukore_core_global.dart'
     hide InMemoryProgressStore;
 
 import 'age_gate_dialog.dart';
+import 'app_storage.dart';
 import 'badge_collection_screen.dart';
 import 'character_collection_repository.dart';
 import 'character_definition.dart';
@@ -49,7 +50,12 @@ class HomeScreen extends StatefulWidget {
     this.consentStore,
     this.displayLocale,
     this.onDisplayLocaleChanged,
+    this.storage,
   });
+
+  /// 端末内の保存先(進捗・成長・持ち物・同意など)。起動時に開いて渡す。
+  /// 未指定(単体テスト等)の場合は、メモリ上の実装を使う。
+  final AppStorage? storage;
 
   /// RevenueCat APIキー未設定（開発中・CI）の場合はnullのままにする。
   /// nullの場合、premiumToggleButtonは課金状態を模擬するデバッグ用トグルの
@@ -80,15 +86,19 @@ class _HomeScreenState extends State<HomeScreen> {
   GrowthRepository? _growthRepository;
   RegionalProfile? _regionalProfile;
   ScreenTimeRepository? _screenTimeRepository;
-  final ScreenTimeStore _screenTimeStore = InMemoryScreenTimeStore();
+  late final ScreenTimeStore _screenTimeStore =
+      widget.storage?.screenTimeStore ?? InMemoryScreenTimeStore();
 
   // pt_BRの既定ではscreenTimeLimitMinutesが0（無制限）のため、結合確認用に
   // 保護者が制限を設定した状態を模擬するトグルを用意する。
   bool _screenTimeLimitDemoEnabled = false;
 
-  final ProgressStore _progressStore = InMemoryProgressStore();
-  final GrowthStore _growthStore = InMemoryGrowthStore();
-  final CharacterCollectionStore _characterCollectionStore =
+  late final ProgressStore _progressStore =
+      widget.storage?.progressStore ?? InMemoryProgressStore();
+  late final GrowthStore _growthStore =
+      widget.storage?.growthStore ?? InMemoryGrowthStore();
+  late final CharacterCollectionStore _characterCollectionStore =
+      widget.storage?.characterCollectionStore ??
       InMemoryCharacterCollectionStore();
   CharacterCollectionSnapshot _characterSnapshot =
       CharacterCollectionSnapshot.initial;
@@ -98,7 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
   );
   final QuestionCache _questionCache = QuestionCache();
   late final ConsentStore _consentStore =
-      widget.consentStore ?? InMemoryConsentStore();
+      widget.consentStore ??
+      widget.storage?.consentStore ??
+      InMemoryConsentStore();
   ConsentRecord? _consent;
 
   final NotificationScheduler _notificationScheduler =
@@ -127,13 +139,15 @@ class _HomeScreenState extends State<HomeScreen> {
   // 入れ替わる(コア側の判定ロジックを利用)。
   Set<String> _unitTestPassedIds = {};
 
-  final WeeklyChallengeStore _weeklyChallengeStore =
-      InMemoryWeeklyChallengeStore();
+  late final WeeklyChallengeStore _weeklyChallengeStore =
+      widget.storage?.weeklyChallengeStore ?? InMemoryWeeklyChallengeStore();
   WeeklyChallengeRepository? _weeklyChallengeRepository;
 
-  final InventoryStore _inventoryStore = InMemoryInventoryStore();
+  late final InventoryStore _inventoryStore =
+      widget.storage?.inventoryStore ?? InMemoryInventoryStore();
   InventorySnapshot _inventorySnapshot = InventorySnapshot.initial;
-  final EquippedItemsStore _equippedItemsStore = InMemoryEquippedItemsStore();
+  late final EquippedItemsStore _equippedItemsStore =
+      widget.storage?.equippedItemsStore ?? InMemoryEquippedItemsStore();
   EquippedItems _equippedItems = EquippedItems.initial;
 
   // 下部メニュー(タブバー)の選択中タブ。JP版と同様、ホーム/コレクション/
@@ -1058,11 +1072,12 @@ class _StatsRow extends StatelessWidget {
     // 合わせ、Material3が1つのシード色から生成する3つのトナルロール
     // (primary/secondary/tertiary)で区別する。
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
         _StatCard(
           icon: Icons.local_fire_department,
-          value: '$streakDays dias',
+          value: l10n.homeStatStreakValue(streakDays),
           label: 'Sequência',
           color: colorScheme.primary,
         ),

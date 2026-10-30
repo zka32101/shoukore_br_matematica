@@ -70,13 +70,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
   Question? _question;
   Mastery? _mastery;
   String? _feedback;
+  // 回答の保存中(awaitの間)に、2回目の回答が入らないようにする。
+  bool _answering = false;
+  // 回答後、結果の表示(正解/不正解と解説)を、画面内にスクロールして見せる。
+  final GlobalKey _feedbackKey = GlobalKey();
   // 回答後、選んだ選択肢を強調表示するために保持する(正誤判定自体は
   // コア側のcheckAnswerが行うが、見た目の色分けにはどれを選んだかが要る)。
   String? _lastChosenId;
   String? _overcomeMisconception;
   String? _misconceptionHint;
   bool _consecutiveIncorrectAlertShown = false;
-  int _answerAttemptSequence = 0;
 
   // 解説を読むとボーナスコインを獲得できる(「解説を読む」行動自体を
   // 後押しする仕組み)。連打での不正獲得を防ぐため、1問につき1回のみ。
@@ -149,6 +152,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
   }
 
   Future<void> _answer(String chosenId) async {
+    // 回答済み、または回答の保存中は受け付けない(ドラッグでの2回目の回答や、
+    // 連打で、1問に複数の記録が付くのを防ぐ)。
+    if (_feedback != null || _answering) return;
+    _answering = true;
+    try {
+      await _answerOnce(chosenId);
+    } finally {
+      _answering = false;
+    }
+  }
+
+  Future<void> _answerOnce(String chosenId) async {
     final question = _question!;
     final correct = widget.source.checkAnswer(question, chosenId);
     await widget.progressStore.recordAttempt(
@@ -224,7 +239,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
       _mastery = mastery;
       _overcomeMisconception = overcome ? topMisconception : null;
       _misconceptionHint = misconceptionHint;
-      _answerAttemptSequence++;
       if (widget.isGameSession) {
         _sessionTotal++;
         if (correct) {
@@ -236,6 +250,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
           _sessionStreak = 0;
         }
       }
+    });
+    // 結果(正解/不正解と解説)は、選択肢の下にあり、小さい画面では見えないため、
+    // 描画のあとで、画面内に入るようにスクロールする。
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final feedbackContext = _feedbackKey.currentContext;
+      if (!mounted || feedbackContext == null) return;
+      Scrollable.ensureVisible(
+        feedbackContext,
+        alignment: 0.2,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
     });
     // 触覚フィードバック: 画面を見ていなくても回答の手応えを感じられる
     // ようにする(正解は弾む強め、不正解は控えめな振動)。
@@ -590,6 +616,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                   child: Draggable<String>(
                                     key: Key('choiceDraggable_$choice'),
                                     data: choice,
+                                    // 回答後は、選択肢を、ドラッグできないようにする。
+                                    maxSimultaneousDrags:
+                                        _feedback == null ? 1 : 0,
                                     feedback: Material(
                                       color: Colors.transparent,
                                       child: SizedBox(
@@ -627,9 +656,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                           if (_feedback != null) ...[
                             const SizedBox(height: 20),
                             AnswerFeedbackAnimation(
-                              key: ValueKey(
-                                'answerFeedbackAnimation_$_answerAttemptSequence',
-                              ),
+                              key: _feedbackKey,
                               correct: correct,
                               child: Card(
                                 color: correct

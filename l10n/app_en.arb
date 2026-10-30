@@ -58,7 +58,7 @@
   "explanationSubtract": "Subtraction shows how much is left after taking a part away from a total. Imagine you had 8 stickers and gave 3 to a friend: how many were left? 8-3 means \"take 3 away from 8\", and the result is 5. Tip: the result of a subtraction can never be greater than the number you started with.",
   "explanationMultiply": "Multiplication is a quick way to add the same number several times. Instead of adding 3+3+3+3, you can calculate 3×4, which means \"4 groups of 3\", and the result is 12. Think of 4 boxes with 3 balls each: that's 12 balls in total!",
   "explanationDivide": "Division splits a quantity into equal parts. Imagine 12 cookies shared equally among 4 friends: how many does each one get? 12÷4 means \"split 12 into 4 equal parts\", and the result is 3. Tip: multiplication and division are inverse operations — if 4×3=12, then 12÷4=3.",
-  "onboardingWelcomeTitle": "Welcome to Colecinho!Matemática",
+  "onboardingWelcomeTitle": "Welcome to Colecinho! Matemática",
   "onboardingWelcomeBody": "Learn math following the BNCC curriculum, take care of your pet, and earn coins with every correct answer!",
   "onboardingWelcomeNextButton": "Let's get started!",
   "onboardingQuizTitle": "Try a question",
@@ -284,7 +284,15 @@
       }
     }
   },
-  "homeTitle": "Colecinho!Matemática",
+  "homeStatStreakValue": "{streak, plural, =1{1 day} other{{streak} days}}",
+  "@homeStatStreakValue": {
+    "placeholders": {
+      "streak": {
+        "type": "int"
+      }
+    }
+  },
+  "homeTitle": "Colecinho! Matemática",
   "screenTimeUsedNoLimit": "Used today: {used} min · No limit",
   "@screenTimeUsedNoLimit": {
     "placeholders": {

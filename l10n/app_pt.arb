@@ -58,7 +58,7 @@
   "explanationSubtract": "A subtração mostra quanto resta depois de tirar uma parte de um total. Imagine que você tinha 8 figurinhas e deu 3 para um amigo: quantas sobraram? 8-3 significa \"de 8, tire 3\", e o resultado é 5. Dica: o resultado da subtração nunca pode ser maior que o número de onde você começou.",
   "explanationMultiply": "A multiplicação é um jeito rápido de somar o mesmo número várias vezes. Em vez de somar 3+3+3+3, você pode calcular 3×4, que significa \"4 grupos de 3\", e o resultado é 12. Pense em 4 caixas com 3 bolas cada: no total são 12 bolas!",
   "explanationDivide": "A divisão separa uma quantidade em partes iguais. Imagine 12 biscoitos divididos igualmente entre 4 amigos: quantos cada um recebe? 12÷4 significa \"separar 12 em 4 partes iguais\", e o resultado é 3. Dica: multiplicação e divisão são operações inversas — se 4×3=12, então 12÷4=3.",
-  "onboardingWelcomeTitle": "Bem-vindo ao Colecinho!Matemática",
+  "onboardingWelcomeTitle": "Bem-vindo ao Colecinho! Matemática",
   "onboardingWelcomeBody": "Aprenda matemática seguindo a BNCC, cuide do seu bichinho e conquiste moedas a cada acerto!",
   "onboardingWelcomeNextButton": "Vamos começar!",
   "onboardingQuizTitle": "Experimente uma questão",
@@ -284,7 +284,15 @@
       }
     }
   },
-  "homeTitle": "Colecinho!Matemática",
+  "homeStatStreakValue": "{streak, plural, =1{1 dia} other{{streak} dias}}",
+  "@homeStatStreakValue": {
+    "placeholders": {
+      "streak": {
+        "type": "int"
+      }
+    }
+  },
+  "homeTitle": "Colecinho! Matemática",
   "screenTimeUsedNoLimit": "Usado hoje: {used} min · Sem limite",
   "@screenTimeUsedNoLimit": {
     "placeholders": {
