@@ -12,12 +12,18 @@ class SequenceQuestionSource implements QuestionSource {
     Random? random,
   })  : _unitsByLocale = unitsByLocale,
         _templates = templates,
-        _random = random ?? Random();
+        _random = random ?? Random() {
+    _choicePositionSequencer = BalancedChoicePositionSequencer(random: _random);
+  }
 
   final Map<String, List<Unit>> _unitsByLocale;
   final Map<String, SequencePatternTemplate> _templates;
   final Random _random;
   int _sequence = 0;
+
+  /// 正解の選択肢の位置が短い区間でも偏らないよう、順序とは別に位置だけを
+  /// 均等にする(CLAUDE.md共通要件「選択肢はランダムに」のバランス面)。
+  late final BalancedChoicePositionSequencer _choicePositionSequencer;
 
   @override
   Future<List<Unit>> loadUnits(String locale) async {
@@ -93,7 +99,9 @@ class SequenceQuestionSource implements QuestionSource {
       if (candidate >= 0) choices.add(candidate);
       i++;
     }
-    final choiceList = choices.toList()..shuffle(_random);
+    final wrongChoices = choices.where((c) => c != answer).toList()..shuffle(_random);
+    final position = _choicePositionSequencer.nextPosition(wrongChoices.length + 1);
+    final choiceList = [...wrongChoices]..insert(position, answer);
 
     _sequence++;
     return Question(
