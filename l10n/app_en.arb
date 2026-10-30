@@ -903,6 +903,15 @@
       }
     }
   },
+  "achievementSectionTitle": "Achievements",
+  "achievementStreakDays3Title": "3-day streak",
+  "achievementStreakDays7Title": "7-day streak",
+  "achievementStreakDays30Title": "30-day streak",
+  "achievementCorrectAnswers100Title": "100 correct answers",
+  "achievementCorrectAnswers500Title": "500 correct answers",
+  "achievementCollection50Title": "50% of collection",
+  "achievementCollection80Title": "80% of collection",
+  "achievementCollection100Title": "Collection complete!",
   "crossPromoComingSoonText": "Coming soon: more subjects from Colecinho!",
   "growthStageEgg": "Egg",
   "growthStageBaby": "Hatchling",

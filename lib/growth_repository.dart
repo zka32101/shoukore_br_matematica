@@ -55,6 +55,7 @@ class GrowthRepository {
         );
   CoinWallet get wallet => CoinWallet(balance: _snapshot.coinBalance);
   GrowthStage get stage => stageCalculator.stageFor(_snapshot.totalCorrectAnswers);
+  int get totalCorrectAnswers => _snapshot.totalCorrectAnswers;
   LearningStreak get streak => LearningStreak(
         currentStreakDays: _snapshot.currentStreakDays,
         lastStudiedDay: _snapshot.lastStudiedDay,

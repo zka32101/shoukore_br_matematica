@@ -904,6 +904,15 @@
       }
     }
   },
+  "achievementSectionTitle": "Conquistas",
+  "achievementStreakDays3Title": "3 dias seguidos",
+  "achievementStreakDays7Title": "7 dias seguidos",
+  "achievementStreakDays30Title": "30 dias seguidos",
+  "achievementCorrectAnswers100Title": "100 acertos",
+  "achievementCorrectAnswers500Title": "500 acertos",
+  "achievementCollection50Title": "50% da coleção",
+  "achievementCollection80Title": "80% da coleção",
+  "achievementCollection100Title": "Coleção completa!",
   "crossPromoComingSoonText": "Em breve: mais matérias da Colecinho!",
   "growthStageEgg": "Ovo",
   "growthStageBaby": "Filhote",

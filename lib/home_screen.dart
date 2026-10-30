@@ -576,6 +576,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   BadgeCollectionScreen(
                     units: curriculum.units,
                     masteredUnitIds: _masteredUnitIds,
+                    testPassedUnitIds: _unitTestPassedIds,
+                    currentStreakDays: _growthRepository?.streak.currentStreakDays ?? 0,
+                    totalCorrectAnswers: _growthRepository?.totalCorrectAnswers ?? 0,
+                    ownedCharacterCount: _characterSnapshot.ownedCount,
+                    totalCharacterCount: characterDefinitions.length,
                   ),
                   _buildSettingsTab(context, l10n),
                 ],
