@@ -5,6 +5,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 import 'package:shoukore_core_global/shoukore_core_global_entitlement_revenuecat.dart';
 
+import 'app_storage.dart';
 import 'home_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'locale_preference_store.dart';
@@ -22,15 +23,21 @@ const _subjectEntitlementIds = {'matematica': 'matematica'};
 const _premiumEntitlementId = 'premium';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   if (_revenueCatApiKey.isNotEmpty) {
-    WidgetsFlutterBinding.ensureInitialized();
     await Purchases.configure(PurchasesConfiguration(_revenueCatApiKey));
   }
-  runApp(const ShoukoreBrMatematicaApp());
+  // 端末内の保存先を開く。これを渡さないと、学習の記録・コイン・キャラなどが
+  // アプリを閉じると消える(メモリ上の実装になる)。
+  final storage = await AppStorage.open();
+  runApp(ShoukoreBrMatematicaApp(storage: storage));
 }
 
 class ShoukoreBrMatematicaApp extends StatefulWidget {
-  const ShoukoreBrMatematicaApp({super.key});
+  const ShoukoreBrMatematicaApp({super.key, this.storage});
+
+  /// 端末内の保存先。未指定(単体テスト等)の場合は、メモリ上の実装を使う。
+  final AppStorage? storage;
 
   @override
   State<ShoukoreBrMatematicaApp> createState() => _ShoukoreBrMatematicaAppState();
@@ -42,15 +49,18 @@ class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
   // しない(HomeScreen側は常にpt_BRでカリキュラムを読み込む)。ここで切り替える
   // のはMaterialAppの表示言語(AppLocalizationsが解決する文言)のみ。
   Locale _displayLocale = const Locale('pt', 'BR');
-  final LocalePreferenceStore _localePreferenceStore = InMemoryLocalePreferenceStore();
+  late final LocalePreferenceStore _localePreferenceStore =
+      widget.storage?.localeStore ?? InMemoryLocalePreferenceStore();
 
-  final OnboardingCompletionStore _onboardingStore = InMemoryOnboardingCompletionStore();
+  late final OnboardingCompletionStore _onboardingStore =
+      widget.storage?.onboardingStore ?? InMemoryOnboardingCompletionStore();
   bool _loadingOnboardingState = true;
   bool _onboardingCompleted = false;
 
   // オンボーディングの年齢確認/保護者同意ステップとホーム画面の設定タイルが
   // 同じ同意記録を共有するよう、アプリ直下で1つだけ保持する。
-  final ConsentStore _consentStore = InMemoryConsentStore();
+  late final ConsentStore _consentStore =
+      widget.storage?.consentStore ?? InMemoryConsentStore();
 
   final RevenueCatEntitlementReader? _entitlementReader = _revenueCatApiKey.isEmpty
       ? null
@@ -118,6 +128,7 @@ class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
           ? const Scaffold(body: Center(child: CircularProgressIndicator()))
           : _onboardingCompleted
               ? HomeScreen(
+                  storage: widget.storage,
                   entitlementReader: _entitlementReader,
                   consentStore: _consentStore,
                   displayLocale: _displayLocale,

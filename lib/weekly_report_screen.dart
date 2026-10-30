@@ -61,7 +61,13 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
           : report.totalAttempts == 0
               ? Center(
                   key: const Key('weeklyReportNoDataText'),
-                  child: Text(l10n.weeklyReportNoData),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(
+                      l10n.weeklyReportNoData,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 )
               : ListView(
                   key: const Key('weeklyReportList'),
