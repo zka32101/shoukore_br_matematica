@@ -51,8 +51,24 @@ void main() {
     expect(find.byKey(const Key('lessonExampleExplanationText')), findsOneWidget);
   });
 
-  testWidgets('まだレッスンを用意していない単元はnullを返す', (tester) async {
+  testWidgets('未登録の単元IDはnullを返す', (tester) async {
     final l10n = await loadL10n(tester);
-    expect(resolveLesson(l10n, 'mat_numeros_2'), isNull);
+    expect(resolveLesson(l10n, 'mat_desconhecido_1'), isNull);
+  });
+
+  testWidgets('全25単元(5eixo×5単元)にレッスンが用意されている', (tester) async {
+    final l10n = await loadL10n(tester);
+    for (final eixo in ['numeros', 'algebra', 'geometria', 'grandezas', 'probabilidade']) {
+      for (var i = 1; i <= 5; i++) {
+        final unitId = 'mat_${eixo}_$i';
+        final lesson = resolveLesson(l10n, unitId);
+        expect(lesson, isNotNull, reason: '$unitId のレッスンが見つからない');
+        expect(lesson!.intro, isNotEmpty);
+        expect(lesson.tip, isNotEmpty);
+        expect(lesson.example.question, isNotEmpty);
+        expect(lesson.example.answer, isNotEmpty);
+        expect(lesson.example.explanation, isNotEmpty);
+      }
+    }
   });
 }
