@@ -25,6 +25,8 @@ import 'growth_repository.dart';
 import 'guardian_dialog.dart';
 import 'in_memory_progress_store.dart';
 import 'l10n/app_localizations.dart';
+import 'lesson_content.dart';
+import 'lesson_screen.dart';
 import 'math_guide_screen.dart';
 import 'question_cache.dart';
 import 'question_screen.dart';
@@ -298,6 +300,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
     await _refreshUnitTestPassed(curriculum.units);
+  }
+
+  /// 単元を解く前に読む、教科書的な「学ぶ」画面(LessonScreen)を開く。
+  void _openLesson(BuildContext context, String unitId) {
+    final lesson = resolveLesson(AppLocalizations.of(context)!, unitId);
+    if (lesson == null) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => LessonScreen(unitId: unitId, lesson: lesson),
+      ),
+    );
   }
 
   /// 新規所持・レベルアップしたキャラがいれば、専用ダイアログで1体ずつ
@@ -890,6 +903,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               testPassed: _unitTestPassedIds.contains(unit.id),
                               testButtonKey: Key('unitTestButton_${unit.id}'),
                               onTestTap: () => _openUnitTest(context, l10n, unit),
+                              onLessonTap: resolveLesson(l10n, unit.id) == null
+                                  ? null
+                                  : () => _openLesson(context, unit.id),
+                              lessonButtonKey: Key('lessonButton_${unit.id}'),
                             ),
                           ),
                       ],
@@ -1339,6 +1356,8 @@ class _UnitCard extends StatelessWidget {
     this.testPassed = false,
     this.onTestTap,
     this.testButtonKey,
+    this.onLessonTap,
+    this.lessonButtonKey,
   });
 
   final Key unitKey;
@@ -1356,6 +1375,11 @@ class _UnitCard extends StatelessWidget {
   /// まとめテストへの導線。未指定(ロック中等)ならボタン自体を出さない。
   final VoidCallback? onTestTap;
   final Key? testButtonKey;
+
+  /// 単元の「学ぶ」画面(LessonScreen)への導線。レッスン未用意の単元
+  /// (resolveLesson が null)では未指定にし、ボタン自体を出さない。
+  final VoidCallback? onLessonTap;
+  final Key? lessonButtonKey;
 
   @override
   Widget build(BuildContext context) {
@@ -1410,6 +1434,19 @@ class _UnitCard extends StatelessWidget {
                     key: const Key('lockIcon'),
                     size: 18,
                     color: theme.colorScheme.outline,
+                  ),
+                )
+              else if (onLessonTap != null)
+                Positioned(
+                  top: -4,
+                  right: -4,
+                  child: IconButton(
+                    key: lessonButtonKey,
+                    tooltip: AppLocalizations.of(context)!.lessonTile,
+                    iconSize: 18,
+                    visualDensity: VisualDensity.compact,
+                    icon: const Icon(Icons.menu_book_outlined),
+                    onPressed: onLessonTap,
                   ),
                 ),
               if (mastered)
