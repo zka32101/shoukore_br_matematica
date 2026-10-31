@@ -41,9 +41,20 @@ class CharacterCard extends StatelessWidget {
     return SizedBox(
       width: 96,
       height: 110,
-      child: Material(
-        color: backgroundColor.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(16),
+      child: Container(
+        decoration: BoxDecoration(
+          color: owned ? theme.colorScheme.surface : theme.colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: owned
+              ? [
+                  BoxShadow(
+                    color: backgroundColor.withValues(alpha: 0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : null,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Stack(

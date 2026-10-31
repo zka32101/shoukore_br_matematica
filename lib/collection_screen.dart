@@ -35,36 +35,65 @@ class CollectionScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Card(
+              elevation: 0,
+              color: theme.colorScheme.primaryContainer,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text(
-                      l10n.collectionProgressText(ownedCount, totalCount),
-                      key: const Key('collectionProgressText'),
-                      style: theme.textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: LinearProgressIndicator(value: progress, minHeight: 10),
-                    ),
-                    if (milestoneReached) ...[
-                      const SizedBox(height: 8),
-                      Row(
+                    SizedBox(
+                      width: 56,
+                      height: 56,
+                      child: Stack(
+                        alignment: Alignment.center,
                         children: [
-                          Icon(Icons.celebration, size: 18, color: theme.colorScheme.primary),
-                          const SizedBox(width: 4),
-                          Text(
-                            l10n.collectionMilestoneText,
-                            key: const Key('collectionMilestoneText'),
-                            style: theme.textTheme.bodySmall
-                                ?.copyWith(color: theme.colorScheme.primary),
+                          CircularProgressIndicator(
+                            value: progress,
+                            strokeWidth: 6,
+                            backgroundColor:
+                                theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.15),
+                            color: theme.colorScheme.onPrimaryContainer,
                           ),
+                          Icon(Icons.auto_awesome, color: theme.colorScheme.onPrimaryContainer, size: 24),
                         ],
                       ),
-                    ],
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.collectionProgressText(ownedCount, totalCount),
+                            key: const Key('collectionProgressText'),
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: theme.colorScheme.onPrimaryContainer,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          if (milestoneReached) ...[
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.celebration,
+                                  size: 16,
+                                  color: theme.colorScheme.onPrimaryContainer,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  l10n.collectionMilestoneText,
+                                  key: const Key('collectionMilestoneText'),
+                                  style: theme.textTheme.bodySmall
+                                      ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
