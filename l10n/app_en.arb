@@ -191,15 +191,8 @@
   "explanationUnitMmToCm": "1 centimeter has 10 millimeters — look closely at a ruler: between each centimeter mark there are 10 small millimeter marks. To convert millimeters to centimeters, divide the number by 10.",
   "explanationUnitCmToMm": "1 centimeter has 10 millimeters. To convert centimeters to millimeters, multiply the number by 10 — for example, a 15 cm pencil is 150 mm long.",
   "explanationSequenceMultiplicative": "In this sequence, each number is obtained by multiplying the previous number by the same fixed value — like the number of likes on a video that doubles every day. Find out what each number is multiplied by and apply that same pattern to the last number to find the next one.",
-  "unitMasteredMessage": "Congratulations! You've mastered the {unitId} unit! 🏆",
-  "@unitMasteredMessage": {
-    "description": "単元マスター時のお祝いメッセージ",
-    "placeholders": {
-      "unitId": {
-        "type": "String"
-      }
-    }
-  },
+  "badgeCelebrationTitle": "New badge!",
+  "badgeCelebrationContinueButton": "Continue",
   "shapeNameTriangle": "triangle",
   "shapeNameSquare": "square",
   "shapeNamePentagon": "pentagon",

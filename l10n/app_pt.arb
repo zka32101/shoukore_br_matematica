@@ -191,15 +191,8 @@
   "explanationUnitMmToCm": "1 centímetro tem 10 milímetros — olhe de perto uma régua: entre cada marcação de centímetro há 10 marcações pequenas de milímetro. Para transformar milímetros em centímetros, divida o número por 10.",
   "explanationUnitCmToMm": "1 centímetro tem 10 milímetros. Para transformar centímetros em milímetros, multiplique o número por 10 — por exemplo, um lápis de 15 cm mede 150 mm.",
   "explanationSequenceMultiplicative": "Nesta sequência, cada número é obtido multiplicando o número anterior pelo mesmo valor fixo — como o número de curtidas de um vídeo que dobra todos os dias. Descubra por quanto cada número é multiplicado e aplique esse mesmo padrão ao último número para encontrar o próximo.",
-  "unitMasteredMessage": "Parabéns! Você dominou a unidade {unitId}! 🏆",
-  "@unitMasteredMessage": {
-    "description": "単元マスター時のお祝いメッセージ",
-    "placeholders": {
-      "unitId": {
-        "type": "String"
-      }
-    }
-  },
+  "badgeCelebrationTitle": "Nova medalha!",
+  "badgeCelebrationContinueButton": "Continuar",
   "shapeNameTriangle": "triângulo",
   "shapeNameSquare": "quadrado",
   "shapeNamePentagon": "pentágono",

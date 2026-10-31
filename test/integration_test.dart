@@ -3,16 +3,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shoukore_br_matematica/main.dart';
 
-/// キャラの新規所持・レベルアップがあると、ホームに戻った際に専用の
-/// お祝いダイアログ(barrierDismissible:false)が表示され、後続の操作を
-/// ブロックする。複数体同時に変化すると1体ずつ順番に出るため、
-/// 無くなるまで「Continuar」を押し続けて確実に閉じる。
+/// キャラの新規所持・レベルアップ、単元バッジの新規獲得があると、ホームに
+/// 戻った際に専用のお祝いダイアログ(barrierDismissible:false)が表示され、
+/// 後続の操作をブロックする。複数件同時に変化すると1件ずつ順番に出るため、
+/// 両方のダイアログが無くなるまで「Continuar」を押し続けて確実に閉じる。
 Future<void> dismissCharacterGrowthCelebrations(WidgetTester tester) async {
-  final continueButton = find.byKey(
+  final continueButtonKeys = [
     const Key('characterGrowthCelebrationContinueButton'),
-  );
-  while (continueButton.evaluate().isNotEmpty) {
-    await tester.tap(continueButton);
+    const Key('badgeCelebrationContinueButton'),
+  ];
+  while (true) {
+    final remaining = continueButtonKeys
+        .map(find.byKey)
+        .where((finder) => finder.evaluate().isNotEmpty)
+        .toList();
+    if (remaining.isEmpty) break;
+    await tester.tap(remaining.first);
     await tester.pumpAndSettle();
   }
 }

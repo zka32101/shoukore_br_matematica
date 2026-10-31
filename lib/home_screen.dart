@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 // example独自の軽量InMemoryProgressStoreを使うため、コアが同名で公開している
 // 実装（テスト・プロトタイピング用途向け）を隠す。
 import 'package:shoukore_core_global/shoukore_core_global.dart'
@@ -10,7 +9,9 @@ import 'package:shoukore_core_global/shoukore_core_global.dart'
 
 import 'age_gate_dialog.dart';
 import 'app_storage.dart';
+import 'badge_celebration_dialog.dart';
 import 'badge_collection_screen.dart';
+import 'badge_image_resolver.dart';
 import 'character_collection_repository.dart';
 import 'character_definition.dart';
 import 'character_growth_celebration_dialog.dart';
@@ -231,8 +232,9 @@ class _HomeScreenState extends State<HomeScreen> {
     await _refreshUnitTestPassed(curriculum.units);
   }
 
-  /// 単元ごとのマスター判定を更新する。新たにマスターした単元があれば
-  /// お祝いのSnackBarを表示し、「やった感」を実感できるようにする。
+  /// 単元ごとのマスター判定を更新する。新たにマスターした単元があれば、
+  /// バッジ獲得の専用ダイアログで1件ずつ祝う(内部IDをそのまま見せていた
+  /// 旧SnackBarを廃止し、人が読める単元名+バッジ画像で見せるようにした)。
   Future<void> _refreshMasteredUnits(List<Unit> units) async {
     final masteredIds = <String>{};
     for (final unit in units) {
@@ -245,17 +247,15 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!mounted) return;
     setState(() => _masteredUnitIds = masteredIds);
     if (newlyMastered.isNotEmpty) {
-      unawaited(HapticFeedback.heavyImpact());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          key: const Key('unitMasteredSnackBar'),
-          content: Text(
-            AppLocalizations.of(
-              context,
-            )!.unitMasteredMessage(newlyMastered.first),
+      final l10n = AppLocalizations.of(context)!;
+      final celebrations = [
+        for (final unitId in newlyMastered)
+          BadgeCelebration(
+            unitLabel: resolveUnitName(l10n, unitId),
+            strandId: strandIdForUnit(unitId),
           ),
-        ),
-      );
+      ];
+      await showBadgeCelebrations(context, celebrations);
     }
   }
 

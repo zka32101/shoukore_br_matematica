@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'celebration_effects.dart';
 import 'character_definition.dart';
 import 'l10n/app_localizations.dart';
 
@@ -55,18 +56,8 @@ class _CharacterGrowthCelebrationDialogState extends State<CharacterGrowthCelebr
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 900),
+    duration: const Duration(milliseconds: 1200),
   )..forward();
-
-  static const _burstOffsets = [
-    (-1.0, -0.6),
-    (-0.3, -1.1),
-    (0.4, -1.0),
-    (1.0, -0.5),
-    (-0.8, 0.3),
-    (0.9, 0.4),
-    (0.0, -1.3),
-  ];
 
   @override
   void dispose() {
@@ -99,48 +90,22 @@ class _CharacterGrowthCelebrationDialogState extends State<CharacterGrowthCelebr
               style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: 160,
-              height: 160,
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
-                children: [
-                  for (var i = 0; i < _burstOffsets.length; i++)
-                    AnimatedBuilder(
-                      animation: _controller,
-                      builder: (context, _) {
-                        final (dx, dy) = _burstOffsets[i];
-                        final progress = Curves.easeOut.transform(_controller.value);
-                        final opacity = (1 - progress).clamp(0.0, 1.0);
-                        return Positioned(
-                          left: 80 + dx * 90 * progress - 10,
-                          top: 80 + dy * 90 * progress - 10,
-                          child: Opacity(
-                            opacity: opacity,
-                            child: Icon(Icons.star, size: 20, color: Colors.amber),
-                          ),
-                        );
-                      },
-                    ),
-                  ScaleTransition(
-                    scale: CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
-                    child: CircleAvatar(
-                      radius: 56,
-                      backgroundColor: character.color,
-                      foregroundColor: Colors.white,
-                      child: ClipOval(
-                        child: Image.asset(
-                          imagePath,
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Icon(character.icon, size: 48),
-                        ),
-                      ),
-                    ),
+            CelebrationBurst(
+              controller: _controller,
+              size: 180,
+              child: CircleAvatar(
+                radius: 56,
+                backgroundColor: character.color,
+                foregroundColor: Colors.white,
+                child: ClipOval(
+                  child: Image.asset(
+                    imagePath,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Icon(character.icon, size: 48),
                   ),
-                ],
+                ),
               ),
             ),
             const SizedBox(height: 16),
