@@ -25,7 +25,7 @@
   "weeklyReportTile": "Weekly report (for parents)",
   "weeklyReportTitle": "Weekly report",
   "weeklyReportAccuracy": "Accuracy: {percent}% ({correct}/{total} questions)",
-  "weeklyReportUnitLine": "{unitId}: {percent}% ({correct}/{total} questions)",
+  "weeklyReportUnitLine": "{unitName}: {percent}% ({correct}/{total} questions)",
   "weeklyReportTopMisconception": "Most common mistake: {tag}",
   "weeklyReportNoData": "No learning records yet this week.",
   "entitlementLockedMessage": "This subject is locked. Purchase to unlock.",

@@ -22,10 +22,12 @@ class StudyHistoryCalendarScreen extends StatefulWidget {
   final Clock clock;
 
   @override
-  State<StudyHistoryCalendarScreen> createState() => _StudyHistoryCalendarScreenState();
+  State<StudyHistoryCalendarScreen> createState() =>
+      _StudyHistoryCalendarScreenState();
 }
 
-class _StudyHistoryCalendarScreenState extends State<StudyHistoryCalendarScreen> {
+class _StudyHistoryCalendarScreenState
+    extends State<StudyHistoryCalendarScreen> {
   Set<DateTime>? _studiedDays;
   late DateTime _visibleMonth;
 
@@ -78,50 +80,56 @@ class _StudyHistoryCalendarScreenState extends State<StudyHistoryCalendarScreen>
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.studyHistoryCalendarTitle)),
+      backgroundColor: theme.colorScheme.surfaceContainerLowest,
       body: studiedDays == null
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      IconButton(
-                        key: const Key('studyCalendarPrevMonthButton'),
-                        icon: const Icon(Icons.chevron_left),
-                        onPressed: () => _changeMonth(-1),
+                      Row(
+                        children: [
+                          IconButton(
+                            key: const Key('studyCalendarPrevMonthButton'),
+                            icon: const Icon(Icons.chevron_left),
+                            onPressed: () => _changeMonth(-1),
+                          ),
+                          Expanded(
+                            child: Text(
+                              DateFormat.yMMMM(locale).format(_visibleMonth),
+                              key: const Key('studyCalendarMonthLabel'),
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.titleMedium,
+                            ),
+                          ),
+                          IconButton(
+                            key: const Key('studyCalendarNextMonthButton'),
+                            icon: const Icon(Icons.chevron_right),
+                            onPressed: () => _changeMonth(1),
+                          ),
+                        ],
                       ),
-                      Expanded(
-                        child: Text(
-                          DateFormat.yMMMM(locale).format(_visibleMonth),
-                          key: const Key('studyCalendarMonthLabel'),
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.titleMedium,
-                        ),
+                      const SizedBox(height: 8),
+                      _WeekdayHeaderRow(locale: locale),
+                      const SizedBox(height: 4),
+                      _CalendarGrid(
+                        month: _visibleMonth,
+                        studiedDays: studiedDays,
+                        today: todayDateOnly,
+                        accentColor: theme.colorScheme.primary,
                       ),
-                      IconButton(
-                        key: const Key('studyCalendarNextMonthButton'),
-                        icon: const Icon(Icons.chevron_right),
-                        onPressed: () => _changeMonth(1),
+                      const SizedBox(height: 16),
+                      Text(
+                        l10n.studyHistoryCalendarLegend,
+                        style: theme.textTheme.bodySmall,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  _WeekdayHeaderRow(locale: locale),
-                  const SizedBox(height: 4),
-                  _CalendarGrid(
-                    month: _visibleMonth,
-                    studiedDays: studiedDays,
-                    today: todayDateOnly,
-                    accentColor: theme.colorScheme.primary,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    l10n.studyHistoryCalendarLegend,
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
+                ),
               ),
             ),
     );
@@ -178,7 +186,9 @@ class _CalendarGrid extends StatelessWidget {
       key: const Key('studyCalendarGrid'),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 7),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 7,
+      ),
       itemCount: leadingBlanks + daysInMonth,
       itemBuilder: (context, index) {
         if (index < leadingBlanks) return const SizedBox.shrink();
@@ -189,7 +199,9 @@ class _CalendarGrid extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(2),
           child: Container(
-            key: studied ? Key('studyCalendarStudiedDay_${date.toIso8601String()}') : null,
+            key: studied
+                ? Key('studyCalendarStudiedDay_${date.toIso8601String()}')
+                : null,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: studied ? accentColor : Colors.transparent,

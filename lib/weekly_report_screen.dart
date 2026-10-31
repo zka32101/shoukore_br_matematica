@@ -3,6 +3,7 @@ import 'package:shoukore_core_global/shoukore_core_global.dart';
 
 import 'l10n/app_localizations.dart';
 import 'question_cache.dart';
+import 'unit_name_resolver.dart';
 
 class WeeklyReportScreen extends StatefulWidget {
   const WeeklyReportScreen({
@@ -74,22 +75,50 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                   padding: const EdgeInsets.all(16),
                   children: [
                     Card(
+                      elevation: 0,
                       color: theme.colorScheme.primaryContainer,
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.query_stats,
-                          color: theme.colorScheme.onPrimaryContainer,
-                        ),
-                        title: Text(
-                          l10n.weeklyReportAccuracy(
-                            (report.overallAccuracy * 100).round(),
-                            report.totalCorrect,
-                            report.totalAttempts,
-                          ),
-                          key: const Key('weeklyReportAccuracyText'),
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.colorScheme.onPrimaryContainer,
-                          ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 56,
+                              height: 56,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  CircularProgressIndicator(
+                                    value: report.overallAccuracy,
+                                    strokeWidth: 6,
+                                    backgroundColor: theme.colorScheme.onPrimaryContainer
+                                        .withValues(alpha: 0.15),
+                                    color: theme.colorScheme.onPrimaryContainer,
+                                  ),
+                                  Icon(
+                                    Icons.query_stats,
+                                    color: theme.colorScheme.onPrimaryContainer,
+                                    size: 24,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                l10n.weeklyReportAccuracy(
+                                  (report.overallAccuracy * 100).round(),
+                                  report.totalCorrect,
+                                  report.totalAttempts,
+                                ),
+                                key: const Key('weeklyReportAccuracyText'),
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  color: theme.colorScheme.onPrimaryContainer,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -100,7 +129,7 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                         child: ListTile(
                           leading: const Icon(Icons.menu_book_outlined),
                           title: Text(l10n.weeklyReportUnitLine(
-                            unit.unitId,
+                            resolveUnitName(l10n, unit.unitId),
                             (unit.accuracy * 100).round(),
                             unit.correctCount,
                             unit.attemptCount,

@@ -44,4 +44,35 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets('単元名は内部IDではなく人が読める名前で表示される', (tester) async {
+    final clock = FixedClock(DateTime(2026, 10, 30));
+    final progressStore = InMemoryProgressStore();
+    await progressStore.recordAttempt(
+      Attempt(
+        questionId: 'q1',
+        unitId: 'mat_numeros_1',
+        correct: true,
+        answeredAt: DateTime(2026, 10, 29),
+      ),
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt', 'BR'),
+        home: WeeklyReportScreen(
+          unitIds: const ['mat_numeros_1'],
+          progressStore: progressStore,
+          clock: clock,
+          questionCache: QuestionCache(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('mat_numeros_1'), findsNothing);
+    expect(find.textContaining('Números: somar até 10'), findsOneWidget);
+  });
 }

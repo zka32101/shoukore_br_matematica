@@ -25,7 +25,7 @@
   "weeklyReportTile": "Relatório semanal (para responsáveis)",
   "weeklyReportTitle": "Relatório semanal",
   "weeklyReportAccuracy": "Acerto: {percent}% ({correct}/{total} questões)",
-  "weeklyReportUnitLine": "{unitId}: {percent}% ({correct}/{total} questões)",
+  "weeklyReportUnitLine": "{unitName}: {percent}% ({correct}/{total} questões)",
   "weeklyReportTopMisconception": "Erro mais comum: {tag}",
   "weeklyReportNoData": "Ainda não há registros de aprendizagem nesta semana.",
   "entitlementLockedMessage": "Esta matéria está bloqueada. Compre para desbloquear.",
