@@ -25,7 +25,13 @@ const _premiumEntitlementId = 'premium';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (_revenueCatApiKey.isNotEmpty) {
-    await Purchases.configure(PurchasesConfiguration(_revenueCatApiKey));
+    try {
+      await Purchases.configure(PurchasesConfiguration(_revenueCatApiKey));
+    } catch (_) {
+      // オフライン等でRevenueCatの初期化に失敗しても、アプリ自体は起動できる
+      // ようにする(課金・権利確認はその後の呼び出し側で個別にフォールバック
+      // 済み。このアプリの学習コンテンツ自体はネットワーク不要で動く)。
+    }
   }
   // 端末内の保存先を開く。これを渡さないと、学習の記録・コイン・キャラなどが
   // アプリを閉じると消える(メモリ上の実装になる)。
