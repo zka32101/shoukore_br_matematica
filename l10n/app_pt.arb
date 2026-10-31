@@ -64,6 +64,7 @@
   "onboardingQuizTitle": "Experimente uma questão",
   "onboardingQuizQuestion": "Quanto é 2 + 3?",
   "onboardingQuizCorrectFeedback": "Isso mesmo! Você ganhou 10 moedas.",
+  "onboardingFirstBadgeLabel": "Primeira resposta certa!",
   "onboardingQuizIncorrectFeedback": "Quase! Tente de novo.",
   "onboardingQuizContinueButton": "Continuar",
   "onboardingPaywallTitle": "Continue aprendendo sem limites",

@@ -4,6 +4,7 @@ import 'package:shoukore_core_global/shoukore_core_global.dart';
 import 'package:shoukore_core_global/shoukore_core_global_entitlement_revenuecat.dart';
 
 import 'age_gate_consent_logic.dart';
+import 'badge_celebration_dialog.dart';
 import 'curriculum_repository.dart';
 import 'l10n/app_localizations.dart';
 
@@ -74,6 +75,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     widget.onCompleted();
   }
 
+  /// 初回起動の最初の正解(Ahaモーメント)で、通常の演出(やや小さな
+  /// お祝いアイコン)に加えて、バッジ獲得の専用ダイアログでも祝う。
+  /// 離脱しやすい最初の数分のうちに「やった感」の強い体験を1回挟むことで、
+  /// その後のペイウォール・学習継続への期待を高める狙い。
+  Future<void> _handleQuizAnswered(bool correct) async {
+    final reachedNow = _ahaTracker.reachedOnThisAnswer(
+      alreadyReached: _quizCorrect,
+      correct: correct,
+    );
+    setState(() {
+      _quizAnswered = true;
+      _quizCorrect = reachedNow;
+    });
+    if (reachedNow && mounted) {
+      final l10n = AppLocalizations.of(context)!;
+      await showBadgeCelebrations(context, [
+        BadgeCelebration(unitLabel: l10n.onboardingFirstBadgeLabel, strandId: null),
+      ]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -125,13 +147,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               l10n: l10n,
               correct: _quizCorrect,
               answered: _quizAnswered,
-              onAnswered: (correct) => setState(() {
-                _quizAnswered = true;
-                _quizCorrect = _ahaTracker.reachedOnThisAnswer(
-                  alreadyReached: _quizCorrect,
-                  correct: correct,
-                );
-              }),
+              onAnswered: _handleQuizAnswered,
               onContinue: () => _goToPage(3),
             ),
             _PaywallPage(

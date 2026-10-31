@@ -77,9 +77,12 @@ void main() {
       expect(find.byKey(const Key('onboardingQuizFeedbackText')), findsOneWidget);
 
       // Ahaモーメント: 最初の1問は必ず正解できる固定問題（2+3=5）。
+      // 正解すると、離脱しやすい最初の数分で「やった感」を強めるため、
+      // バッジ獲得の専用ダイアログ(barrierDismissible:false)が挟まる。
       await tester.tap(find.byKey(const Key('onboardingQuizChoice_5')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('onboardingQuizFeedbackText')), findsOneWidget);
+      await dismissCharacterGrowthCelebrations(tester);
       await tester.tap(find.byKey(const Key('onboardingQuizContinueButton')));
       await tester.pumpAndSettle();
 

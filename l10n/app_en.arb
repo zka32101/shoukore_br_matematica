@@ -64,6 +64,7 @@
   "onboardingQuizTitle": "Try a question",
   "onboardingQuizQuestion": "What is 2 + 3?",
   "onboardingQuizCorrectFeedback": "That's right! You earned 10 coins.",
+  "onboardingFirstBadgeLabel": "First correct answer!",
   "onboardingQuizIncorrectFeedback": "Almost! Try again.",
   "onboardingQuizContinueButton": "Continue",
   "onboardingPaywallTitle": "Keep learning without limits",
