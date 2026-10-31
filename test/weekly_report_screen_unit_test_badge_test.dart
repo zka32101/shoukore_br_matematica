@@ -75,4 +75,51 @@ void main() {
     expect(find.textContaining('mat_numeros_1'), findsNothing);
     expect(find.textContaining('Números: somar até 10'), findsOneWidget);
   });
+
+  testWidgets('正答率・正答数・問題数が、正しい位置に表示される(2問中1問正解=50%)', (tester) async {
+    final clock = FixedClock(DateTime(2026, 10, 30));
+    final progressStore = InMemoryProgressStore();
+    await progressStore.recordAttempt(
+      Attempt(
+        questionId: 'q1',
+        unitId: 'mat_numeros_1',
+        correct: true,
+        answeredAt: DateTime(2026, 10, 29),
+      ),
+    );
+    await progressStore.recordAttempt(
+      Attempt(
+        questionId: 'q2',
+        unitId: 'mat_numeros_1',
+        correct: false,
+        answeredAt: DateTime(2026, 10, 29, 1),
+      ),
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt', 'BR'),
+        home: WeeklyReportScreen(
+          unitIds: const ['mat_numeros_1'],
+          progressStore: progressStore,
+          clock: clock,
+          questionCache: QuestionCache(),
+          unitTestPassedIds: const {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      tester.widget<Text>(find.byKey(const Key('weeklyReportAccuracyText'))).data,
+      'Acerto: 50% (1/2 questões)',
+    );
+    final unitTitle = find.descendant(
+      of: find.byKey(const Key('weeklyReportUnit_mat_numeros_1')),
+      matching: find.textContaining('50% (1/2 questões)'),
+    );
+    expect(unitTitle, findsOneWidget);
+  });
 }
