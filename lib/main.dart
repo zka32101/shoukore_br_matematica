@@ -100,7 +100,8 @@ class _ShoukoreBrMatematicaAppState extends State<ShoukoreBrMatematicaApp> {
 
   @override
   Widget build(BuildContext context) {
-    final seed = Colors.indigo;
+    // 日本版「算数コレ！」(sansu-kore)のテーマカラー（kPrimaryColor、赤系）に合わせる。
+    const seed = Color(0xFFE74C3C);
     return MaterialApp(
       locale: _displayLocale,
       localizationsDelegates: const [
