@@ -281,9 +281,9 @@ class _HomeScreenState extends State<HomeScreen> {
     Unit unit,
   ) async {
     if (!_isUnitUnlocked(unit)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.entitlementLockedMessage)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.entitlementLockedMessage)));
       return;
     }
     final curriculum = _curriculum!;
@@ -604,8 +604,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     units: curriculum.units,
                     masteredUnitIds: _masteredUnitIds,
                     testPassedUnitIds: _unitTestPassedIds,
-                    currentStreakDays: _growthRepository?.streak.currentStreakDays ?? 0,
-                    totalCorrectAnswers: _growthRepository?.totalCorrectAnswers ?? 0,
+                    currentStreakDays:
+                        _growthRepository?.streak.currentStreakDays ?? 0,
+                    totalCorrectAnswers:
+                        _growthRepository?.totalCorrectAnswers ?? 0,
                     ownedCharacterCount: _characterSnapshot.ownedCount,
                     totalCharacterCount: characterDefinitions.length,
                   ),
@@ -902,7 +904,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: () => _openUnit(context, l10n, unit),
                               testPassed: _unitTestPassedIds.contains(unit.id),
                               testButtonKey: Key('unitTestButton_${unit.id}'),
-                              onTestTap: () => _openUnitTest(context, l10n, unit),
+                              onTestTap: () =>
+                                  _openUnitTest(context, l10n, unit),
                               onLessonTap: resolveLesson(l10n, unit.id) == null
                                   ? null
                                   : () => _openLesson(context, unit.id),
@@ -1322,6 +1325,31 @@ class _ScreenTimeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
+    // 利用時間制限が設定されていない(大多数の)ケースでは、保護者が気にする
+    // 重要情報ではないため、カードで強調せず控えめな一行表示に留める。
+    // 制限が設定されている場合のみ、目立つカードで残り時間を知らせる。
+    if (remainingMinutes == null) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Row(
+          children: [
+            Icon(Icons.schedule, size: 16, color: theme.colorScheme.outline),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                l10n.screenTimeUsedNoLimit(usedMinutes),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.outline),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Card(
       child: ListTile(
         leading: CircleAvatar(
@@ -1330,14 +1358,10 @@ class _ScreenTimeCard extends StatelessWidget {
           child: const Icon(Icons.schedule),
         ),
         title: Text(
-          remainingMinutes == null
-              ? AppLocalizations.of(context)!.screenTimeUsedNoLimit(usedMinutes)
-              : AppLocalizations.of(
-                  context,
-                )!.screenTimeUsed(usedMinutes, remainingMinutes!),
+          l10n.screenTimeUsed(usedMinutes, remainingMinutes!),
           style: theme.textTheme.bodyMedium,
         ),
-        subtitle: Text(AppLocalizations.of(context)!.screenTimeSubtitle),
+        subtitle: Text(l10n.screenTimeSubtitle),
       ),
     );
   }
@@ -1384,107 +1408,119 @@ class _UnitCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Material(
+    return Container(
       key: unitKey,
-      color: color.withValues(alpha: 0.12),
-      borderRadius: BorderRadius.circular(20),
-      child: InkWell(
+      decoration: BoxDecoration(
+        color: locked
+            ? theme.colorScheme.surfaceContainerHighest
+            : theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        onTap: onTap,
-        child: Container(
-          decoration: mastered
-              ? BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.amber, width: 2),
-                )
-              : null,
-          padding: const EdgeInsets.all(12),
-          child: Stack(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 24,
-                    backgroundColor: color,
-                    foregroundColor: Colors.white,
-                    child: Icon(icon, size: 24),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    label,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.labelLarge,
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    AppLocalizations.of(context)!.unitGradeLabel(grade),
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
-              ),
-              if (locked)
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Icon(
-                    Icons.lock,
-                    key: const Key('lockIcon'),
-                    size: 18,
-                    color: theme.colorScheme.outline,
-                  ),
-                )
-              else if (onLessonTap != null)
-                Positioned(
-                  top: -4,
-                  right: -4,
-                  child: IconButton(
-                    key: lessonButtonKey,
-                    tooltip: AppLocalizations.of(context)!.lessonTile,
-                    iconSize: 18,
-                    visualDensity: VisualDensity.compact,
-                    icon: const Icon(Icons.menu_book_outlined),
-                    onPressed: onLessonTap,
-                  ),
+        border: mastered ? Border.all(color: Colors.amber, width: 2) : null,
+        boxShadow: locked
+            ? null
+            : [
+                BoxShadow(
+                  color: color.withValues(alpha: 0.18),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
                 ),
-              if (mastered)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  child: Icon(
-                    Icons.emoji_events,
-                    key: const Key('masteredIcon'),
-                    size: 18,
-                    color: Colors.amber[800],
-                  ),
+              ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 24,
+                      backgroundColor: color,
+                      foregroundColor: Colors.white,
+                      child: Icon(icon, size: 24),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      label,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.labelLarge,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      AppLocalizations.of(context)!.unitGradeLabel(grade),
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ],
                 ),
-              if (testPassed)
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  child: Icon(
-                    Icons.verified,
-                    key: const Key('unitTestPassedIcon'),
-                    size: 18,
-                    color: Colors.amber[800],
+                if (locked)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Icon(
+                      Icons.lock,
+                      key: const Key('lockIcon'),
+                      size: 18,
+                      color: theme.colorScheme.outline,
+                    ),
+                  )
+                else if (onLessonTap != null)
+                  Positioned(
+                    top: -4,
+                    right: -4,
+                    child: IconButton(
+                      key: lessonButtonKey,
+                      tooltip: AppLocalizations.of(context)!.lessonTile,
+                      iconSize: 18,
+                      visualDensity: VisualDensity.compact,
+                      icon: const Icon(Icons.menu_book_outlined),
+                      onPressed: onLessonTap,
+                    ),
                   ),
-                ),
-              if (onTestTap != null)
-                Positioned(
-                  bottom: -4,
-                  right: -4,
-                  child: IconButton(
-                    key: testButtonKey,
-                    tooltip: AppLocalizations.of(context)!.unitTestTile,
-                    iconSize: 18,
-                    visualDensity: VisualDensity.compact,
-                    icon: const Icon(Icons.quiz_outlined),
-                    onPressed: onTestTap,
+                if (mastered)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Icon(
+                      Icons.emoji_events,
+                      key: const Key('masteredIcon'),
+                      size: 18,
+                      color: Colors.amber[800],
+                    ),
                   ),
-                ),
-            ],
+                if (testPassed)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: Icon(
+                      Icons.verified,
+                      key: const Key('unitTestPassedIcon'),
+                      size: 18,
+                      color: Colors.amber[800],
+                    ),
+                  ),
+                if (onTestTap != null)
+                  Positioned(
+                    bottom: -4,
+                    right: -4,
+                    child: IconButton(
+                      key: testButtonKey,
+                      tooltip: AppLocalizations.of(context)!.unitTestTile,
+                      iconSize: 18,
+                      visualDensity: VisualDensity.compact,
+                      icon: const Icon(Icons.quiz_outlined),
+                      onPressed: onTestTap,
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
