@@ -370,52 +370,64 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         key: const ValueKey('questionLoaded'),
                         padding: const EdgeInsets.all(16),
                         children: [
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (_mastery != null)
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.insights,
-                                          size: 18,
-                                          color: theme.colorScheme.primary,
-                                        ),
-                                        const SizedBox(width: 6),
-                                        Text(
-                                          l10n.questionMasteryLabel(
-                                            (_mastery!.score * 100).round(),
-                                          ),
-                                          key: const Key('masteryText'),
-                                          style: theme.textTheme.titleSmall,
-                                        ),
-                                      ],
-                                    ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    l10n.questionGrowthStatusLine(
-                                      growthStageLabel(
-                                        l10n,
-                                        widget.growthRepository.stage,
+                          // 「どの段階にいるか」の情報は補助的なものなので、問題文より
+                          // 目立たせすぎないよう、カードではなく控えめなピル型の帯にする。
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.secondaryContainer.withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(999),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (_mastery != null)
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.insights,
+                                        size: 16,
+                                        color: theme.colorScheme.primary,
                                       ),
-                                      widget.growthRepository.wallet.balance,
-                                      widget
-                                          .growthRepository
-                                          .missionState
-                                          .completedCount,
-                                      widget
-                                          .growthRepository
-                                          .streak
-                                          .currentStreakDays,
-                                    ),
-                                    key: const Key('growthStatusText'),
-                                    style: theme.textTheme.bodySmall,
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        l10n.questionMasteryLabel(
+                                          (_mastery!.score * 100).round(),
+                                        ),
+                                        key: const Key('masteryText'),
+                                        style: theme.textTheme.labelMedium?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                if (_mastery != null) const SizedBox(height: 2),
+                                Text(
+                                  l10n.questionGrowthStatusLine(
+                                    growthStageLabel(
+                                      l10n,
+                                      widget.growthRepository.stage,
+                                    ),
+                                    widget.growthRepository.wallet.balance,
+                                    widget
+                                        .growthRepository
+                                        .missionState
+                                        .completedCount,
+                                    widget
+                                        .growthRepository
+                                        .streak
+                                        .currentStreakDays,
+                                  ),
+                                  key: const Key('growthStatusText'),
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: theme.colorScheme.onSecondaryContainer,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           // KeyedSubtree: 条件付きで出現/消滅するリスト項目にはKeyを付け、
