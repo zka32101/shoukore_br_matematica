@@ -3,7 +3,6 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shoukore_core_global/shoukore_core_global.dart';
 import 'package:shoukore_core_global/shoukore_core_global_entitlement_revenuecat.dart';
 
-import 'age_gate_consent_logic.dart';
 import 'badge_celebration_dialog.dart';
 import 'curriculum_repository.dart';
 import 'l10n/app_localizations.dart';
@@ -191,6 +190,8 @@ class _AgeGatePage extends StatefulWidget {
 }
 
 class _AgeGatePageState extends State<_AgeGatePage> {
+  static const _consentCoordinator = AgeGateConsentCoordinator();
+
   final TextEditingController _birthYearController = TextEditingController();
   String? _errorText;
   bool _submitting = false;
@@ -216,7 +217,7 @@ class _AgeGatePageState extends State<_AgeGatePage> {
       _submitting = true;
     });
     final profile = await widget.repository.loadRegionalProfile(widget.locale);
-    final requiresConsent = await requiresConsentAndRecordIfNot(
+    final requiresConsent = await _consentCoordinator.requiresConsentAndRecordIfNot(
       birthYear: birthYear,
       profile: profile,
       clock: widget.clock,
@@ -234,7 +235,7 @@ class _AgeGatePageState extends State<_AgeGatePage> {
   }
 
   Future<void> _answerConsent(bool accepted) async {
-    await recordConsentAnswer(
+    await _consentCoordinator.recordConsentAnswer(
       consentStore: widget.consentStore,
       clock: widget.clock,
       accepted: accepted,

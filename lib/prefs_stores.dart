@@ -125,28 +125,28 @@ class PrefsWeeklyChallengeStore implements WeeklyChallengeStore {
   final SharedPreferences _prefs;
 
   @override
-  Future<WeeklyChallengeSnapshot> load() async {
+  Future<WeeklyChallengeState> load() async {
     final raw = _prefs.getString(_key);
-    if (raw == null) return WeeklyChallengeSnapshot.initial;
+    if (raw == null) return WeeklyChallengeState.initial;
     try {
       final map = jsonDecode(raw) as Map<String, dynamic>;
       final start = map['weekStart'] as String?;
-      return WeeklyChallengeSnapshot(
+      return WeeklyChallengeState(
         weekStart: start == null ? null : DateTime.parse(start),
         completedCount: map['completedCount'] as int? ?? 0,
       );
     } catch (_) {
-      return WeeklyChallengeSnapshot.initial;
+      return WeeklyChallengeState.initial;
     }
   }
 
   @override
-  Future<void> save(WeeklyChallengeSnapshot snapshot) async {
+  Future<void> save(WeeklyChallengeState state) async {
     await _prefs.setString(
       _key,
       jsonEncode({
-        'weekStart': snapshot.weekStart?.toIso8601String(),
-        'completedCount': snapshot.completedCount,
+        'weekStart': state.weekStart?.toIso8601String(),
+        'completedCount': state.completedCount,
       }),
     );
   }

@@ -6,7 +6,6 @@ import 'package:shoukore_core_global/shoukore_core_global.dart';
 import 'package:shoukore_br_matematica/app_storage.dart';
 import 'package:shoukore_br_matematica/equipped_items.dart';
 import 'package:shoukore_br_matematica/prefs_core_stores.dart';
-import 'package:shoukore_br_matematica/weekly_challenge_repository.dart';
 
 /// アプリを閉じて開き直した状態(2つ目の AppStorage)で、記録が残っているかを確かめる。
 void main() {
@@ -84,7 +83,7 @@ void main() {
     );
     await first.equippedItemsStore.save(const EquippedItems(hatItemId: 'hat_calc'));
     await first.weeklyChallengeStore.save(
-      WeeklyChallengeSnapshot(weekStart: DateTime(2026, 10, 26), completedCount: 4),
+      WeeklyChallengeState(weekStart: DateTime(2026, 10, 26), completedCount: 4),
     );
 
     final second = await reopen();
