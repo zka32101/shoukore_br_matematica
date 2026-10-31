@@ -43,6 +43,7 @@ class _FamilyChallengeScreenState extends State<FamilyChallengeScreen> {
   _Turn _turn = _Turn.child;
   Question? _question;
   String? _feedback;
+  String? _lastChosenId;
 
   @override
   void initState() {
@@ -63,6 +64,7 @@ class _FamilyChallengeScreenState extends State<FamilyChallengeScreen> {
     setState(() {
       _question = question;
       _feedback = null;
+      _lastChosenId = null;
     });
   }
 
@@ -83,7 +85,12 @@ class _FamilyChallengeScreenState extends State<FamilyChallengeScreen> {
     } else {
       if (correct && mounted) setState(() => _parentScore++);
     }
-    if (mounted) setState(() => _feedback = correct ? 'correct' : 'incorrect');
+    if (mounted) {
+      setState(() {
+        _feedback = correct ? 'correct' : 'incorrect';
+        _lastChosenId = chosenId;
+      });
+    }
   }
 
   Future<void> _nextStep() async {
@@ -177,48 +184,173 @@ class _FamilyChallengeScreenState extends State<FamilyChallengeScreen> {
                   const SizedBox(height: 16),
                   Builder(builder: (context) {
                     final prompt = resolveQuestionPrompt(l10n, question);
-                    return Text(
-                      prompt ?? '',
-                      key: const Key('familyChallengePromptText'),
-                      style: theme.textTheme.headlineSmall,
+                    // 練習画面(question_screen.dart)と同じ、白背景・影付きの
+                    // 丸みカードで問題文を表示し、見た目をファミリーチャレンジ
+                    // だけ違う印象にならないよう揃える。
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        prompt ?? '',
+                        key: const Key('familyChallengePromptText'),
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          height: 1.4,
+                        ),
+                      ),
                     );
                   }),
                   const SizedBox(height: 20),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: [
-                      for (final choice in question.choices)
-                        SizedBox(
-                          width: 140,
-                          height: 56,
-                          child: ElevatedButton(
-                            key: Key('familyChallengeChoice_$choice'),
-                            onPressed: _feedback == null ? () => _answer(choice) : null,
-                            child: Text(choice),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        for (final choice in question.choices)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: _FamilyChoiceCard(
+                              choiceKey: Key('familyChallengeChoice_$choice'),
+                              label: choice,
+                              state: _feedback == null
+                                  ? _FamilyChoiceState.unanswered
+                                  : choice == question.answer
+                                      ? _FamilyChoiceState.correct
+                                      : choice == _lastChosenId
+                                          ? _FamilyChoiceState.incorrectSelected
+                                          : _FamilyChoiceState.disabled,
+                              onTap: _feedback == null ? () => _answer(choice) : null,
+                            ),
                           ),
-                        ),
-                    ],
+                        if (_feedback != null) ...[
+                          const SizedBox(height: 8),
+                          Card(
+                            color: _feedback == 'correct'
+                                ? theme.colorScheme.primaryContainer
+                                : theme.colorScheme.errorContainer,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    _feedback == 'correct' ? Icons.check_circle : Icons.cancel,
+                                    color: _feedback == 'correct'
+                                        ? theme.colorScheme.onPrimaryContainer
+                                        : theme.colorScheme.onErrorContainer,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      _feedback == 'correct'
+                                          ? l10n.questionFeedbackCorrect
+                                          : l10n.questionFeedbackIncorrect,
+                                      key: const Key('familyChallengeFeedbackText'),
+                                      style: theme.textTheme.titleMedium?.copyWith(
+                                        color: _feedback == 'correct'
+                                            ? theme.colorScheme.onPrimaryContainer
+                                            : theme.colorScheme.onErrorContainer,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          FilledButton(
+                            key: const Key('familyChallengeNextButton'),
+                            onPressed: _nextStep,
+                            child: Text(l10n.familyChallengeNextButton),
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
-                  if (_feedback != null) ...[
-                    const SizedBox(height: 20),
-                    Text(
-                      _feedback == 'correct'
-                          ? l10n.questionFeedbackCorrect
-                          : l10n.questionFeedbackIncorrect,
-                      key: const Key('familyChallengeFeedbackText'),
-                      style: theme.textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      key: const Key('familyChallengeNextButton'),
-                      onPressed: _nextStep,
-                      child: Text(l10n.familyChallengeNextButton),
-                    ),
-                  ],
                 ],
               ),
             ),
+    );
+  }
+}
+
+enum _FamilyChoiceState { unanswered, correct, incorrectSelected, disabled }
+
+/// question_screen.dartの_ChoiceCardと同じ見た目・色分けの選択肢カード
+/// (ファミリーチャレンジではドラッグ&ドロップ操作は不要なため、
+/// Draggable対応は持たない簡略版)。
+class _FamilyChoiceCard extends StatelessWidget {
+  const _FamilyChoiceCard({
+    this.choiceKey,
+    required this.label,
+    required this.state,
+    required this.onTap,
+  });
+
+  final Key? choiceKey;
+  final String label;
+  final _FamilyChoiceState state;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    Color background;
+    Color border;
+    Color text;
+    switch (state) {
+      case _FamilyChoiceState.unanswered:
+        background = theme.colorScheme.surface;
+        border = theme.colorScheme.outlineVariant;
+        text = theme.colorScheme.onSurface;
+      case _FamilyChoiceState.correct:
+        background = theme.colorScheme.primaryContainer;
+        border = theme.colorScheme.primary;
+        text = theme.colorScheme.onPrimaryContainer;
+      case _FamilyChoiceState.incorrectSelected:
+        background = theme.colorScheme.errorContainer;
+        border = theme.colorScheme.error;
+        text = theme.colorScheme.onErrorContainer;
+      case _FamilyChoiceState.disabled:
+        background = theme.colorScheme.surface;
+        border = theme.colorScheme.outlineVariant.withValues(alpha: 0.5);
+        text = theme.colorScheme.onSurfaceVariant;
+    }
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        key: choiceKey,
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+          decoration: BoxDecoration(
+            color: background,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: border, width: 2),
+          ),
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: text,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

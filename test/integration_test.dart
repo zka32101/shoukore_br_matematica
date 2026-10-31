@@ -519,7 +519,7 @@ void main() {
 
           final choiceButton = find.byWidgetPredicate(
             (widget) =>
-                widget is ElevatedButton &&
+                widget is InkWell &&
                 widget.key is ValueKey<String> &&
                 (widget.key as ValueKey<String>).value.startsWith('familyChallengeChoice_'),
           );
