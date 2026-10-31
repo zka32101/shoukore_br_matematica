@@ -106,9 +106,10 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                             const SizedBox(width: 16),
                             Expanded(
                               child: Text(
+                                // 生成コードの引数は、名前のアルファベット順(correct, percent, total)。
                                 l10n.weeklyReportAccuracy(
-                                  (report.overallAccuracy * 100).round(),
                                   report.totalCorrect,
+                                  (report.overallAccuracy * 100).round(),
                                   report.totalAttempts,
                                 ),
                                 key: const Key('weeklyReportAccuracyText'),
@@ -128,11 +129,12 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                         key: Key('weeklyReportUnit_${unit.unitId}'),
                         child: ListTile(
                           leading: const Icon(Icons.menu_book_outlined),
+                          // 引数は、名前のアルファベット順(correct, percent, total, unitName)。
                           title: Text(l10n.weeklyReportUnitLine(
-                            resolveUnitName(l10n, unit.unitId),
-                            (unit.accuracy * 100).round(),
                             unit.correctCount,
+                            (unit.accuracy * 100).round(),
                             unit.attemptCount,
+                            resolveUnitName(l10n, unit.unitId),
                           )),
                           subtitle: unit.topMisconception != null
                               ? Text(
