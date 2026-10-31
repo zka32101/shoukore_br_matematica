@@ -41,6 +41,30 @@ class CelebrationBurst extends StatelessWidget {
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
+          // イラストの紙吹雪リング画像。ふわっと浮かび上がってから少しだけ
+          // 回転・拡大し続け、プログラム描画の星粒子だけでは出せない
+          // 華やかさを加える(中央は透過になっているので中身を隠さない)。
+          AnimatedBuilder(
+            animation: controller,
+            builder: (context, _) {
+              final fadeIn = Curves.easeOut.transform((controller.value * 2.5).clamp(0.0, 1.0));
+              return Opacity(
+                opacity: fadeIn,
+                child: Transform.rotate(
+                  angle: controller.value * 0.3,
+                  child: Transform.scale(
+                    scale: 0.85 + 0.15 * fadeIn,
+                    child: Image.asset(
+                      'assets/effects/celebration_burst.png',
+                      width: size * 1.35,
+                      height: size * 1.35,
+                      errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
           // 広がりながら薄くなる、2重のグローリング(放射状の輪)。
           for (final ringDelay in [0.0, 0.15])
             AnimatedBuilder(
